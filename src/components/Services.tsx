@@ -3,27 +3,27 @@ import { Hammer, ArrowUpRight } from 'lucide-react';
 const services = [
   {
     title: "Custom kitchen cabinets",
-    image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=75",
     href: "#services"
   },
   {
     title: "Bathroom vanities & storage",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=400&q=75",
     href: "#services"
   },
   {
     title: "Fine handmade furniture",
-    image: "https://images.unsplash.com/photo-1538688423619-a81d3f23454b?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1538688423619-a81d3f23454b?auto=format&fit=crop&w=400&q=75",
     href: "#services"
   },
   {
     title: "Shelving & bedroom built-ins",
-    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=400&q=75",
     href: "#services"
   },
   {
     title: "Custom doors & drawer fronts",
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=400&q=75",
     href: "#doors-drawers"
   }
 ];
@@ -83,6 +83,7 @@ export function Services() {
               <img 
                 src={service.image} 
                 alt={service.title} 
+                loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               {/* Gradient Overlay */}

@@ -35,9 +35,11 @@ export function Hero() {
       {/* Widescreen image section */}
       <div className="relative w-full h-[380px] md:h-[480px] overflow-hidden border-b border-royal-stone/20">
         <img 
-          src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1600&q=80" 
+          src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1400&q=75" 
           alt="Woodworking workshop" 
           className="w-full h-full object-cover object-center"
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-[#2c201c]/30" />
 
