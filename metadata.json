@@ -1,0 +1,6 @@
+{
+  "name": "Royal Brand Woodworking",
+  "description": "Professional woodworking and custom cabinetry portfolio and quote engine for Royal Brand Woodworking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
