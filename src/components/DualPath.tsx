@@ -221,19 +221,20 @@ export function DualPath() {
   const raisedPanelInset = frameInset * 1.35;
 
   return (
-    <section id="doors-drawers" className="py-24 bg-royal-light relative text-royal-text-dark">
+    <section id="doors-drawers" className="py-24 bg-royal-bg border-b border-royal-border-light relative text-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-royal-terracotta/10 border border-royal-terracotta/30 rounded-full mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-royal-terracotta"></span>
-            <span className="text-royal-terracotta text-[10px] font-extrabold tracking-widest uppercase">INTERACTIVE ESTIMATOR</span>
+          <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
+            <div className="w-12 h-[1px] bg-royal-gold" />
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Interactive Estimator</span>
+            <div className="w-12 h-[1px] bg-royal-gold" />
           </div>
           
-          <h2 className="font-sans text-4xl md:text-5xl text-royal-charcoal font-black mb-6 tracking-tight uppercase">
+          <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-6 tracking-wide uppercase">
             Custom Cabinet Ordering
           </h2>
           
-          <p className="text-royal-slate text-base md:text-lg">
+          <p className="text-royal-text-muted text-sm md:text-base font-light">
             Configure custom doors and drawer fronts built in our shop. Use our live previewer, add multiple dimensions to your list, and instantly draft a quote. Robert will call you to finalize grain patterns, shipping, and finish the deal.
           </p>
         </div>
@@ -244,9 +245,9 @@ export function DualPath() {
             <div className="grid lg:grid-cols-12 gap-8 items-start">
               
               {/* Left Column: Interactive Live Previewer */}
-              <div className="lg:col-span-5 bg-white p-6 rounded-xl border border-royal-stone/20 shadow-md flex flex-col justify-between self-stretch">
+              <div className="lg:col-span-5 bg-royal-charcoal p-8 rounded-none border border-royal-border shadow-md flex flex-col justify-between self-stretch">
                 <div>
-                  <h4 className="font-sans text-sm font-extrabold text-royal-terracotta uppercase tracking-wider mb-4 text-center">
+                  <h4 className="font-sans text-sm font-bold text-royal-gold uppercase tracking-[0.15em] mb-6 text-center">
                     Live Dimension Previewer
                   </h4>
                   
@@ -481,9 +482,9 @@ export function DualPath() {
               </div>
 
               {/* Right Column: Custom Configuration Controls */}
-              <div className="lg:col-span-7 bg-royal-charcoal text-white p-6 md:p-8 rounded-xl shadow-md self-stretch flex flex-col justify-between">
+              <div className="lg:col-span-7 bg-royal-charcoal text-white p-8 md:p-10 rounded-none border border-royal-border shadow-md self-stretch flex flex-col justify-between">
                 <div>
-                  <h3 className="font-sans text-xl font-bold mb-6 tracking-tight uppercase border-b border-white/10 pb-3">
+                  <h3 className="font-serif text-2xl font-bold mb-8 tracking-wide uppercase border-b border-royal-border pb-4">
                     Configure Cabinet Door Details
                   </h3>
 

@@ -36,56 +36,58 @@ export function FaqAccordion() {
   };
 
   return (
-    <section className="py-24 bg-royal-cream text-royal-charcoal border-t border-royal-stone/30">
+    <section className="py-24 bg-royal-bg text-royal-text border-b border-royal-border-light">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Two-column: FAQs left, contact sidebar right */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
           
           {/* Left: FAQ list */}
           <div className="lg:col-span-2">
             <div className="mb-12">
-              <div className="text-royal-terracotta text-sm font-semibold tracking-wide mb-3">Common Questions</div>
-              <h2 className="font-serif text-4xl md:text-5xl text-royal-charcoal font-semibold tracking-tight normal-case italic">
+              <div className="flex items-center gap-4 text-royal-gold mb-4">
+                <div className="w-12 h-[1px] bg-royal-gold" />
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Common Questions</span>
+              </div>
+              <h2 className="font-serif text-3xl md:text-5xl text-white font-bold tracking-wide uppercase">
                 Frequently Asked<br />Questions
               </h2>
-              <p className="text-royal-slate mt-4 text-sm max-w-xl">
+              <p className="text-royal-text-muted mt-6 text-sm md:text-base font-light max-w-xl leading-relaxed">
                 Common questions homeowners and contractors ask about ordering custom doors and remodeling.
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {faqs.map((faq, idx) => {
                 const isOpen = openIndex === idx;
                 return (
                   <div 
                     key={idx} 
-                    className={`bg-white rounded-xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-royal-terracotta/40 shadow-md' : 'border-royal-stone/30'}`}
+                    className={`bg-royal-charcoal rounded-none border overflow-hidden transition-all duration-300 ${isOpen ? 'border-royal-gold shadow-lg' : 'border-royal-border hover:border-royal-border-light'}`}
                   >
                     <button
                       onClick={() => toggleAccordion(idx)}
-                      className="w-full flex items-center justify-between p-5 text-left focus:outline-none cursor-pointer group"
+                      className="w-full flex items-center justify-between p-6 text-left focus:outline-none cursor-pointer group"
                     >
-                      <div className="flex items-center gap-4">
-                        <span className={`text-xs font-black font-mono w-6 shrink-0 transition-colors ${isOpen ? 'text-royal-terracotta' : 'text-royal-stone/60'}`}>
+                      <div className="flex items-center gap-6">
+                        <span className={`text-xs font-bold tracking-wider w-6 shrink-0 transition-colors ${isOpen ? 'text-royal-gold' : 'text-royal-text-muted'}`}>
                           {String(idx + 1).padStart(2, '0')}
                         </span>
-                        <span className={`font-bold text-sm md:text-base transition-colors ${isOpen ? 'text-royal-terracotta' : 'text-royal-charcoal group-hover:text-royal-terracotta'}`}>
+                        <span className={`font-bold text-sm md:text-base transition-colors uppercase tracking-wider ${isOpen ? 'text-royal-gold' : 'text-white group-hover:text-royal-gold'}`}>
                           {faq.question}
                         </span>
                       </div>
                       <ChevronDown 
-                        className={`w-5 h-5 text-royal-slate shrink-0 transition-transform duration-300 ml-4 ${
-                          isOpen ? "transform rotate-180 text-royal-terracotta" : ""
+                        className={`w-5 h-5 text-royal-text-muted shrink-0 transition-transform duration-300 ml-4 ${
+                          isOpen ? "transform rotate-180 text-royal-gold" : ""
                         }`}
                       />
                     </button>
                     
                     <div 
                       className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                        isOpen ? "max-h-[300px] border-t border-royal-terracotta/20" : "max-h-0"
+                        isOpen ? "max-h-[300px] border-t border-royal-border/50" : "max-h-0"
                       }`}
                     >
-                      <div className="p-5 pl-14 text-royal-slate text-sm leading-relaxed">
+                      <div className="p-6 pl-18 text-royal-text-muted text-sm md:text-base font-light leading-relaxed">
                         {faq.answer}
                       </div>
                     </div>
@@ -97,30 +99,30 @@ export function FaqAccordion() {
 
           {/* Right: Sticky contact sidebar */}
           <div className="lg:sticky lg:top-8">
-            <div className="bg-royal-charcoal text-white rounded-2xl p-8 space-y-6 shadow-xl">
+            <div className="bg-royal-charcoal text-white rounded-none border border-royal-border p-8 md:p-10 space-y-8 shadow-xl">
               <div>
-                <p className="text-royal-terracotta text-xs font-bold uppercase tracking-widest mb-2">Ready to order?</p>
-                <h3 className="font-serif text-2xl font-bold leading-tight">Talk to Robert<br />directly</h3>
+                <p className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Ready to order?</p>
+                <h3 className="font-serif text-2xl md:text-3xl font-bold leading-tight uppercase tracking-wide">Talk to Robert<br />directly</h3>
               </div>
-              <p className="text-royal-stone text-sm leading-relaxed">
+              <p className="text-royal-text-muted text-sm font-light leading-relaxed">
                 Robert personally handles every inquiry. Call or fill out the online estimator to get started on your custom cabinet doors.
               </p>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <a 
                   href="tel:555-0199" 
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-royal-terracotta text-white font-bold text-sm rounded-full tracking-wider uppercase hover:bg-white hover:text-royal-charcoal transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-black transition-all"
                 >
-                  📞 Call (555) 0199
+                  Call (555) 0199
                 </a>
                 <a 
                   href="#doors-drawers" 
-                  className="flex items-center justify-center gap-2 w-full py-3 border-2 border-white/20 text-white font-bold text-sm rounded-full tracking-wider uppercase hover:border-white/50 transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-4 border border-royal-border text-white font-bold text-xs tracking-[0.15em] uppercase hover:border-royal-gold hover:text-royal-gold transition-all"
                 >
                   Get an Estimate
                 </a>
               </div>
-              <div className="border-t border-white/10 pt-4">
-                <p className="text-royal-stone text-xs">
+              <div className="border-t border-royal-border pt-6">
+                <p className="text-royal-text-muted text-xs font-light leading-loose uppercase tracking-wider">
                   Mon – Fri: 8am – 5pm<br />
                   Workshop in Portland, OR
                 </p>

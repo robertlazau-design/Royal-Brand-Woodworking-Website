@@ -1,49 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-royal-cream: #ece8df;
-  --color-royal-terracotta: #722615;
-  --color-royal-charcoal: #152219;
-  --color-royal-slate: #223328;
-  --color-royal-light: #fbfbfa;
-  --color-royal-text-dark: #1b261f;
-  --color-royal-stone: #8fa095;
-  --color-royal-amber: #e0a230;
-  --color-royal-bronze: #c5a47e;
+  --color-royal-bg: #0a0a0a;
+  --color-royal-charcoal: #151515;
+  --color-royal-slate: #242424;
+  --color-royal-black: #000000;
+  
+  --color-royal-gold: #c9a47a;
+  --color-royal-bronze: #8e6c46;
+  --color-royal-mahogany: #4a1910;
+  
+  --color-royal-text: #f4f4f5;
+  --color-royal-text-muted: #a1a1aa;
+  
+  --color-royal-border: rgba(201, 164, 122, 0.2);
+  --color-royal-border-light: rgba(255, 255, 255, 0.1);
 
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
 }
 
 /* Smooth scrolling for the whole page */
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-royal-bg);
+  color: var(--color-royal-text);
 }
 
-/* Woody Parallax Background Cast — optimized with lower res image */
-.app-woody-bg {
-  position: relative;
-}
-.app-woody-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=40');
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-  pointer-events: none;
-  will-change: transform;
-}
-.app-woody-bg::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  /* Blend of mahogany (#722615) and dark pine green/black (#0a100c) */
-  background: linear-gradient(135deg, rgba(114, 38, 21, 0.8) 0%, rgba(10, 16, 12, 0.94) 100%);
-  z-index: 1;
-  pointer-events: none;
+/* Base body styles */
+body {
+  background-color: var(--color-royal-bg);
+  color: var(--color-royal-text);
+  overflow-x: hidden;
 }
 
 /* Section fade-in-up animation when visible */

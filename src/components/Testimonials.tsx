@@ -65,45 +65,46 @@ const testimonials = [
 export function Testimonials() {
   return (
     <>
-      <section id="testimonials" className="py-24 bg-royal-charcoal relative overflow-hidden text-white border-t border-royal-stone/10">
-        {/* Decorative background element */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-        
+      <section id="testimonials" className="py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="mb-16">
-            <div className="text-royal-terracotta text-sm font-semibold tracking-wide mb-3">Words from our neighbors</div>
-            <h2 className="font-serif text-4xl md:text-5xl text-white font-semibold mb-4 tracking-tight normal-case italic">
-              Our neighborly feedback
+          <div className="mb-16 text-center">
+            <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
+              <div className="w-12 h-[1px] bg-royal-gold" />
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reviews</span>
+              <div className="w-12 h-[1px] bg-royal-gold" />
+            </div>
+            <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4 tracking-wide uppercase">
+              Built Beautifully. Built For You.
             </h2>
-            <p className="text-royal-stone text-base md:text-lg max-w-2xl font-medium">
+            <p className="text-royal-text-muted text-sm md:text-base max-w-2xl mx-auto font-light">
               Our legacy is built on the words of those who live and work alongside our craftsmanship every day.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 border border-royal-stone/20 gap-5">
+              <div key={idx} className="bg-royal-charcoal p-8 rounded-none flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 border border-royal-border hover:border-royal-gold group gap-5">
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-royal-charcoal/10 text-royal-terracotta flex items-center justify-center font-bold text-sm shrink-0 border border-royal-charcoal/20">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-sm shrink-0 border border-royal-border">
                         {getInitials(testimonial.name)}
                       </div>
                       <div>
-                        <p className="font-bold text-royal-text-dark text-sm">{testimonial.name}</p>
-                        <p className="text-royal-stone text-[11px] font-medium tracking-wide mt-0.5">{testimonial.role}</p>
+                        <p className="font-bold text-white text-sm tracking-wider uppercase">{testimonial.name}</p>
+                        <p className="text-royal-text-muted text-[10px] font-medium tracking-wide mt-1 uppercase">{testimonial.role}</p>
                       </div>
                     </div>
                     <GoogleIcon />
                   </div>
 
-                  <div className="flex gap-0.5 mb-4">
+                  <div className="flex gap-1 mb-6">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-royal-amber text-royal-amber" />
+                      <Star key={i} className="w-4 h-4 fill-royal-gold text-royal-gold" />
                     ))}
                   </div>
 
-                  <blockquote className="text-royal-text-dark/90 font-medium text-xs leading-relaxed italic">
+                  <blockquote className="text-royal-text font-light text-sm leading-relaxed italic group-hover:text-white transition-colors">
                     "{testimonial.quote}"
                   </blockquote>
                 </div>
@@ -113,36 +114,32 @@ export function Testimonials() {
         </div>
       </section>
 
-      {/* Solid Terracotta Saw-Tooth Banner Section (Ripped Paper Look from Photo) */}
-      <div className="bg-royal-charcoal">
-        <SawtoothDivider color="text-royal-terracotta" position="top" invert={true} />
-        
-        <section className="bg-royal-terracotta py-16 text-white text-center relative z-10">
-          <div className="max-w-4xl mx-auto px-6 space-y-6">
-            <h3 className="font-serif text-4xl md:text-5xl font-semibold uppercase tracking-tight leading-none normal-case italic">
+      {/* Solid Banner Section */}
+      <div className="bg-royal-bg border-b border-royal-border-light">
+        <section className="bg-royal-charcoal py-20 text-center relative z-10 border-y border-royal-border">
+          <div className="max-w-4xl mx-auto px-6 space-y-8">
+            <h3 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wide">
               Where plans become woodwork
             </h3>
-            <p className="text-royal-light/95 text-base md:text-lg max-w-xl mx-auto font-medium">
-              Let's bring your ideas to life — reach out today to start your order with a craftsman you can trust.
+            <p className="text-royal-text-muted text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
+              Let's bring your ideas to life. Reach out today to start your order with a craftsman you can trust.
             </p>
-            <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:555-0199" 
-                className="inline-block px-8 py-3.5 bg-white text-royal-terracotta font-extrabold text-sm rounded-full tracking-wider hover:bg-royal-charcoal hover:text-white transition-all shadow-xl"
+                className="inline-block px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-black transition-all shadow-xl"
               >
                 Call Robert Now
               </a>
               <a 
                 href="#doors-drawers" 
-                className="inline-block px-8 py-3.5 bg-transparent border-2 border-white text-white font-extrabold text-sm rounded-full tracking-wider hover:bg-white hover:text-royal-terracotta transition-all"
+                className="inline-block px-8 py-3.5 bg-transparent border border-royal-gold text-royal-gold font-bold text-xs uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
               >
                 Get an Estimate
               </a>
             </div>
           </div>
         </section>
-
-        <SawtoothDivider color="text-royal-terracotta" position="bottom" />
       </div>
     </>
   );

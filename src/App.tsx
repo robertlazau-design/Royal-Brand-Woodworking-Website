@@ -50,11 +50,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen app-woody-bg text-royal-text-dark font-sans selection:bg-royal-terracotta selection:text-white py-0 md:py-10 px-0 md:px-6 relative flex items-center justify-center">
+    <div className="min-h-screen bg-royal-bg text-royal-text font-sans selection:bg-royal-gold selection:text-royal-black relative">
       {/* Scroll progress bar */}
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
 
-      <div className="w-full max-w-7xl rounded-none md:rounded-3xl overflow-hidden shadow-2xl bg-royal-light border border-royal-stone/20 relative z-10">
+      <div className="w-full relative z-10">
         <Navigation />
         <main>
           <Hero />
