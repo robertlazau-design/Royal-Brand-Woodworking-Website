@@ -125,7 +125,7 @@ export function Testimonials() {
       <div className="bg-royal-charcoal border-b border-royal-border-light">
         <section className="py-16 text-center relative z-10">
           <div className="max-w-4xl mx-auto px-6 space-y-6">
-            <img src="/logo.jpg" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-4" />
+            <img src="/logo.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-4" />
             <h3 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wide">
               Where plans become woodwork
             </h3>

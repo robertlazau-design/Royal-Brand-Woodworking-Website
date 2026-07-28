@@ -41,7 +41,7 @@ export function Hero() {
         <div className="max-w-2xl">
           {/* Logo badge */}
           <div className="flex items-center gap-3 mb-8">
-            <img src="/logo.jpg" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
+            <img src="/logo.png" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
             <span className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em]">Est. 2009 · 3rd Generation</span>
           </div>
 
