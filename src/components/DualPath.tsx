@@ -394,13 +394,13 @@ export function DualPath() {
                       )}
 
                       {/* Height Measurement Line & Label */}
-                      <line x1={x - 15} y1={y} x2={x - 15} y2={y + drawH} stroke="#bd4f2a" strokeWidth="1.5" />
-                      <line x1={x - 20} y1={y} x2={x - 10} y2={y} stroke="#bd4f2a" strokeWidth="1.5" />
-                      <line x1={x - 20} y1={y + drawH} x2={x - 10} y2={y + drawH} stroke="#bd4f2a" strokeWidth="1.5" />
+                      <line x1={x - 15} y1={y} x2={x - 15} y2={y + drawH} stroke="#c9a47a" strokeWidth="1.5" />
+                      <line x1={x - 20} y1={y} x2={x - 10} y2={y} stroke="#c9a47a" strokeWidth="1.5" />
+                      <line x1={x - 20} y1={y + drawH} x2={x - 10} y2={y + drawH} stroke="#c9a47a" strokeWidth="1.5" />
                       <text 
                         x={x - 24} 
                         y={y + drawH / 2} 
-                        fill="#bd4f2a" 
+                        fill="#c9a47a" 
                         textAnchor="middle" 
                         transform={`rotate(-90 ${x - 24} ${y + drawH / 2})`}
                         className="text-[11px] font-black tracking-wider"
@@ -409,13 +409,13 @@ export function DualPath() {
                       </text>
 
                       {/* Width Measurement Line & Label */}
-                      <line x1={x} y1={y - 15} x2={x + drawW} y2={y - 15} stroke="#bd4f2a" strokeWidth="1.5" />
-                      <line x1={x} y1={y - 20} x2={x} y2={y - 10} stroke="#bd4f2a" strokeWidth="1.5" />
-                      <line x1={x + drawW} y1={y - 20} x2={x + drawW} y2={y - 10} stroke="#bd4f2a" strokeWidth="1.5" />
+                      <line x1={x} y1={y - 15} x2={x + drawW} y2={y - 15} stroke="#c9a47a" strokeWidth="1.5" />
+                      <line x1={x} y1={y - 20} x2={x} y2={y - 10} stroke="#c9a47a" strokeWidth="1.5" />
+                      <line x1={x + drawW} y1={y - 20} x2={x + drawW} y2={y - 10} stroke="#c9a47a" strokeWidth="1.5" />
                       <text 
                         x={x + drawW / 2} 
                         y={y - 24} 
-                        fill="#bd4f2a" 
+                        fill="#c9a47a" 
                         textAnchor="middle"
                         className="text-[11px] font-black tracking-wider"
                       >
@@ -427,17 +427,17 @@ export function DualPath() {
 
                 <div className="space-y-4">
                   {/* Swatch color labels for quick finish color selection */}
-                  <div className="bg-royal-cream/30 p-4 rounded-lg border border-royal-stone/10">
-                    <p className="text-[11px] font-extrabold uppercase text-royal-slate tracking-wider mb-2.5">Door Finish Color</p>
+                  <div className="bg-royal-bg p-4 border border-royal-border">
+                    <p className="text-[11px] font-bold uppercase text-white tracking-wider mb-2.5">Door Finish Color</p>
                     <div className="grid grid-cols-3 gap-2">
                       {Object.keys(woodColors).map((name) => (
                         <button
                           key={name}
                           onClick={() => setWoodSpecies(name)}
-                          className={`flex items-center gap-1.5 p-1.5 rounded border text-left cursor-pointer transition-all ${
+                          className={`flex items-center gap-1.5 p-1.5 border text-left cursor-pointer transition-all hover:-translate-y-0.5 ${
                             woodSpecies === name 
-                              ? 'border-royal-terracotta bg-royal-terracotta/5' 
-                              : 'border-royal-stone/20 bg-white hover:border-royal-stone/50'
+                              ? 'border-royal-gold bg-royal-gold/10 text-white shadow-[0_0_10px_rgba(201,164,122,0.2)]' 
+                              : 'border-royal-border bg-royal-bg text-royal-text-muted hover:border-royal-gold hover:text-white'
                           }`}
                         >
                           <span 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { RoyalLogo } from './RoyalLogo';
 
 export function Footer() {
@@ -8,7 +9,9 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 mb-20">
           {/* Owner Bio Section */}
           <div className="lg:col-span-3 space-y-8">
-            <RoyalLogo light={true} />
+            <Link to="/">
+              <RoyalLogo light={true} />
+            </Link>
             
             <div className="space-y-4">
               <h4 className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em]">Meet the Owner</h4>
@@ -25,10 +28,10 @@ export function Footer() {
           <div className="lg:col-span-1 space-y-6">
             <h4 className="font-bold text-white tracking-wider uppercase text-xs">Services</h4>
             <ul className="space-y-4 text-sm">
-              <li><a href="#services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Kitchen Remodeling</a></li>
-              <li><a href="#services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Bathroom Vanities</a></li>
-              <li><a href="#services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Handmade Furniture</a></li>
-              <li><a href="#doors-drawers" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Custom Cabinet Doors</a></li>
+              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Kitchen Remodeling</Link></li>
+              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Bathroom Vanities</Link></li>
+              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Handmade Furniture</Link></li>
+              <li><Link to="/estimator" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Custom Cabinet Doors</Link></li>
             </ul>
           </div>
           
@@ -40,7 +43,7 @@ export function Footer() {
               <li><a href="mailto:robertlazau@gmail.com" className="hover:text-royal-gold transition-colors">robertlazau@gmail.com</a></li>
               <li><a href="tel:555-0199" className="hover:text-royal-gold transition-colors">Workshop: 555-0199</a></li>
               <li className="pt-4">
-                <a href="#doors-drawers" className="text-royal-gold font-bold uppercase tracking-wider text-[10px] hover:text-white transition-colors">Order Online &rarr;</a>
+                <Link to="/estimator" className="text-royal-gold font-bold uppercase tracking-wider text-[10px] hover:text-white transition-colors">Order Online &rarr;</Link>
               </li>
             </ul>
           </div>

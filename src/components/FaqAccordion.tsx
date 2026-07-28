@@ -8,7 +8,7 @@ const faqs = [
   },
   {
     question: "Do you offer free estimates?",
-    answer: "Yes, we provide free preliminary estimates. You can fill out our custom door & drawer front estimator above, or contact Robert directly for larger custom remodeling layouts."
+    answer: "No, on-site estimates and consultations are billed at $150/hr. You can reserve a day for an estimate using our online booking calendar."
   },
   {
     question: "How long will my custom doors or drawer fronts order take?",
