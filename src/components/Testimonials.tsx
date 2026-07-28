@@ -81,35 +81,37 @@ export function Testimonials() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((testimonial, idx) => (
-              <div key={idx} className="bg-royal-charcoal p-8 rounded-none flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 border border-royal-border hover:border-royal-gold group gap-5">
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-sm shrink-0 border border-royal-border">
-                        {getInitials(testimonial.name)}
+          <div className="relative w-full overflow-hidden group py-4">
+            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3">
+              {[...testimonials, ...testimonials].map((testimonial, idx) => (
+                <div key={idx} className="w-[380px] shrink-0 bg-royal-charcoal p-8 rounded-none flex flex-col justify-between transition-all duration-300 border border-royal-border hover:border-royal-gold">
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-sm shrink-0 border border-royal-border">
+                          {getInitials(testimonial.name)}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white text-sm tracking-wider uppercase">{testimonial.name}</p>
+                          <p className="text-royal-text-muted text-[10px] font-medium tracking-wide mt-1 uppercase">{testimonial.role}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-white text-sm tracking-wider uppercase">{testimonial.name}</p>
-                        <p className="text-royal-text-muted text-[10px] font-medium tracking-wide mt-1 uppercase">{testimonial.role}</p>
-                      </div>
+                      <GoogleIcon />
                     </div>
-                    <GoogleIcon />
-                  </div>
 
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-royal-gold text-royal-gold" />
-                    ))}
-                  </div>
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-royal-gold text-royal-gold" />
+                      ))}
+                    </div>
 
-                  <blockquote className="text-royal-text font-light text-sm leading-relaxed italic group-hover:text-white transition-colors">
-                    "{testimonial.quote}"
-                  </blockquote>
+                    <blockquote className="text-royal-text font-light text-sm leading-relaxed italic hover:text-white transition-colors">
+                      "{testimonial.quote}"
+                    </blockquote>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
