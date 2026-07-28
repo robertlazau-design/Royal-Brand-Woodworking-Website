@@ -1,10 +1,10 @@
 import React from 'react';
-import { Services } from '../components/Services';
+import { AnatomyOfDetail } from '../components/AnatomyOfDetail';
 
 export function ServicesPage() {
   return (
     <div className="w-full">
-      <Services />
+      <AnatomyOfDetail />
     </div>
   );
 }
