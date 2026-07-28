@@ -24,6 +24,7 @@ export function BookingPage() {
     <section className="py-24 bg-royal-bg text-royal-text min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
+          <img src="/logo.jpg" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-6" />
           <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
             <div className="w-12 h-[1px] bg-royal-gold" />
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reserve a Consultation</span>

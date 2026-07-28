@@ -251,7 +251,7 @@ export function DualPath() {
                     Live Dimension Previewer
                   </h4>
                   
-                  <div className="relative w-full h-[320px] bg-royal-cream/40 rounded-lg flex items-center justify-center overflow-hidden border border-royal-stone/10 mb-6">
+                  <div className="relative w-full h-[320px] bg-royal-charcoal rounded-lg flex items-center justify-center overflow-hidden border border-royal-border mb-6">
                     <svg width="100%" height="100%" className="max-w-[280px] max-h-[300px]">
                       <defs>
                         <linearGradient id="wood-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -454,13 +454,13 @@ export function DualPath() {
                     {/* Render input field if 'Other (Custom Color)' is selected in swatches */}
                     {woodSpecies === 'Other (Custom Color)' && (
                       <div className="mt-3">
-                        <label className="block text-[10px] font-extrabold text-royal-slate uppercase tracking-wider mb-1">Specify Custom Finish Color *</label>
+                        <label className="block text-[10px] font-extrabold text-royal-text-muted uppercase tracking-wider mb-1">Specify Custom Finish Color *</label>
                         <input 
                           type="text" 
                           placeholder="e.g. SW 7008 Alabaster, F&B Lichen"
                           value={customColor}
                           onChange={(e) => setCustomColor(e.target.value)}
-                          className="w-full bg-white border border-royal-stone/30 text-royal-charcoal px-2.5 py-1.5 rounded text-xs focus:border-royal-terracotta focus:outline-none"
+                          className="w-full bg-royal-bg border border-royal-border text-white px-2.5 py-1.5 rounded text-xs focus:border-royal-gold focus:outline-none"
                         />
                       </div>
                     )}
@@ -469,12 +469,12 @@ export function DualPath() {
                   {/* Instant pricing estimate warning */}
                   <div className="flex items-center justify-between p-3.5 bg-royal-charcoal text-white rounded-lg">
                     <div>
-                      <p className="text-[10px] font-semibold text-royal-stone uppercase tracking-wide">Estimated Price Per Unit</p>
+                      <p className="text-[10px] font-semibold text-royal-text-muted uppercase tracking-wide">Estimated Price Per Unit</p>
                       <p className="text-xl font-black text-white mt-0.5">
                         ${calculateItemPrice(selectedPath || 'doors', woodSpecies, hVal, wVal, profileStyle, preBored)}
                       </p>
                     </div>
-                    <span className="text-[10px] text-royal-stone max-w-[150px] leading-snug text-right font-medium">
+                    <span className="text-[10px] text-royal-text-muted max-w-[150px] leading-snug text-right font-medium">
                       Estimate factors wood choice, sizing, and styling.
                     </span>
                   </div>
@@ -490,14 +490,14 @@ export function DualPath() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Door Finish Color *</label>
+                      <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Door Finish Color *</label>
                       <select 
                         value={woodSpecies}
                         onChange={(e) => setWoodSpecies(e.target.value)}
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none appearance-none cursor-pointer text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                       >
                         {Object.keys(woodColors).map((name) => (
-                          <option key={name} value={name} className="text-royal-charcoal">
+                          <option key={name} value={name} className="text-white">
                             {name}
                           </option>
                         ))}
@@ -506,54 +506,54 @@ export function DualPath() {
                       {/* Render input field if 'Other (Custom Color)' is selected in dropdown */}
                       {woodSpecies === 'Other (Custom Color)' && (
                         <div className="mt-3">
-                          <label className="block text-[10px] font-bold text-royal-stone uppercase tracking-wider mb-1">Specify Custom Finish Color *</label>
+                          <label className="block text-[10px] font-bold text-royal-text-muted uppercase tracking-wider mb-1">Specify Custom Finish Color *</label>
                           <input 
                             type="text" 
                             placeholder="e.g. SW 7008 Alabaster, F&B Lichen"
                             value={customColor}
                             onChange={(e) => setCustomColor(e.target.value)}
-                            className="w-full bg-white/10 border border-white/25 text-white px-2.5 py-1.5 rounded text-xs focus:border-royal-terracotta focus:outline-none"
+                            className="w-full bg-white/10 border border-white/25 text-white px-2.5 py-1.5 rounded text-xs focus:border-royal-gold focus:outline-none"
                           />
                         </div>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Profile Style *</label>
+                      <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Profile Style *</label>
                       <select 
                         value={profileStyle}
                         onChange={(e) => setProfileStyle(e.target.value)}
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none appearance-none cursor-pointer text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                       >
-                        <option value="Classic Shaker" className="text-royal-charcoal">Classic Shaker</option>
-                        <option value="Modern Slab" className="text-royal-charcoal">Modern Slab (Flat Panel)</option>
-                        <option value="Raised Panel" className="text-royal-charcoal">Raised Panel (Traditional)</option>
-                        <option value="Beveled Edge" className="text-royal-charcoal">Beveled Edge</option>
+                        <option value="Classic Shaker" className="text-white">Classic Shaker</option>
+                        <option value="Modern Slab" className="text-white">Modern Slab (Flat Panel)</option>
+                        <option value="Raised Panel" className="text-white">Raised Panel (Traditional)</option>
+                        <option value="Beveled Edge" className="text-white">Beveled Edge</option>
                       </select>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Height (Inches) *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Height (Inches) *</label>
                         <input 
                           type="number" 
                           step="0.0625"
                           placeholder="e.g. 30" 
                           value={height}
                           onChange={(e) => setHeight(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Width (Inches) *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Width (Inches) *</label>
                         <input 
                           type="number" 
                           step="0.0625"
                           placeholder="e.g. 18" 
                           value={width}
                           onChange={(e) => setWidth(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
@@ -561,32 +561,32 @@ export function DualPath() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Thickness *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Thickness *</label>
                         <select 
                           value={thickness}
                           onChange={(e) => setThickness(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none appearance-none cursor-pointer text-sm"
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                         >
-                          <option value="0.75" className="text-royal-charcoal">3/4" (Standard)</option>
-                          <option value="0.875" className="text-royal-charcoal">7/8"</option>
-                          <option value="1.0" className="text-royal-charcoal">1" (Heavy Duty)</option>
+                          <option value="0.75" className="text-white">3/4" (Standard)</option>
+                          <option value="0.875" className="text-white">7/8"</option>
+                          <option value="1.0" className="text-white">1" (Heavy Duty)</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Quantity *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Quantity *</label>
                         <input 
                           type="number" 
                           min="1"
                           value={quantity}
                           onChange={(e) => setQuantity(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Pre-bore Hinge Holes?</label>
+                      <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Pre-bore Hinge Holes?</label>
                       <div className="flex gap-6 mt-1 text-sm">
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input 
@@ -595,7 +595,7 @@ export function DualPath() {
                             value="yes" 
                             checked={preBored === 'yes'}
                             onChange={() => setPreBored('yes')}
-                            className="accent-royal-terracotta w-4 h-4 cursor-pointer" 
+                            className="accent-royal-gold w-4 h-4 cursor-pointer" 
                           />
                           <span className="font-semibold text-white">Yes (35mm cup holes - 3" inset)</span>
                         </label>
@@ -606,7 +606,7 @@ export function DualPath() {
                             value="no" 
                             checked={preBored === 'no'}
                             onChange={() => setPreBored('no')}
-                            className="accent-royal-terracotta w-4 h-4 cursor-pointer" 
+                            className="accent-royal-gold w-4 h-4 cursor-pointer" 
                           />
                           <span className="font-semibold text-white">No (Solid edge)</span>
                         </label>
@@ -614,13 +614,13 @@ export function DualPath() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-royal-stone uppercase tracking-wider mb-2">Special grain alignment or notes</label>
+                      <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Special grain alignment or notes</label>
                       <input 
                         type="text" 
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         placeholder="e.g., Grain matched with adjacent drawer front, custom cup-hole depth..."
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-terracotta focus:outline-none text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -630,7 +630,7 @@ export function DualPath() {
                   <button 
                     type="button"
                     onClick={handleAddItem}
-                    className="w-full sm:w-auto px-6 py-3 bg-royal-terracotta text-white font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:text-white transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                     Add Item to Quote List
@@ -641,21 +641,21 @@ export function DualPath() {
             </div>
 
             {/* List / Basket of Added items */}
-            <div className="bg-white rounded-xl border border-royal-stone/20 shadow-md p-6 md:p-8">
-              <h3 className="font-sans text-xl font-black text-royal-charcoal mb-6 uppercase tracking-tight flex items-center gap-2 border-b border-royal-stone/10 pb-4">
+            <div className="bg-royal-charcoal border border-royal-border shadow-md p-6 md:p-8">
+              <h3 className="font-sans text-xl font-black text-white mb-6 uppercase tracking-tight flex items-center gap-2 border-b border-royal-border pb-4">
                 Your Custom Quote List
-                <span className="text-xs bg-royal-terracotta/10 text-royal-terracotta border border-royal-terracotta/20 rounded-full px-2.5 py-0.5 font-bold">
+                <span className="text-xs bg-royal-gold/10 text-royal-gold border border-royal-gold/20 rounded-full px-2.5 py-0.5 font-bold">
                   {quoteItems.reduce((acc, curr) => acc + curr.quantity, 0)} Items
                 </span>
               </h3>
 
               {quoteItems.length === 0 ? (
-                <div className="py-12 text-center text-royal-slate font-medium space-y-3">
-                  <div className="w-12 h-12 rounded-full border border-dashed border-royal-stone/30 flex items-center justify-center mx-auto text-royal-stone">
+                <div className="py-12 text-center text-royal-text-muted font-medium space-y-3">
+                  <div className="w-12 h-12 rounded-full border border-dashed border-royal-border flex items-center justify-center mx-auto text-royal-text-muted">
                     <Trash2 className="w-5 h-5 opacity-40" />
                   </div>
                   <p className="text-sm">Your custom cabinet list is currently empty.</p>
-                  <p className="text-xs text-royal-stone">Use the form above to configure dimensions and add items to your list.</p>
+                  <p className="text-xs text-royal-text-muted">Use the form above to configure dimensions and add items to your list.</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -663,7 +663,7 @@ export function DualPath() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm border-collapse">
                       <thead>
-                        <tr className="border-b border-royal-stone/20 text-royal-stone font-bold text-xs uppercase tracking-wider">
+                        <tr className="border-b border-royal-border text-royal-text-muted font-bold text-xs uppercase tracking-wider">
                           <th className="py-3 px-2">Type</th>
                           <th className="py-3 px-2">Finish Color</th>
                           <th className="py-3 px-2">Profile</th>
@@ -676,22 +676,22 @@ export function DualPath() {
                       </thead>
                       <tbody>
                         {quoteItems.map((item) => (
-                          <tr key={item.id} className="border-b border-royal-stone/10 hover:bg-royal-cream/20 transition-all font-semibold">
-                            <td className="py-4 px-2 capitalize text-royal-charcoal font-bold">{item.type === 'doors' ? 'Cabinet Door' : 'Drawer Front'}</td>
-                            <td className="py-4 px-2 text-royal-slate">{item.woodSpecies}</td>
-                            <td className="py-4 px-2 text-royal-slate">{item.profileStyle}</td>
-                            <td className="py-4 px-2 text-royal-slate font-mono">
+                          <tr key={item.id} className="border-b border-royal-border hover:bg-royal-bg/20 transition-all font-semibold">
+                            <td className="py-4 px-2 capitalize text-white font-bold">{item.type === 'doors' ? 'Cabinet Door' : 'Drawer Front'}</td>
+                            <td className="py-4 px-2 text-royal-text-muted">{item.woodSpecies}</td>
+                            <td className="py-4 px-2 text-royal-text-muted">{item.profileStyle}</td>
+                            <td className="py-4 px-2 text-royal-text-muted font-mono">
                               {item.height}" x {item.width}" x {item.thickness === '0.75' ? '3/4"' : item.thickness === '0.875' ? '7/8"' : '1"'}
                             </td>
-                            <td className="py-4 px-2 text-center capitalize text-royal-slate">
+                            <td className="py-4 px-2 text-center capitalize text-royal-text-muted">
                               {item.type === 'doors' ? (item.preBored === 'yes' ? 'Yes' : 'No') : '—'}
                             </td>
-                            <td className="py-4 px-2 text-center font-bold text-royal-charcoal">{item.quantity}</td>
-                            <td className="py-4 px-2 text-right text-royal-terracotta font-extrabold">${item.estimatedPrice}</td>
+                            <td className="py-4 px-2 text-center font-bold text-white">{item.quantity}</td>
+                            <td className="py-4 px-2 text-right text-royal-gold font-extrabold">${item.estimatedPrice}</td>
                             <td className="py-4 px-2 text-center">
                               <button 
                                 onClick={() => handleRemoveItem(item.id)}
-                                className="text-royal-stone hover:text-red-600 transition-colors p-1 cursor-pointer"
+                                className="text-royal-text-muted hover:text-red-600 transition-colors p-1 cursor-pointer"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -702,60 +702,60 @@ export function DualPath() {
                     </table>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-between items-end border-t border-royal-stone/20 pt-6 gap-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-end border-t border-royal-border pt-6 gap-6">
                     <div>
-                      <h5 className="text-xs font-bold text-royal-stone uppercase tracking-wider">Estimated Project Subtotal:</h5>
-                      <p className="text-3xl font-black text-royal-charcoal mt-1">
+                      <h5 className="text-xs font-bold text-royal-text-muted uppercase tracking-wider">Estimated Project Subtotal:</h5>
+                      <p className="text-3xl font-black text-white mt-1">
                         ${totalSubtotal}
                       </p>
-                      <p className="text-[10px] text-royal-stone font-medium mt-1">
+                      <p className="text-[10px] text-royal-text-muted font-medium mt-1">
                         * Estimates exclude taxes & shipping, subject to final revision by Robert.
                       </p>
                     </div>
                   </div>
 
                   {/* Customer Info Form built directly beneath the Cart list */}
-                  <div className="bg-royal-cream/35 p-6 rounded-lg border border-royal-stone/10 mt-8 space-y-6">
+                  <div className="bg-royal-charcoal p-6 rounded-lg border border-royal-border mt-8 space-y-6">
                     <div>
-                      <h4 className="text-sm font-extrabold text-royal-charcoal uppercase tracking-wider mb-2">
+                      <h4 className="text-sm font-extrabold text-white uppercase tracking-wider mb-2">
                         Step 2: Enter Client Details & Generate Quote Email
                       </h4>
-                      <p className="text-xs text-royal-slate font-medium">
+                      <p className="text-xs text-royal-text-muted font-medium">
                         Fill in your coordinates to draft your custom quote email. Robert will call you to confirm all details and finish the deal.
                       </p>
                     </div>
 
                     <div className="grid sm:grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-royal-slate uppercase tracking-wider mb-2">Your Full Name *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Your Full Name *</label>
                         <input 
                           type="text" 
                           placeholder="Name..." 
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full bg-white border border-royal-stone/30 text-royal-charcoal p-2.5 rounded focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-royal-bg border border-royal-border text-white p-2.5 rounded focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-royal-slate uppercase tracking-wider mb-2">Your Email *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Your Email *</label>
                         <input 
                           type="email" 
                           placeholder="client@gmail.com" 
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white border border-royal-stone/30 text-royal-charcoal p-2.5 rounded focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-royal-bg border border-royal-border text-white p-2.5 rounded focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-royal-slate uppercase tracking-wider mb-2">Your Phone Number *</label>
+                        <label className="block text-xs font-bold text-royal-text-muted uppercase tracking-wider mb-2">Your Phone Number *</label>
                         <input 
                           type="tel" 
                           placeholder="Phone..." 
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="w-full bg-white border border-royal-stone/30 text-royal-charcoal p-2.5 rounded focus:border-royal-terracotta focus:outline-none text-sm" 
+                          className="w-full bg-royal-bg border border-royal-border text-white p-2.5 rounded focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
@@ -765,12 +765,12 @@ export function DualPath() {
                       <button 
                         type="button" 
                         onClick={handleFormSubmit}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-royal-terracotta text-white font-extrabold text-xs uppercase tracking-wider hover:bg-royal-charcoal transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-royal-charcoal transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <Mail className="w-4 h-4" />
                         Email Quote Request to Robert
                       </button>
-                      <span className="text-[10px] text-royal-slate font-medium max-w-md leading-normal text-center sm:text-left">
+                      <span className="text-[10px] text-royal-text-muted font-medium max-w-md leading-normal text-center sm:text-left">
                         Drafting compiles your list into a formatted quote email sent to Robert Lazau (Burlacu). He will verify dimensions and call you to finalise the agreement.
                       </span>
                     </div>
@@ -781,8 +781,8 @@ export function DualPath() {
           </div>
         ) : (
           /* Confirmation / Success Screen */
-          <div className="bg-royal-charcoal text-white p-8 md:p-12 rounded-xl text-center shadow-2xl max-w-4xl mx-auto border-2 border-royal-terracotta">
-            <div className="w-20 h-20 bg-royal-terracotta/15 rounded-full flex items-center justify-center text-royal-terracotta mx-auto mb-6 border border-royal-terracotta/30">
+          <div className="bg-royal-charcoal text-white p-8 md:p-12 rounded-xl text-center shadow-2xl max-w-4xl mx-auto border-2 border-royal-gold">
+            <div className="w-20 h-20 bg-royal-gold/15 rounded-full flex items-center justify-center text-royal-gold mx-auto mb-6 border border-royal-gold/30">
               <CheckCircle2 className="w-10 h-10" />
             </div>
             
@@ -790,21 +790,21 @@ export function DualPath() {
               Quote Request Drafted!
             </h3>
             
-            <p className="text-royal-stone text-lg mb-8 max-w-2xl mx-auto font-medium">
+            <p className="text-royal-text-muted text-lg mb-8 max-w-2xl mx-auto font-medium">
               Thank you, <span className="text-white font-bold">{name}</span>. Your custom dimension list containing <span className="text-white font-bold">{quoteItems.reduce((acc, curr) => acc + curr.quantity, 0)} items</span> has been formatted. Your default email client was triggered to send specifications to Robert.
             </p>
             
             {/* List breakdown summary */}
             <div className="bg-white/5 border border-white/10 rounded-lg p-6 max-w-xl mx-auto mb-8 text-left text-xs space-y-4">
-              <p className="text-xs font-bold text-royal-terracotta uppercase tracking-wider border-b border-white/10 pb-2">Order Cart Summary:</p>
+              <p className="text-xs font-bold text-royal-gold uppercase tracking-wider border-b border-white/10 pb-2">Order Cart Summary:</p>
               <div className="divide-y divide-white/5">
                 {quoteItems.map((item, idx) => (
                   <div key={idx} className="py-2.5 flex justify-between">
                     <div>
                       <span className="text-white font-bold">{item.quantity}x</span> {item.type === 'doors' ? 'Cabinet Door' : 'Drawer Front'} — {item.woodSpecies} ({item.profileStyle})
-                      <div className="text-royal-stone text-[10px] mt-0.5">Dims: {item.height}"H x {item.width}"W x {item.thickness === '0.75' ? '3/4"' : '1"'} {item.preBored === 'yes' ? '(Hinges: Yes)' : ''}</div>
+                      <div className="text-royal-text-muted text-[10px] mt-0.5">Dims: {item.height}"H x {item.width}"W x {item.thickness === '0.75' ? '3/4"' : '1"'} {item.preBored === 'yes' ? '(Hinges: Yes)' : ''}</div>
                     </div>
-                    <span className="font-bold text-royal-terracotta">${item.estimatedPrice}</span>
+                    <span className="font-bold text-royal-gold">${item.estimatedPrice}</span>
                   </div>
                 ))}
               </div>
@@ -814,14 +814,14 @@ export function DualPath() {
               </div>
             </div>
 
-            <div className="bg-royal-terracotta/10 p-6 rounded-lg max-w-xl mx-auto mb-10 border border-royal-terracotta/20 flex gap-4 items-center text-left">
-              <div className="w-12 h-12 rounded-full bg-royal-terracotta/20 flex items-center justify-center text-royal-terracotta shrink-0">
+            <div className="bg-royal-gold/10 p-6 rounded-lg max-w-xl mx-auto mb-10 border border-royal-gold/20 flex gap-4 items-center text-left">
+              <div className="w-12 h-12 rounded-full bg-royal-gold/20 flex items-center justify-center text-royal-gold shrink-0">
                 <PhoneCall className="w-6 h-6" />
               </div>
               <div>
                 <h4 className="font-bold text-white text-base">Robert is Reviewing & Will Call You</h4>
-                <p className="text-royal-stone text-xs leading-relaxed mt-1">
-                  Robert Burlacu will inspect your specifications, double-check sizing alignments, and prepare wood pricing. He will call you at <span className="text-royal-terracotta font-bold">{phone}</span> (or reply to <span className="text-white font-semibold">{email}</span>) to verify shipping coordinates and finalize the deal.
+                <p className="text-royal-text-muted text-xs leading-relaxed mt-1">
+                  Robert Burlacu will inspect your specifications, double-check sizing alignments, and prepare wood pricing. He will call you at <span className="text-royal-gold font-bold">{phone}</span> (or reply to <span className="text-white font-semibold">{email}</span>) to verify shipping coordinates and finalize the deal.
                 </p>
               </div>
             </div>
@@ -842,7 +842,7 @@ export function DualPath() {
                   setWidth('18');
                   setQuantity('1');
                 }}
-                className="px-8 py-3 bg-royal-terracotta text-white font-bold hover:bg-white hover:text-royal-charcoal transition-all rounded-md text-xs uppercase tracking-wider cursor-pointer"
+                className="px-8 py-3 bg-royal-gold text-white font-bold hover:bg-white hover:text-white transition-all rounded-md text-xs uppercase tracking-wider cursor-pointer"
               >
                 Start New Project Quote
               </button>

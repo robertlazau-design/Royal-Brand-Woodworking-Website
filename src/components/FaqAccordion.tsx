@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const faqs = [
   {
@@ -20,7 +21,7 @@ const faqs = [
   },
   {
     question: "How do I get started with ordering cabinet doors?",
-    answer: "Head to the Cabinet Door Estimator section above, choose your finish color, profile style, and enter your custom dimensions. Then fill in your contact details and click submit to send Robert an email. He'll follow up with a call to confirm the details and finalize your order."
+    answer: "Head to the Cabinet Door Estimator page, choose your finish color, profile style, and enter your custom dimensions. Then fill in your contact details and click submit to send Robert an email. He'll follow up with a call to confirm the details and finalize your order."
   },
   {
     question: "Are you licensed and insured?",
@@ -29,7 +30,7 @@ const faqs = [
 ];
 
 export function FaqAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(1); // Default second accordion open like the photo
+  const [openIndex, setOpenIndex] = useState<number | null>(1);
 
   const toggleAccordion = (idx: number) => {
     setOpenIndex((prev) => (prev === idx ? null : idx));
@@ -84,7 +85,7 @@ export function FaqAccordion() {
                     
                     <div 
                       className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                        isOpen ? "max-h-[300px] border-t border-royal-border/50" : "max-h-0"
+                        isOpen ? "max-h-[300px] border-t border-royal-border" : "max-h-0"
                       }`}
                     >
                       <div className="p-6 pl-18 text-royal-text-muted text-sm md:text-base font-light leading-relaxed">
@@ -98,11 +99,14 @@ export function FaqAccordion() {
           </div>
 
           {/* Right: Sticky contact sidebar */}
-          <div className="lg:sticky lg:top-8">
+          <div className="lg:sticky lg:top-24">
             <div className="bg-royal-charcoal text-white rounded-none border border-royal-border p-8 md:p-10 space-y-8 shadow-xl">
-              <div>
-                <p className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Ready to order?</p>
-                <h3 className="font-serif text-2xl md:text-3xl font-bold leading-tight uppercase tracking-wide">Talk to Robert<br />directly</h3>
+              <div className="flex items-center gap-4">
+                <img src="/logo.jpg" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
+                <div>
+                  <p className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Ready to order?</p>
+                  <h3 className="font-serif text-xl font-bold leading-tight uppercase tracking-wide">Talk to Robert</h3>
+                </div>
               </div>
               <p className="text-royal-text-muted text-sm font-light leading-relaxed">
                 Robert personally handles every inquiry. Call or fill out the online estimator to get started on your custom cabinet doors.
@@ -110,16 +114,16 @@ export function FaqAccordion() {
               <div className="space-y-4">
                 <a 
                   href="tel:555-0199" 
-                  className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-black transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all"
                 >
                   Call (555) 0199
                 </a>
-                <a 
-                  href="#doors-drawers" 
+                <Link 
+                  to="/estimator" 
                   className="flex items-center justify-center gap-2 w-full py-4 border border-royal-border text-white font-bold text-xs tracking-[0.15em] uppercase hover:border-royal-gold hover:text-royal-gold transition-all"
                 >
                   Get an Estimate
-                </a>
+                </Link>
               </div>
               <div className="border-t border-royal-border pt-6">
                 <p className="text-royal-text-muted text-xs font-light leading-loose uppercase tracking-wider">

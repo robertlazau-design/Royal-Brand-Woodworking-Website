@@ -3,7 +3,7 @@ import { RoyalLogo } from './RoyalLogo';
 
 export function Footer() {
   return (
-    <footer id="heritage" className="bg-royal-bg text-white pt-24 pb-12 border-t border-royal-border-light">
+    <footer id="heritage" className="bg-royal-charcoal text-white pt-24 pb-12 border-t border-royal-border-light">
       <div className="max-w-7xl mx-auto px-6">
         {/* Main grid */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 mb-20">
@@ -26,12 +26,12 @@ export function Footer() {
           
           {/* Quick links */}
           <div className="lg:col-span-1 space-y-6">
-            <h4 className="font-bold text-white tracking-wider uppercase text-xs">Services</h4>
+            <h4 className="font-bold text-white tracking-wider uppercase text-xs">Navigate</h4>
             <ul className="space-y-4 text-sm">
-              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Kitchen Remodeling</Link></li>
-              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Bathroom Vanities</Link></li>
-              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Handmade Furniture</Link></li>
-              <li><Link to="/estimator" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Custom Cabinet Doors</Link></li>
+              <li><Link to="/" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Home</Link></li>
+              <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Services</Link></li>
+              <li><Link to="/estimator" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Door Estimator</Link></li>
+              <li><Link to="/booking" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Book Estimate</Link></li>
             </ul>
           </div>
           

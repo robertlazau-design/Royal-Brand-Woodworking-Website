@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react';
-import { SawtoothDivider } from './SawtoothDivider';
+import { Link } from 'react-router-dom';
 
 const GoogleIcon = () => (
   <svg className="w-4 h-4 opacity-90" viewBox="0 0 24 24" fill="currentColor">
@@ -17,32 +17,32 @@ const getInitials = (name: string) => {
 const testimonials = [
   {
     name: "Brian Bostick",
-    role: "Google Review • 5 reviews",
-    quote: "Robert at Royal Brand Woodworking has built the custom cabinets for our kitchen, bathrooms, and most recently our laundry room, and every project has exceeded our expectations. He’s a true craftsman with an incredible eye for detail and a real talent for designing cabinetry that’s not only beautiful, but highly functional. He’s responsive, easy to work with, and genuinely cares about getting every detail right."
+    role: "Google Review · 5 reviews",
+    quote: "Robert at Royal Brand Woodworking has built the custom cabinets for our kitchen, bathrooms, and most recently our laundry room, and every project has exceeded our expectations. He's a true craftsman with an incredible eye for detail and a real talent for designing cabinetry that's not only beautiful, but highly functional. He's responsive, easy to work with, and genuinely cares about getting every detail right."
   },
   {
     name: "Marisa S.",
-    role: "Google Review • 4 reviews",
+    role: "Google Review · 4 reviews",
     quote: "Robert is an absolutely phenomenal cabinet maker and contractor. His attention to detail and stellar craftsmanship made our kitchen/dining/bath renovation a dream. He is trustworthy, accountable and communicative, and beyond his top-quality work, Robert is simply a good human. We 100% will be working with him for any future projects and would recommend to anyone."
   },
   {
     name: "M Johnston",
-    role: "Google Review • Local Guide",
+    role: "Google Review · Local Guide",
     quote: "Robert is a highly skilled finish carpenter and gives his work an immense amount of detail. I am so pleased with our new kitchen cabinets; he made my vision come true! He helped us with design, details in sliding racks, crown finishing, dishwasher ready island, left work site clean & tidy, etc. He communicated well via email, text and calls. Truly one of the best contractors I have ever worked with!"
   },
   {
     name: "Lynn Monahan",
-    role: "Google Review • 3 reviews",
+    role: "Google Review · 3 reviews",
     quote: "My kitchen cabinets are fantastic! Robert made suggestions for the kitchen remodel that I hadn't thought of. Quality workmanship with careful attention to detail. He was exacting in the installation, a perfectionist. On time, professional, delivered beyond my expectations. I highly recommend him."
   },
   {
     name: "Catherine Malmin",
-    role: "Google Review • 7 reviews",
+    role: "Google Review · 7 reviews",
     quote: "Incredible craftsmanship. Robert is truly gifted. Our inset, white-oak kitchen turned out more beautiful than I could have dreamed."
   },
   {
     name: "Bo Malmin",
-    role: "Google Review • 3 reviews",
+    role: "Google Review · 3 reviews",
     quote: "This is true craftsmanship! They take great pride in their work and it shows. They went above and beyond to be sure every detail of our project was perfect. 10/10!"
   },
   {
@@ -65,9 +65,9 @@ const testimonials = [
 export function Testimonials() {
   return (
     <>
-      <section id="testimonials" className="py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="mb-16 text-center">
+      <section id="testimonials" className="py-16 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
+        <div className="w-full relative z-10">
+          <div className="mb-12 text-center px-6">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
               <div className="w-12 h-[1px] bg-royal-gold" />
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reviews</span>
@@ -81,31 +81,36 @@ export function Testimonials() {
             </p>
           </div>
 
-          <div className="relative w-full overflow-hidden group py-4">
+          {/* Marquee ticker — edge-to-edge */}
+          <div className="relative w-full overflow-hidden py-4">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-royal-bg to-transparent pointer-events-none" />
+            
             <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3">
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={idx} className="w-[380px] shrink-0 bg-royal-charcoal p-8 rounded-none flex flex-col justify-between transition-all duration-300 border border-royal-border hover:border-royal-gold">
+                <div key={idx} className="w-[360px] shrink-0 bg-royal-charcoal p-6 flex flex-col justify-between transition-all duration-300 border border-royal-border hover:border-royal-gold">
                   <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-sm shrink-0 border border-royal-border">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-xs shrink-0 border border-royal-border">
                           {getInitials(testimonial.name)}
                         </div>
                         <div>
-                          <p className="font-bold text-white text-sm tracking-wider uppercase">{testimonial.name}</p>
-                          <p className="text-royal-text-muted text-[10px] font-medium tracking-wide mt-1 uppercase">{testimonial.role}</p>
+                          <p className="font-bold text-white text-xs tracking-wider uppercase">{testimonial.name}</p>
+                          <p className="text-royal-text-muted text-[9px] font-medium tracking-wide mt-0.5 uppercase">{testimonial.role}</p>
                         </div>
                       </div>
                       <GoogleIcon />
                     </div>
 
-                    <div className="flex gap-1 mb-6">
+                    <div className="flex gap-0.5 mb-4">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-royal-gold text-royal-gold" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-royal-gold text-royal-gold" />
                       ))}
                     </div>
 
-                    <blockquote className="text-royal-text font-light text-sm leading-relaxed italic hover:text-white transition-colors">
+                    <blockquote className="text-royal-text-muted font-light text-xs leading-relaxed italic line-clamp-4">
                       "{testimonial.quote}"
                     </blockquote>
                   </div>
@@ -116,10 +121,11 @@ export function Testimonials() {
         </div>
       </section>
 
-      {/* Solid Banner Section */}
-      <div className="bg-royal-bg border-b border-royal-border-light">
-        <section className="bg-royal-charcoal py-20 text-center relative z-10 border-y border-royal-border">
-          <div className="max-w-4xl mx-auto px-6 space-y-8">
+      {/* CTA Banner Section */}
+      <div className="bg-royal-charcoal border-b border-royal-border-light">
+        <section className="py-16 text-center relative z-10">
+          <div className="max-w-4xl mx-auto px-6 space-y-6">
+            <img src="/logo.jpg" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-4" />
             <h3 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wide">
               Where plans become woodwork
             </h3>
@@ -129,16 +135,16 @@ export function Testimonials() {
             <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:555-0199" 
-                className="inline-block px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-black transition-all shadow-xl"
+                className="inline-block px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-xl"
               >
                 Call Robert Now
               </a>
-              <a 
-                href="#doors-drawers" 
+              <Link 
+                to="/estimator" 
                 className="inline-block px-8 py-3.5 bg-transparent border border-royal-gold text-royal-gold font-bold text-xs uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
               >
                 Get an Estimate
-              </a>
+              </Link>
             </div>
           </div>
         </section>
