@@ -8,6 +8,7 @@ import { Home } from './pages/Home';
 import { ServicesPage } from './pages/ServicesPage';
 import { EstimatorPage } from './pages/EstimatorPage';
 import { BookingPage } from './pages/BookingPage';
+import { AboutPage } from './pages/AboutPage';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/estimator" element={<EstimatorPage />} />
             <Route path="/booking" element={<BookingPage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
 

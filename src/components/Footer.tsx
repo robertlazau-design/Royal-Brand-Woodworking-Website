@@ -14,12 +14,8 @@ export function Footer() {
             </Link>
             
             <div className="space-y-4">
-              <h4 className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em]">Meet the Owner</h4>
-              <p className="text-royal-text-muted text-sm font-light leading-relaxed max-w-2xl">
-                Robert Burlacu has been refining his carpentry expertise for over 15 years as a third-generation woodworker. His interest began at a young age helping his father in the shop, continuing a craft passed down from his grandfather, who ran a cabinet shop in Romania. At Royal Brand Woodworking, client satisfaction, meticulous attention to detail, and timely completions are guaranteed.
-              </p>
-              <p className="text-royal-text-muted text-xs font-light italic max-w-2xl pt-2">
-                Outside the shop, Robert enjoys traveling with his family, exploring the outdoors, and cheering on the Trail Blazers.
+              <p className="text-royal-text-muted text-sm font-light leading-relaxed max-w-xl">
+                Custom woodworking that elevates your space. Handcrafting luxury furniture & fine cabinetry in Portland, OR.
               </p>
             </div>
           </div>
@@ -29,6 +25,7 @@ export function Footer() {
             <h4 className="font-bold text-white tracking-wider uppercase text-xs">Navigate</h4>
             <ul className="space-y-4 text-sm">
               <li><Link to="/" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Home</Link></li>
+              <li><Link to="/about" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">About Us</Link></li>
               <li><Link to="/services" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Services</Link></li>
               <li><Link to="/estimator" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Door Estimator</Link></li>
               <li><Link to="/booking" className="text-royal-text-muted font-light hover:text-royal-gold transition-colors">Book Estimate</Link></li>

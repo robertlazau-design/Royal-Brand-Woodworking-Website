@@ -5,6 +5,7 @@ import { RoyalLogo } from './RoyalLogo';
 
 const navLinks = [
   { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Estimator', href: '/estimator' },
   { label: 'Book Estimate', href: '/booking' },
