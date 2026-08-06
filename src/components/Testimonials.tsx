@@ -84,20 +84,20 @@ export function Testimonials() {
           {/* Marquee ticker — edge-to-edge */}
           <div className="relative w-full overflow-hidden py-4">
             {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-royal-bg to-transparent pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 z-20 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 z-20 bg-gradient-to-l from-royal-bg to-transparent pointer-events-none" />
             
-            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3">
+            <div className="flex items-start w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3 py-6">
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={idx} className="w-[360px] shrink-0 bg-royal-charcoal p-6 flex flex-col justify-between transition-all duration-300 border border-royal-border hover:border-royal-gold">
+                <div key={idx} className="group w-[360px] shrink-0 bg-royal-charcoal p-6 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-30 cursor-pointer">
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-xs shrink-0 border border-royal-border">
+                        <div className="w-9 h-9 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-xs shrink-0 border border-royal-border group-hover:border-royal-gold transition-colors duration-500">
                           {getInitials(testimonial.name)}
                         </div>
                         <div>
-                          <p className="font-bold text-white text-xs tracking-wider uppercase">{testimonial.name}</p>
+                          <p className="font-bold text-white text-xs tracking-wider uppercase group-hover:text-royal-gold transition-colors duration-500">{testimonial.name}</p>
                           <p className="text-royal-text-muted text-[9px] font-medium tracking-wide mt-0.5 uppercase">{testimonial.role}</p>
                         </div>
                       </div>
@@ -110,9 +110,13 @@ export function Testimonials() {
                       ))}
                     </div>
 
-                    <blockquote className="text-royal-text-muted font-light text-xs leading-relaxed italic line-clamp-4">
-                      "{testimonial.quote}"
-                    </blockquote>
+                    <div className="relative transition-all duration-500 ease-in-out overflow-hidden max-h-[78px] group-hover:max-h-[300px]">
+                      <blockquote className="text-royal-text-muted font-light text-xs leading-relaxed italic">
+                        "{testimonial.quote}"
+                      </blockquote>
+                      {/* Fading bottom edge for ellipsis effect when not hovered */}
+                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-royal-charcoal to-transparent group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+                    </div>
                   </div>
                 </div>
               ))}
