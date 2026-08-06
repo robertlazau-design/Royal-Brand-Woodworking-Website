@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, Clock, CreditCard, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle, CalendarCheck, RotateCcw, Send } from 'lucide-react';
 
 /* ───── helpers ───── */
 function getDaysInMonth(year: number, month: number) {
@@ -31,6 +31,9 @@ export function BookingPage() {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Verification flow state
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   /* ── month grid ── */
   const calendarGrid = useMemo(() => {
@@ -146,7 +149,151 @@ export function BookingPage() {
     : null;
 
   /* ── step state ── */
-  const step = !selectedFullDate ? 1 : !selectedTime ? 2 : 3;
+  const step = isSubmitted ? 4 : !selectedFullDate ? 1 : !selectedTime ? 2 : 3;
+
+  /* ── form validation ── */
+  const isFormValid = name.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && address.trim() !== '';
+
+  /* ── submit handler ── */
+  function handleSubmitRequest() {
+    if (!isFormValid || !selectedFullDate || !selectedTime) return;
+    setIsSubmitted(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── reschedule handler ── */
+  function handleReschedule() {
+    setIsSubmitted(false);
+    setSelectedFullDate(null);
+    setSelectedTime(null);
+    // Keep the contact info so they don't have to re-enter it
+  }
+
+  /* ── Submitted Confirmation Screen ── */
+  if (isSubmitted) {
+    return (
+      <section className="py-24 bg-royal-bg text-royal-text min-h-screen">
+        <div className="max-w-2xl mx-auto px-6">
+          <div className="text-center mb-12" style={{ animation: 'fadeSlideUp 0.6s ease-out' }}>
+            <div className="w-20 h-20 rounded-full bg-royal-gold/15 flex items-center justify-center mx-auto mb-8 border border-royal-gold/30">
+              <CalendarCheck className="w-10 h-10 text-royal-gold" />
+            </div>
+            <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4 tracking-wide uppercase">
+              Request Submitted
+            </h2>
+            <p className="text-royal-text-muted text-sm md:text-base font-light leading-relaxed max-w-lg mx-auto">
+              Your consultation request has been sent to Robert for review. He will verify availability and confirm your appointment.
+            </p>
+          </div>
+
+          {/* Confirmation Details Card */}
+          <div className="bg-royal-charcoal border border-royal-border p-8 mb-6" style={{ animation: 'fadeSlideUp 0.6s ease-out 0.1s both' }}>
+            <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
+              <Shield className="w-4 h-4 text-royal-gold" /> Pending Verification
+            </h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center text-sm font-light">
+                <span className="text-royal-text-muted">Status</span>
+                <span className="text-yellow-400 font-bold text-xs uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                  Awaiting Confirmation
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-light">
+                <span className="text-royal-text-muted">Requested Date</span>
+                <span className="text-white">{formattedDate}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-light">
+                <span className="text-royal-text-muted">Requested Time</span>
+                <span className="text-white">{selectedTime}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-light">
+                <span className="text-royal-text-muted">Duration</span>
+                <span className="text-white">~1–2 hours</span>
+              </div>
+              <div className="border-t border-royal-border pt-4 space-y-3">
+                <div className="flex justify-between items-center text-sm font-light">
+                  <span className="text-royal-text-muted">Name</span>
+                  <span className="text-white">{name}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm font-light">
+                  <span className="text-royal-text-muted">Email</span>
+                  <span className="text-white">{email}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm font-light">
+                  <span className="text-royal-text-muted">Phone</span>
+                  <span className="text-white">{phone}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm font-light">
+                  <span className="text-royal-text-muted">Location</span>
+                  <span className="text-white">{address}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* What Happens Next */}
+          <div className="bg-royal-charcoal border border-royal-border p-8 mb-6" style={{ animation: 'fadeSlideUp 0.6s ease-out 0.2s both' }}>
+            <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
+              <ChevronRight className="w-4 h-4 text-royal-gold" /> What Happens Next
+            </h3>
+            <div className="space-y-5">
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-royal-gold/15 flex items-center justify-center shrink-0 border border-royal-gold/30">
+                  <span className="text-royal-gold text-xs font-bold">1</span>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-bold mb-1">Availability Verification</p>
+                  <p className="text-royal-text-muted text-xs font-light leading-relaxed">Robert will review your requested date and time to confirm availability.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-royal-gold/15 flex items-center justify-center shrink-0 border border-royal-gold/30">
+                  <span className="text-royal-gold text-xs font-bold">2</span>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-bold mb-1">Confirmation or Reschedule</p>
+                  <p className="text-royal-text-muted text-xs font-light leading-relaxed">You'll receive a confirmation email, or be offered alternative available dates if your requested slot is unavailable.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-royal-gold/15 flex items-center justify-center shrink-0 border border-royal-gold/30">
+                  <span className="text-royal-gold text-xs font-bold">3</span>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-bold mb-1">Invoice Sent</p>
+                  <p className="text-royal-text-muted text-xs font-light leading-relaxed">Once confirmed, Robert will send you a consultation invoice. No payment is required until your appointment is verified.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4" style={{ animation: 'fadeSlideUp 0.6s ease-out 0.3s both' }}>
+            <button
+              onClick={handleReschedule}
+              className="flex-1 py-4 bg-transparent text-white font-bold text-xs uppercase tracking-wider border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all rounded flex items-center justify-center gap-2"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Choose a Different Date
+            </button>
+          </div>
+
+          <p className="text-center text-[10px] text-royal-text-muted mt-6 tracking-wide uppercase">
+            A confirmation email has been sent to {email}
+          </p>
+        </div>
+
+        {/* Inline CSS for animations */}
+        <style>{`
+          @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 bg-royal-bg text-royal-text min-h-screen">
@@ -165,7 +312,7 @@ export function BookingPage() {
           <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
             Robert personally visits your location to assess the project, take precise measurements, and discuss design options.
             <br/><br/>
-            <strong className="text-white">Estimates are billed at $150/hr</strong>. Please select a date and time to reserve your consultation.
+            <strong className="text-white">Estimates are billed at $150/hr.</strong> Select a preferred date and time below. Robert will verify availability and send you an invoice once confirmed.
           </p>
         </div>
 
@@ -174,7 +321,7 @@ export function BookingPage() {
           {[
             { num: 1, label: 'Select Date' },
             { num: 2, label: 'Choose Time' },
-            { num: 3, label: 'Your Details' },
+            { num: 3, label: 'Verify & Submit' },
           ].map((s, i) => (
             <React.Fragment key={s.num}>
               <div className="flex flex-col items-center gap-2">
@@ -374,9 +521,11 @@ export function BookingPage() {
                     <span className="text-royal-text-muted">Rate</span>
                     <span className="text-white">$150.00 / hour</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm font-bold mt-3">
-                    <span className="text-white">Deposit Required</span>
-                    <span className="text-royal-gold text-lg">$150.00</span>
+                  <div className="flex items-start gap-2 mt-3 p-3 bg-royal-gold/5 border border-royal-gold/20 rounded">
+                    <Shield className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-royal-text-muted leading-relaxed">
+                      <span className="text-royal-gold font-bold">No payment required now.</span> An invoice will be sent after Robert confirms your appointment.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -394,7 +543,7 @@ export function BookingPage() {
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
                   <input
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="Full Name *"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
@@ -404,7 +553,7 @@ export function BookingPage() {
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
                   <input
                     type="email"
-                    placeholder="Email Address"
+                    placeholder="Email Address *"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
@@ -414,7 +563,7 @@ export function BookingPage() {
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
                   <input
                     type="tel"
-                    placeholder="Phone Number"
+                    placeholder="Phone Number *"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
@@ -424,7 +573,7 @@ export function BookingPage() {
                   <MapPin className="absolute left-3 top-3 w-4 h-4 text-royal-text-muted/50" />
                   <input
                     type="text"
-                    placeholder="Project Address"
+                    placeholder="Project Address *"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
@@ -443,44 +592,49 @@ export function BookingPage() {
               </div>
             </div>
 
-            {/* Payment */}
+            {/* Submit for Verification */}
             <div className={`bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
               step >= 3 ? 'opacity-100' : 'opacity-40 pointer-events-none'
             }`}>
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-royal-gold" /> Payment
+                <CalendarCheck className="w-4 h-4 text-royal-gold" /> Confirm & Submit
               </h3>
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Cardholder Name"
-                  className="w-full bg-transparent border border-royal-border text-white px-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
-                />
-                <input
-                  type="text"
-                  placeholder="Card Number"
-                  className="w-full bg-transparent border border-royal-border text-white px-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
-                />
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    className="w-full bg-transparent border border-royal-border text-white px-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
-                  />
-                  <input
-                    type="text"
-                    placeholder="CVC"
-                    className="w-full bg-transparent border border-royal-border text-white px-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
-                  />
+
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                  <CheckCircle className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                    Robert will review your request and confirm availability within <span className="text-white font-bold">24 hours</span>.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                  <RotateCcw className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                    If your selected date doesn't work, you'll be offered <span className="text-white font-bold">alternative available dates</span> to reschedule.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                  <Send className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                    Once confirmed, an <span className="text-white font-bold">invoice for the consultation</span> will be sent to your email.
+                  </p>
                 </div>
               </div>
 
-              <button className="w-full mt-6 py-4 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all rounded flex items-center justify-center gap-2">
-                <Shield className="w-4 h-4" />
-                Confirm & Pay $150
+              <button
+                onClick={handleSubmitRequest}
+                disabled={!isFormValid}
+                className={`w-full py-4 font-bold text-xs uppercase tracking-wider transition-all rounded flex items-center justify-center gap-2 ${
+                  isFormValid
+                    ? 'bg-royal-gold text-white hover:bg-white hover:text-black cursor-pointer'
+                    : 'bg-royal-border text-royal-text-muted/50 cursor-not-allowed'
+                }`}
+              >
+                <CalendarCheck className="w-4 h-4" />
+                Submit Consultation Request
               </button>
               <p className="text-center text-[10px] text-royal-text-muted mt-3 tracking-wide uppercase flex items-center justify-center gap-1">
-                <Shield className="w-3 h-3" /> Secure payment · 256-bit encryption
+                <Shield className="w-3 h-3" /> No payment required · Invoice sent after confirmation
               </p>
             </div>
           </div>
@@ -505,3 +659,4 @@ export function BookingPage() {
     </section>
   );
 }
+
