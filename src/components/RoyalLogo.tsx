@@ -28,7 +28,7 @@ export function RoyalLogo({ className = "", iconOnly = false, light = false, siz
             Royal Brand
           </span>
           <span className={`font-sans text-[8px] font-bold tracking-[0.2em] uppercase leading-normal mt-0.5 ${light ? 'text-royal-text-muted' : 'text-royal-text-muted'}`}>
-            Woodworking & Cabinets
+            Woodworking & Custom Doors
           </span>
         </div>
       )}

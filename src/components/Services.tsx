@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Hammer, ArrowUpRight } from 'lucide-react';
+import { Hammer, ArrowUpRight, Shield, MapPin, CheckCircle } from 'lucide-react';
 
 const services = [
   {
@@ -29,9 +30,28 @@ const services = [
   }
 ];
 
+const stats = [
+  { icon: <Hammer className="w-5 h-5" />, value: "15+", label: "Years Experience" },
+  { icon: <Shield className="w-5 h-5" />, value: "100%", label: "Custom Work" },
+  { icon: <MapPin className="w-5 h-5" />, value: "Local", label: "& Trusted" },
+  { icon: <CheckCircle className="w-5 h-5" />, value: "100%", label: "Satisfaction" },
+];
+
 export function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="services" className="py-24 bg-royal-bg text-royal-text px-4 md:px-8 border-b border-royal-border-light">
+    <section ref={sectionRef} id="services" className="py-24 bg-royal-bg text-royal-text px-4 md:px-8 border-b border-royal-border-light">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Top Header Row */}
@@ -57,28 +77,38 @@ export function Services() {
             <Link 
               to={service.href}
               key={idx} 
-              className={`group relative h-[320px] md:h-[400px] border border-royal-border rounded-none overflow-hidden transition-all duration-500 hover:border-royal-gold ${
+              className={`group relative h-[320px] md:h-[400px] border border-royal-border rounded-none overflow-hidden transition-all duration-700 hover:border-royal-gold ${
                 idx === 4 ? 'col-span-2 md:col-span-1' : ''
               }`}
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(40px)',
+                transition: `opacity 0.6s ease-out ${idx * 0.1}s, transform 0.6s ease-out ${idx * 0.1}s`,
+              }}
             >
               {/* Image background */}
               <img 
                 src={service.image} 
                 alt={service.title} 
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
               />
               {/* Dark Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/90 via-royal-bg/20 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-royal-bg/30 to-transparent pointer-events-none" />
               
+              {/* Number badge */}
+              <div className="absolute top-4 left-4 text-royal-gold/20 font-serif text-4xl font-bold leading-none group-hover:text-royal-gold/40 transition-colors duration-500">
+                {String(idx + 1).padStart(2, '0')}
+              </div>
+
               {/* Icon / Top Badge */}
-              <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border border-royal-border text-royal-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border border-royal-border text-royal-gold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:border-royal-gold">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
 
               {/* Title Bottom Left */}
               <div className="absolute bottom-6 left-6 right-6">
-                <p className="font-sans font-semibold text-white text-sm md:text-base leading-snug tracking-wider group-hover:text-royal-gold transition-colors">
+                <p className="font-sans font-semibold text-white text-sm md:text-base leading-snug tracking-wider group-hover:text-royal-gold transition-colors duration-300">
                   {service.title}
                 </p>
                 <div className="w-0 h-[1px] bg-royal-gold mt-4 group-hover:w-full transition-all duration-500" />
@@ -87,28 +117,32 @@ export function Services() {
           ))}
         </div>
 
+        {/* Decorative divider */}
+        <div className="flex items-center gap-4 justify-center mb-12">
+          <div className="flex-1 max-w-[200px] h-[1px] bg-gradient-to-r from-transparent to-royal-border" />
+          <div className="w-2 h-2 bg-royal-gold rotate-45" />
+          <div className="flex-1 max-w-[200px] h-[1px] bg-gradient-to-l from-transparent to-royal-border" />
+        </div>
+
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-royal-border-light relative z-10">
-          <div className="text-center flex flex-col items-center">
-            <div className="mb-3 text-royal-gold"><Hammer className="w-6 h-6" /></div>
-            <p className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">15+</p>
-            <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted">Years Exp.</p>
-          </div>
-          <div className="text-center flex flex-col items-center">
-            <div className="mb-3 text-royal-gold"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>
-            <p className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">100%</p>
-            <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted">Custom Work</p>
-          </div>
-          <div className="text-center flex flex-col items-center">
-            <div className="mb-3 text-royal-gold"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
-            <p className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Local</p>
-            <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted">& Trusted</p>
-          </div>
-          <div className="text-center flex flex-col items-center">
-            <div className="mb-3 text-royal-gold"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-            <p className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">100%</p>
-            <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted">Satisfaction</p>
-          </div>
+          {stats.map((stat, idx) => (
+            <div
+              key={idx}
+              className="text-center flex flex-col items-center group"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(24px)',
+                transition: `opacity 0.6s ease-out ${0.6 + idx * 0.1}s, transform 0.6s ease-out ${0.6 + idx * 0.1}s`,
+              }}
+            >
+              <div className="mb-3 text-royal-gold w-10 h-10 rounded-full border border-royal-border flex items-center justify-center group-hover:border-royal-gold group-hover:shadow-[0_0_15px_rgba(201,164,122,0.2)] transition-all duration-500">
+                {stat.icon}
+              </div>
+              <p className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted">{stat.label}</p>
+            </div>
+          ))}
         </div>
 
       </div>

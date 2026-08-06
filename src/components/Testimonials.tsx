@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star, Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const GoogleIcon = () => (
@@ -65,9 +65,9 @@ const testimonials = [
 export function Testimonials() {
   return (
     <>
-      <section id="testimonials" className="py-16 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
+      <section id="testimonials" className="py-20 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
         <div className="w-full relative z-10">
-          <div className="mb-12 text-center px-6">
+          <div className="mb-14 text-center px-6">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
               <div className="w-12 h-[1px] bg-royal-gold" />
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reviews</span>
@@ -84,16 +84,19 @@ export function Testimonials() {
           {/* Marquee ticker — edge-to-edge */}
           <div className="relative w-full overflow-hidden py-4">
             {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 z-20 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 z-20 bg-gradient-to-l from-royal-bg to-transparent pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-24 z-20 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 z-20 bg-gradient-to-l from-royal-bg to-transparent pointer-events-none" />
             
             <div className="flex items-start w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3 py-6">
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={idx} className="group w-[360px] shrink-0 bg-royal-charcoal p-6 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-30 cursor-pointer">
+                <div key={idx} className="group w-[380px] shrink-0 bg-royal-charcoal p-7 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-30 cursor-pointer">
                   <div>
+                    {/* Decorative quote icon */}
+                    <Quote className="w-6 h-6 text-royal-gold/15 mb-3 group-hover:text-royal-gold/30 transition-colors duration-500" />
+
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-xs shrink-0 border border-royal-border group-hover:border-royal-gold transition-colors duration-500">
+                        <div className="w-10 h-10 rounded-full bg-royal-bg text-royal-gold flex items-center justify-center font-bold text-xs shrink-0 border border-royal-border group-hover:border-royal-gold group-hover:shadow-[0_0_10px_rgba(201,164,122,0.2)] transition-all duration-500">
                           {getInitials(testimonial.name)}
                         </div>
                         <div>
@@ -125,29 +128,50 @@ export function Testimonials() {
         </div>
       </section>
 
-      {/* CTA Banner Section */}
-      <div className="bg-royal-charcoal border-b border-royal-border-light">
-        <section className="py-16 text-center relative z-10">
-          <div className="max-w-4xl mx-auto px-6 space-y-6">
-            <img src="/logo.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-4" />
-            <h3 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wide">
-              Where plans become woodwork
+      {/* CTA Banner Section — Premium Upgrade */}
+      <div className="bg-royal-charcoal border-b border-royal-border-light relative overflow-hidden">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a47a' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }} />
+
+        {/* Decorative top line */}
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/20 to-transparent" />
+
+        <section className="py-20 text-center relative z-10">
+          <div className="max-w-4xl mx-auto px-6">
+            {/* Ornamental top piece */}
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-royal-gold/40" />
+              <img src="/logo.png" alt="Royal Brand Woodworking" className="w-14 h-14 object-contain" />
+              <div className="w-16 h-[1px] bg-gradient-to-l from-transparent to-royal-gold/40" />
+            </div>
+
+            <h3 className="font-serif text-3xl md:text-5xl text-white font-bold uppercase tracking-wide mb-4">
+              Where Plans Become <span className="text-royal-gold">Woodwork</span>
             </h3>
-            <p className="text-royal-text-muted text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
+
+            <div className="flex items-center justify-center gap-3 my-6">
+              <div className="w-8 h-[1px] bg-royal-gold/40" />
+              <div className="w-1.5 h-1.5 bg-royal-gold rotate-45" />
+              <div className="w-8 h-[1px] bg-royal-gold/40" />
+            </div>
+
+            <p className="text-royal-text-muted text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed mb-10">
               Let's bring your ideas to life. Reach out today to start your order with a craftsman you can trust.
             </p>
-            <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:555-0199" 
-                className="inline-block px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-xl"
+                className="inline-block px-10 py-4 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.15)]"
               >
                 Call Robert Now
               </a>
               <Link 
                 to="/estimator" 
-                className="inline-block px-8 py-3.5 bg-transparent border border-royal-gold text-royal-gold font-bold text-xs uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
+                className="inline-block px-10 py-4 bg-transparent border border-royal-gold text-royal-gold font-bold text-xs uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
               >
-                Get an Estimate
+                Order Custom Doors
               </Link>
             </div>
           </div>
