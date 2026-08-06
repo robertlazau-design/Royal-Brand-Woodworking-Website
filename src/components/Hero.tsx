@@ -68,8 +68,11 @@ export function Hero() {
             <Link to="/services" className="px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-lg">
               View Our Work
             </Link>
-            <Link to="/estimator" className="px-8 py-3.5 bg-transparent text-white font-bold text-xs tracking-[0.15em] uppercase border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all">
+            <Link to="/booking" className="px-8 py-3.5 bg-transparent text-white font-bold text-xs tracking-[0.15em] uppercase border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all">
               Start Your Project
+            </Link>
+            <Link to="/estimator" className="px-8 py-3.5 bg-transparent text-white font-bold text-xs tracking-[0.15em] uppercase border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all">
+              Order Custom Doors
             </Link>
           </div>
         </div>
