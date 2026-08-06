@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RoyalLogo } from './RoyalLogo';
-import { Mail, Phone, MapPin, Clock, Star, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Star, ChevronRight, X } from 'lucide-react';
 
 export function Footer() {
+  const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
+
   return (
-    <footer id="heritage" className="bg-royal-charcoal text-white relative">
+    <>
+      <footer id="heritage" className="bg-royal-charcoal text-white relative">
       {/* Decorative gold top line */}
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/60 to-transparent" />
 
@@ -162,13 +166,49 @@ export function Footer() {
               &copy; {new Date().getFullYear()} Royal Brand Woodworking. All rights reserved. Handcrafted with pride in Portland, OR.
             </p>
             <div className="flex gap-8">
-              <a href="#" className="text-royal-text-muted/60 font-light hover:text-royal-gold text-[10px] transition-colors tracking-wide uppercase">Privacy Policy</a>
-              <a href="#" className="text-royal-text-muted/60 font-light hover:text-royal-gold text-[10px] transition-colors tracking-wide uppercase">Terms of Service</a>
+              <button onClick={() => setLegalModal('privacy')} className="text-royal-text-muted/60 font-light hover:text-royal-gold text-[10px] transition-colors tracking-wide uppercase">Privacy Policy</button>
+              <button onClick={() => setLegalModal('terms')} className="text-royal-text-muted/60 font-light hover:text-royal-gold text-[10px] transition-colors tracking-wide uppercase">Terms of Service</button>
             </div>
           </div>
         </div>
       </div>
     </footer>
+
+      {legalModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setLegalModal(null)} />
+          <div className="bg-royal-charcoal border border-royal-border w-full max-w-2xl max-h-[80vh] overflow-y-auto relative z-10 shadow-2xl">
+            <div className="sticky top-0 bg-royal-charcoal border-b border-royal-border p-6 flex items-center justify-between z-20">
+              <h2 className="font-serif text-2xl text-white uppercase tracking-wider font-bold">
+                {legalModal === 'privacy' ? 'Privacy Policy' : 'Terms of Service'}
+              </h2>
+              <button onClick={() => setLegalModal(null)} className="p-2 text-royal-text-muted hover:text-white transition-colors">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="p-6 md:p-8 space-y-6 text-royal-text-muted text-sm font-light leading-relaxed">
+              {legalModal === 'privacy' ? (
+                <>
+                  <p><strong className="text-white">1. Information We Collect</strong><br/>We collect information you provide directly to us when you request an estimate, contact us, or otherwise communicate with us. This may include your name, email address, phone number, and project details.</p>
+                  <p><strong className="text-white">2. How We Use Your Information</strong><br/>We use the information we collect to provide, maintain, and improve our services, communicate with you about your projects, send estimates and invoices, and respond to your inquiries.</p>
+                  <p><strong className="text-white">3. Information Sharing</strong><br/>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties. This does not include trusted third parties who assist us in operating our website or conducting our business, so long as those parties agree to keep this information confidential.</p>
+                  <p><strong className="text-white">4. Security</strong><br/>We implement a variety of security measures to maintain the safety of your personal information when you submit a request.</p>
+                  <p><strong className="text-white">5. Contact Us</strong><br/>If there are any questions regarding this privacy policy, you may contact us using the information on our website.</p>
+                </>
+              ) : (
+                <>
+                  <p><strong className="text-white">1. Acceptance of Terms</strong><br/>By accessing our website or engaging our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                  <p><strong className="text-white">2. Estimates and Pricing</strong><br/>All estimates provided are subject to change based on final measurements, material costs, and scope of work adjustments. On-site estimates are billed at $150/hr unless otherwise stated.</p>
+                  <p><strong className="text-white">3. Custom Orders</strong><br/>Because our products are custom-made to your specific dimensions and finishes, all sales are final once production begins. A deposit is required before any materials are ordered or work commences.</p>
+                  <p><strong className="text-white">4. Timelines</strong><br/>Estimated completion dates are provided in good faith but are not guaranteed. Delays out of our control (e.g., material shortages, shipping delays) may occur.</p>
+                  <p><strong className="text-white">5. Liability</strong><br/>Royal Brand Woodworking is not liable for any indirect, incidental, or consequential damages arising from the use of our products or services.</p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

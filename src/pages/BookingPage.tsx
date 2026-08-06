@@ -34,6 +34,7 @@ export function BookingPage() {
 
   // Verification flow state
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   /* ── month grid ── */
   const calendarGrid = useMemo(() => {
@@ -155,10 +156,58 @@ export function BookingPage() {
   const isFormValid = name.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && address.trim() !== '';
 
   /* ── submit handler ── */
-  function handleSubmitRequest() {
+  async function handleSubmitRequest() {
     if (!isFormValid || !selectedFullDate || !selectedTime) return;
-    setIsSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    setIsSubmitting(true);
+    
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    
+    // Mock submission if key isn't set yet (for demonstration)
+    if (!accessKey) {
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1000);
+      return;
+    }
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: 'New Consultation Request - Royal Brand Woodworking',
+          from_name: name,
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+          notes: notes,
+          requested_date: formattedDate,
+          requested_time: selectedTime,
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        console.error("Web3Forms error:", result);
+        alert("Form submission failed: " + result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong submitting the form.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   /* ── reschedule handler ── */
@@ -623,15 +672,15 @@ export function BookingPage() {
 
               <button
                 onClick={handleSubmitRequest}
-                disabled={!isFormValid}
+                disabled={!isFormValid || isSubmitting}
                 className={`w-full py-4 font-bold text-xs uppercase tracking-wider transition-all rounded flex items-center justify-center gap-2 ${
-                  isFormValid
+                  isFormValid && !isSubmitting
                     ? 'bg-royal-gold text-white hover:bg-white hover:text-black cursor-pointer'
                     : 'bg-royal-border text-royal-text-muted/50 cursor-not-allowed'
                 }`}
               >
                 <CalendarCheck className="w-4 h-4" />
-                Submit Consultation Request
+                {isSubmitting ? 'Submitting...' : 'Submit Consultation Request'}
               </button>
               <p className="text-center text-[10px] text-royal-text-muted mt-3 tracking-wide uppercase flex items-center justify-center gap-1">
                 <Shield className="w-3 h-3" /> No payment required · Invoice sent after confirmation
