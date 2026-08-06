@@ -148,7 +148,7 @@ export function DualPath() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (quoteItems.length === 0) {
-      alert("Please add at least one cabinet door or drawer front to your quote list first.");
+      alert("Please add at least one custom door or drawer front to your quote list first.");
       return;
     }
     if (!name || !email || !phone) {
@@ -231,7 +231,7 @@ export function DualPath() {
           </div>
           
           <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-6 tracking-wide uppercase">
-            Custom Cabinet Ordering
+            Custom Door Ordering
           </h2>
           
           <p className="text-royal-text-muted text-sm md:text-base font-light">
@@ -485,7 +485,7 @@ export function DualPath() {
               <div className="lg:col-span-7 bg-royal-charcoal text-white p-8 md:p-10 rounded-none border border-royal-border shadow-md self-stretch flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-2xl font-bold mb-8 tracking-wide uppercase border-b border-royal-border pb-4">
-                    Configure Cabinet Door Details
+                    Configure Custom Door Details
                   </h3>
 
                   <div className="grid sm:grid-cols-2 gap-5">
@@ -654,7 +654,7 @@ export function DualPath() {
                   <div className="w-12 h-12 rounded-full border border-dashed border-royal-border flex items-center justify-center mx-auto text-royal-text-muted">
                     <Trash2 className="w-5 h-5 opacity-40" />
                   </div>
-                  <p className="text-sm">Your custom cabinet list is currently empty.</p>
+                  <p className="text-sm">Your custom door list is currently empty.</p>
                   <p className="text-xs text-royal-text-muted">Use the form above to configure dimensions and add items to your list.</p>
                 </div>
               ) : (
@@ -677,7 +677,7 @@ export function DualPath() {
                       <tbody>
                         {quoteItems.map((item) => (
                           <tr key={item.id} className="border-b border-royal-border hover:bg-royal-bg/20 transition-all font-semibold">
-                            <td className="py-4 px-2 capitalize text-white font-bold">{item.type === 'doors' ? 'Cabinet Door' : 'Drawer Front'}</td>
+                            <td className="py-4 px-2 capitalize text-white font-bold">{item.type === 'doors' ? 'Custom Door' : 'Drawer Front'}</td>
                             <td className="py-4 px-2 text-royal-text-muted">{item.woodSpecies}</td>
                             <td className="py-4 px-2 text-royal-text-muted">{item.profileStyle}</td>
                             <td className="py-4 px-2 text-royal-text-muted font-mono">
@@ -801,7 +801,7 @@ export function DualPath() {
                 {quoteItems.map((item, idx) => (
                   <div key={idx} className="py-2.5 flex justify-between">
                     <div>
-                      <span className="text-white font-bold">{item.quantity}x</span> {item.type === 'doors' ? 'Cabinet Door' : 'Drawer Front'} — {item.woodSpecies} ({item.profileStyle})
+                      <span className="text-white font-bold">{item.quantity}x</span> {item.type === 'doors' ? 'Custom Door' : 'Drawer Front'} — {item.woodSpecies} ({item.profileStyle})
                       <div className="text-royal-text-muted text-[10px] mt-0.5">Dims: {item.height}"H x {item.width}"W x {item.thickness === '0.75' ? '3/4"' : '1"'} {item.preBored === 'yes' ? '(Hinges: Yes)' : ''}</div>
                     </div>
                     <span className="font-bold text-royal-gold">${item.estimatedPrice}</span>

@@ -20,8 +20,8 @@ const faqs = [
     answer: "Absolutely! Robert Burlacu brings 15+ years of third-generation woodworking experience. He'll help you choose from popular finishes like Classic White, Slate Gray, Navy Blue, or Mahogany Red — and recommend the best profile style (Shaker, Raised Panel, Beveled Edge) to match your kitchen's aesthetic."
   },
   {
-    question: "How do I get started with ordering cabinet doors?",
-    answer: "Head to the Cabinet Door Estimator page, choose your finish color, profile style, and enter your custom dimensions. Then fill in your contact details and click submit to send Robert an email. He'll follow up with a call to confirm the details and finalize your order."
+    question: "How do I get started with ordering custom doors?",
+    answer: "Head to the Custom Door Estimator page, choose your finish color, profile style, and enter your custom dimensions. Then fill in your contact details and click submit to send Robert an email. He'll follow up with a call to confirm the details and finalize your order."
   },
   {
     question: "Are you licensed and insured?",
@@ -109,7 +109,7 @@ export function FaqAccordion() {
                 </div>
               </div>
               <p className="text-royal-text-muted text-sm font-light leading-relaxed">
-                Robert personally handles every inquiry. Call or fill out the online estimator to get started on your custom cabinet doors.
+                Robert personally handles every inquiry. Call or fill out the online estimator to get started on your custom doors.
               </p>
               <div className="space-y-4">
                 <a 
