@@ -86,16 +86,10 @@ export function AboutPage() {
                 Outside the shop, Robert enjoys traveling with his family, exploring the outdoors, and cheering on the Trail Blazers.
               </p>
               
-              <div className="pt-6 flex flex-wrap gap-4">
-                <Link 
-                  to="/estimator" 
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
-                >
-                  Work With Us
-                </Link>
+              <div className="pt-6">
                 <Link
                   to="/booking"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-royal-border text-white font-bold text-xs tracking-[0.15em] uppercase hover:border-royal-gold hover:text-royal-gold transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                 >
                   Book a Consultation
                 </Link>
