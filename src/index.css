@@ -75,3 +75,6 @@ body {
 .animate-marquee {
   animation: marquee 60s linear infinite;
 }
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
