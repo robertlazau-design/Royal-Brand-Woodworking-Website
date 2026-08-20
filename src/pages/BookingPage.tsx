@@ -321,7 +321,7 @@ export function BookingPage() {
           <div className="flex flex-col sm:flex-row gap-4" style={{ animation: 'fadeSlideUp 0.6s ease-out 0.3s both' }}>
             <button
               onClick={handleReschedule}
-              className="flex-1 py-4 bg-transparent text-white font-bold text-xs uppercase tracking-wider border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all rounded flex items-center justify-center gap-2"
+              className="flex-1 py-4 bg-transparent text-white font-bold text-xs uppercase tracking-wider border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               Choose a Different Date
@@ -459,7 +459,7 @@ export function BookingPage() {
                     onClick={() => handleDateClick(cell)}
                     disabled={disabled}
                     className={`
-                      relative aspect-square flex flex-col items-center justify-center text-sm rounded-lg transition-all duration-200
+                      relative aspect-square flex flex-col items-center justify-center text-sm transition-all duration-200
                       ${!cell.isCurrentMonth ? 'opacity-15 cursor-default' : ''}
                       ${cell.isCurrentMonth && cell.isPast ? 'opacity-25 cursor-not-allowed line-through' : ''}
                       ${cell.isCurrentMonth && cell.isWeekend && !cell.isPast ? 'opacity-30 cursor-not-allowed' : ''}
@@ -518,7 +518,7 @@ export function BookingPage() {
                     <button
                       key={i}
                       onClick={() => setSelectedTime(slot.time)}
-                      className={`py-4 px-3 text-center transition-all border rounded-lg group ${
+                      className={`py-4 px-3 text-center transition-all border group ${
                         selectedTime === slot.time
                           ? 'bg-royal-gold text-white border-royal-gold shadow-[0_0_20px_rgba(201,164,122,0.25)]'
                           : 'bg-transparent text-white border-royal-border hover:border-royal-gold hover:bg-white/5'
@@ -570,7 +570,7 @@ export function BookingPage() {
                     <span className="text-royal-text-muted">Rate</span>
                     <span className="text-white">$150.00 / hour</span>
                   </div>
-                  <div className="flex items-start gap-2 mt-3 p-3 bg-royal-gold/5 border border-royal-gold/20 rounded">
+                   <div className="flex items-start gap-2 mt-3 p-3 bg-royal-gold/5 border border-royal-gold/20">
                     <Shield className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
                     <p className="text-[10px] text-royal-text-muted leading-relaxed">
                       <span className="text-royal-gold font-bold">No payment required now.</span> An invoice will be sent after Robert confirms your appointment.
@@ -595,7 +595,7 @@ export function BookingPage() {
                     placeholder="Full Name *"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -605,7 +605,7 @@ export function BookingPage() {
                     placeholder="Email Address *"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -615,7 +615,7 @@ export function BookingPage() {
                     placeholder="Phone Number *"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -625,7 +625,7 @@ export function BookingPage() {
                     placeholder="Project Address *"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -635,7 +635,7 @@ export function BookingPage() {
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     rows={3}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm rounded resize-none"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm resize-none"
                   />
                 </div>
               </div>
@@ -650,19 +650,19 @@ export function BookingPage() {
               </h3>
 
               <div className="space-y-3 mb-6">
-                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <CheckCircle className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
                   <p className="text-[11px] text-royal-text-muted leading-relaxed">
                     Robert will review your request and confirm availability within <span className="text-white font-bold">24 hours</span>.
                   </p>
                 </div>
-                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <RotateCcw className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
                   <p className="text-[11px] text-royal-text-muted leading-relaxed">
                     If your selected date doesn't work, you'll be offered <span className="text-white font-bold">alternative available dates</span> to reschedule.
                   </p>
                 </div>
-                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border rounded">
+                <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <Send className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
                   <p className="text-[11px] text-royal-text-muted leading-relaxed">
                     Once confirmed, an <span className="text-white font-bold">invoice for the consultation</span> will be sent to your email.
@@ -673,7 +673,7 @@ export function BookingPage() {
               <button
                 onClick={handleSubmitRequest}
                 disabled={!isFormValid || isSubmitting}
-                className={`w-full py-4 font-bold text-xs uppercase tracking-wider transition-all rounded flex items-center justify-center gap-2 ${
+                className={`w-full py-4 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
                   isFormValid && !isSubmitting
                     ? 'bg-royal-gold text-white hover:bg-white hover:text-black cursor-pointer'
                     : 'bg-royal-border text-royal-text-muted/50 cursor-not-allowed'

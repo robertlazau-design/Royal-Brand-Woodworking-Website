@@ -6,7 +6,7 @@ export function AboutPage() {
   return (
     <div className="w-full bg-royal-bg text-white min-h-screen">
       {/* Header Section with background image */}
-      <section className="relative pt-32 pb-20 px-4 md:px-8 border-b border-royal-border-light overflow-hidden">
+      <section className="relative pt-32 pb-20 px-6 border-b border-royal-border-light overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -56,7 +56,7 @@ export function AboutPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-20 px-4 md:px-8">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Bio */}
@@ -139,7 +139,7 @@ export function AboutPage() {
       </section>
 
       {/* Heritage Timeline */}
-      <section className="py-20 px-4 md:px-8 bg-royal-charcoal border-y border-royal-border-light">
+      <section className="py-20 px-6 bg-royal-charcoal border-y border-royal-border-light">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">

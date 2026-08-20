@@ -251,7 +251,7 @@ export function DualPath() {
                     Live Dimension Previewer
                   </h4>
                   
-                  <div className="relative w-full h-[320px] bg-royal-charcoal rounded-lg flex items-center justify-center overflow-hidden border border-royal-border mb-6">
+                  <div className="relative w-full h-[320px] bg-royal-charcoal flex items-center justify-center overflow-hidden border border-royal-border mb-6">
                     <svg width="100%" height="100%" className="max-w-[280px] max-h-[300px]">
                       <defs>
                         <linearGradient id="wood-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -467,7 +467,7 @@ export function DualPath() {
                   </div>
 
                   {/* Instant pricing estimate warning */}
-                  <div className="flex items-center justify-between p-3.5 bg-royal-charcoal text-white rounded-lg">
+                  <div className="flex items-center justify-between p-3.5 bg-royal-charcoal text-white">
                     <div>
                       <p className="text-[10px] font-semibold text-royal-text-muted uppercase tracking-wide">Estimated Price Per Unit</p>
                       <p className="text-xl font-black text-white mt-0.5">
@@ -494,7 +494,7 @@ export function DualPath() {
                       <select 
                         value={woodSpecies}
                         onChange={(e) => setWoodSpecies(e.target.value)}
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                       >
                         {Object.keys(woodColors).map((name) => (
                           <option key={name} value={name} className="text-white">
@@ -523,7 +523,7 @@ export function DualPath() {
                       <select 
                         value={profileStyle}
                         onChange={(e) => setProfileStyle(e.target.value)}
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                       >
                         <option value="Classic Shaker" className="text-white">Classic Shaker</option>
                         <option value="Modern Slab" className="text-white">Modern Slab (Flat Panel)</option>
@@ -541,7 +541,7 @@ export function DualPath() {
                           placeholder="e.g. 30" 
                           value={height}
                           onChange={(e) => setHeight(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
@@ -553,7 +553,7 @@ export function DualPath() {
                           placeholder="e.g. 18" 
                           value={width}
                           onChange={(e) => setWidth(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
@@ -565,7 +565,7 @@ export function DualPath() {
                         <select 
                           value={thickness}
                           onChange={(e) => setThickness(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none appearance-none cursor-pointer text-sm"
                         >
                           <option value="0.75" className="text-white">3/4" (Standard)</option>
                           <option value="0.875" className="text-white">7/8"</option>
@@ -579,7 +579,7 @@ export function DualPath() {
                           min="1"
                           value={quantity}
                           onChange={(e) => setQuantity(e.target.value)}
-                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm" 
+                          className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none text-sm" 
                           required
                         />
                       </div>
@@ -620,7 +620,7 @@ export function DualPath() {
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         placeholder="e.g., Grain matched with adjacent drawer front, custom cup-hole depth..."
-                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 rounded-md focus:border-royal-gold focus:outline-none text-sm"
+                        className="w-full bg-white/10 border border-white/25 text-white p-2.5 focus:border-royal-gold focus:outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -630,7 +630,7 @@ export function DualPath() {
                   <button 
                     type="button"
                     onClick={handleAddItem}
-                    className="w-full sm:w-auto px-6 py-3 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:text-white transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                     Add Item to Quote List
@@ -715,7 +715,7 @@ export function DualPath() {
                   </div>
 
                   {/* Customer Info Form built directly beneath the Cart list */}
-                  <div className="bg-royal-charcoal p-6 rounded-lg border border-royal-border mt-8 space-y-6">
+                  <div className="bg-royal-charcoal p-6 border border-royal-border mt-8 space-y-6">
                     <div>
                       <h4 className="text-sm font-extrabold text-white uppercase tracking-wider mb-2">
                         Step 2: Enter Client Details & Generate Quote Email
@@ -765,7 +765,7 @@ export function DualPath() {
                       <button 
                         type="button" 
                         onClick={handleFormSubmit}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-royal-charcoal transition-all rounded shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-royal-gold text-white font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <Mail className="w-4 h-4" />
                         Email Quote Request to Robert
@@ -781,7 +781,7 @@ export function DualPath() {
           </div>
         ) : (
           /* Confirmation / Success Screen */
-          <div className="bg-royal-charcoal text-white p-8 md:p-12 rounded-xl text-center shadow-2xl max-w-4xl mx-auto border-2 border-royal-gold">
+          <div className="bg-royal-charcoal text-white p-8 md:p-12 text-center shadow-2xl max-w-4xl mx-auto border border-royal-gold">
             <div className="w-20 h-20 bg-royal-gold/15 rounded-full flex items-center justify-center text-royal-gold mx-auto mb-6 border border-royal-gold/30">
               <CheckCircle2 className="w-10 h-10" />
             </div>
@@ -795,7 +795,7 @@ export function DualPath() {
             </p>
             
             {/* List breakdown summary */}
-            <div className="bg-white/5 border border-white/10 rounded-lg p-6 max-w-xl mx-auto mb-8 text-left text-xs space-y-4">
+            <div className="bg-white/5 border border-white/10 p-6 max-w-xl mx-auto mb-8 text-left text-xs space-y-4">
               <p className="text-xs font-bold text-royal-gold uppercase tracking-wider border-b border-white/10 pb-2">Order Cart Summary:</p>
               <div className="divide-y divide-white/5">
                 {quoteItems.map((item, idx) => (
@@ -829,7 +829,7 @@ export function DualPath() {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button 
                 onClick={handleFormSubmit}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-md transition-all text-xs uppercase tracking-wider"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-bold transition-all text-xs uppercase tracking-wider"
               >
                 <Mail className="w-4 h-4" />
                 Resend Quote Email
@@ -842,7 +842,7 @@ export function DualPath() {
                   setWidth('18');
                   setQuantity('1');
                 }}
-                className="px-8 py-3 bg-royal-gold text-white font-bold hover:bg-white hover:text-white transition-all rounded-md text-xs uppercase tracking-wider cursor-pointer"
+                className="px-8 py-3 bg-royal-gold text-white font-bold hover:bg-white hover:text-royal-charcoal transition-all text-xs uppercase tracking-wider cursor-pointer"
               >
                 Start New Project Quote
               </button>

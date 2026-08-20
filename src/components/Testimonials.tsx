@@ -65,7 +65,7 @@ const testimonials = [
 export function Testimonials() {
   return (
     <>
-      <section id="testimonials" className="py-20 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
+      <section id="testimonials" className="py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
         <div className="w-full relative z-10">
           <div className="mb-14 text-center px-6">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
@@ -89,7 +89,7 @@ export function Testimonials() {
             
             <div className="flex items-start w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3 py-6">
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={idx} className="group w-[380px] shrink-0 bg-royal-charcoal p-7 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-30 cursor-pointer">
+                <div key={idx} className="group w-[380px] shrink-0 bg-royal-charcoal p-7 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-20 cursor-pointer">
                   <div>
                     {/* Decorative quote icon */}
                     <Quote className="w-6 h-6 text-royal-gold/15 mb-3 group-hover:text-royal-gold/30 transition-colors duration-500" />

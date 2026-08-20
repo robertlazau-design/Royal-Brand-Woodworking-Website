@@ -33,7 +33,7 @@ export function Navigation() {
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link to="/" className="hover:opacity-90 transition-opacity">
-            <RoyalLogo light={true} />
+            <RoyalLogo />
           </Link>
         </div>
 

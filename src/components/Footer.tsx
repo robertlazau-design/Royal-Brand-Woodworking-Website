@@ -20,7 +20,7 @@ export function Footer() {
             {/* Brand Column */}
             <div className="lg:col-span-4 space-y-6">
               <Link to="/">
-                <RoyalLogo light={true} />
+                <RoyalLogo />
               </Link>
               
               <p className="text-royal-text-muted text-sm font-light leading-relaxed max-w-sm">

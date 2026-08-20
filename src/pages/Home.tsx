@@ -7,8 +7,8 @@ export function Home() {
   return (
     <div className="w-full">
       <Hero />
-      <Testimonials />
       <FaqAccordion />
+      <Testimonials />
     </div>
   );
 }
