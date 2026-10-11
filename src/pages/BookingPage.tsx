@@ -345,8 +345,18 @@ export function BookingPage() {
   }
 
   return (
-    <section className="py-24 bg-royal-bg text-royal-text min-h-screen">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-hidden">
+      {/* Background ambient image */}
+      <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
+        <img
+          src="/photos/web/craftsman-handshake.jpg"
+          alt="Workshop background"
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/40 via-royal-bg/85 to-royal-bg" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <img src="/logo.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-6" />

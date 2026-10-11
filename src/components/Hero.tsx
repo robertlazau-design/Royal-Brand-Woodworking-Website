@@ -7,16 +7,16 @@ export function Hero() {
       {/* Background Image & Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=1920&q=80" 
-          alt="Craftsman doing woodworking" 
+          src="/photos/web/hand-sanding-door.jpg" 
+          alt="Royal Brand Woodworking master craftsman hand-finishing a custom cabinet door in Portland shop" 
           className="w-full h-full object-cover object-center scale-105"
           loading="eager"
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/90 to-royal-bg/30 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/80 via-transparent to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/90 to-royal-bg/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/90 via-transparent to-transparent z-10" />
         <div className="absolute inset-0 bg-royal-bg/30 z-10" />
       </div>
 

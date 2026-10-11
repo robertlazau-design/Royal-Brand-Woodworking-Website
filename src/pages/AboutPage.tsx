@@ -10,11 +10,11 @@ export function AboutPage() {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1920&q=80"
-            alt="Woodworking workshop"
-            className="w-full h-full object-cover opacity-15"
+            src="/photos/web/door-clamp-overview.jpg"
+            alt="Royal Brand Woodworking workshop in Portland"
+            className="w-full h-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/60 via-royal-bg/80 to-royal-bg" />
+          <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/70 via-royal-bg/90 to-royal-bg" />
         </div>
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
@@ -100,36 +100,38 @@ export function AboutPage() {
             <div className="space-y-6">
               <div className="aspect-[4/3] bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                 <img
-                  src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80"
-                  alt="Craftsman at work in woodworking shop"
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  src="/photos/web/powermatic-planer-shop.jpg"
+                  alt="Robert Burlacu operating Powermatic planer in the Portland shop"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-4 left-4">
-                  <span className="text-royal-gold text-[9px] font-bold uppercase tracking-[0.2em]">Robert in the Workshop</span>
+                  <span className="text-royal-gold text-[9px] font-bold uppercase tracking-[0.2em] bg-royal-bg/80 px-2 py-1 border border-royal-border">
+                    Robert at the Planer · Portland Shop
+                  </span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                   <img
-                    src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=400&q=80"
-                    alt="Woodworking hand tools"
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    src="/photos/web/door-components-still-life.jpg"
+                    alt="Precision joinery components dry-fitted on workbench"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">The Craft</span>
+                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">The Joinery Detail</span>
                   </div>
                 </div>
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                   <img
-                    src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=400&q=80"
-                    alt="Woodworking workshop detail"
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    src="/photos/web/hand-sanding-door.jpg"
+                    alt="Hand sanding custom shaker door in shop"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">The Workshop</span>
+                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">320-Grit Hand Finish</span>
                   </div>
                 </div>
               </div>
@@ -198,6 +200,56 @@ export function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* The Craftsman Handshake Guarantee */}
+      <section className="py-20 px-6 bg-royal-bg border-b border-royal-border-light">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-royal-charcoal border border-royal-border p-8 md:p-12 relative overflow-hidden">
+            {/* Top gold accent */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-royal-gold via-royal-gold/60 to-transparent" />
+            
+            <div className="lg:col-span-7 space-y-6">
+              <div className="flex items-center gap-3 text-royal-gold">
+                <div className="w-8 h-[1px] bg-royal-gold" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">The Royal Guarantee</span>
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wider">
+                Built On Trust. <br />
+                <span className="text-royal-gold">Sealed With A Handshake.</span>
+              </h2>
+              <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
+                In an era of mass-market distributors and faceless sub-contractors, we believe in old-world accountability. When you commission a project with Royal Brand Woodworking, you work directly with Robert from the initial wood selection to the final delivery.
+              </p>
+              <div className="pt-2">
+                <Link
+                  to="/booking"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
+                >
+                  Schedule Your Shop Consultation
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="aspect-[4/3] bg-royal-bg border border-royal-border overflow-hidden relative group">
+                <img
+                  src="/photos/web/craftsman-handshake.jpg"
+                  alt="Robert Burlacu handshake in workshop with client"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-3">
+                  <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em] bg-royal-bg/85 px-2 py-1 border border-royal-border">
+                    Direct Master Craftsman Partnership
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

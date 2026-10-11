@@ -237,6 +237,48 @@ export function DualPath() {
           <p className="text-royal-text-muted text-sm md:text-base font-light">
             Configure custom doors and drawer fronts built in our shop. Use our live previewer, add multiple dimensions to your list, and instantly draft a quote. Robert will call you to finalize grain patterns, shipping, and finish the deal.
           </p>
+
+          {/* Authentic Workshop Quality Badges */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-royal-border-light text-left">
+            <div className="bg-royal-charcoal border border-royal-border p-3.5 flex items-center gap-3">
+              <img
+                src="/photos/web/miter-grooves-detail.jpg"
+                alt="Reinforced 45 degree miter joints"
+                className="w-16 h-16 object-cover border border-royal-border shrink-0"
+              />
+              <div>
+                <p className="text-[10px] uppercase font-bold text-royal-gold tracking-wider">Internal Splines</p>
+                <p className="text-xs font-semibold text-white">Reinforced 45° Miters</p>
+                <p className="text-[11px] text-royal-text-muted font-light leading-tight mt-0.5">High-strength internal joinery that will never gap.</p>
+              </div>
+            </div>
+
+            <div className="bg-royal-charcoal border border-royal-border p-3.5 flex items-center gap-3">
+              <img
+                src="/photos/web/cantek-power-feeder-action.jpg"
+                alt="Power-fed shaper sticking"
+                className="w-16 h-16 object-cover border border-royal-border shrink-0"
+              />
+              <div>
+                <p className="text-[10px] uppercase font-bold text-royal-gold tracking-wider">Cantek Feeder</p>
+                <p className="text-xs font-semibold text-white">Chatter-Free Sticking</p>
+                <p className="text-[11px] text-royal-text-muted font-light leading-tight mt-0.5">Automated continuous feed ensures crisp profile lines.</p>
+              </div>
+            </div>
+
+            <div className="bg-royal-charcoal border border-royal-border p-3.5 flex items-center gap-3">
+              <img
+                src="/photos/web/hand-sanding-door.jpg"
+                alt="320-grit hand finishing"
+                className="w-16 h-16 object-cover border border-royal-border shrink-0"
+              />
+              <div>
+                <p className="text-[10px] uppercase font-bold text-royal-gold tracking-wider">Bench Inspection</p>
+                <p className="text-xs font-semibold text-white">320-Grit Hand Sanding</p>
+                <p className="text-[11px] text-royal-text-muted font-light leading-tight mt-0.5">Individually surfaced and signed off by Robert.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {!isSubmitted ? (

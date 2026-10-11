@@ -121,18 +121,42 @@ const ANATOMY_DATA: ServiceTab[] = [
   {
     id: "doors-fronts",
     tabLabel: "Custom Doors & Fronts",
-    imageSrc: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Custom door detail",
+    imageSrc: "/photos/web/door-components-still-life.jpg",
+    imageAlt: "Authentic custom door components, miter joinery, and floating panel on workshop bench",
     description: "Precision-milled doors and drawer fronts in Shaker, Raised Panel, and Beveled Edge profiles.",
     icon: <DoorOpen className="w-4 h-4" />,
     hotspots: [
       {
         id: "hs-8",
-        x: "45%",
-        y: "40%",
-        title: "5-Piece Cope and Stick Construction",
-        spec: "Engineered panel expansion tolerances that eliminate hairline paint cracking during seasonal humidity shifts.",
+        x: "26%",
+        y: "45%",
+        title: "Reinforced 45° Miter & Internal Spline",
+        spec: "Precision-machined 45.00° angle with internal hardwood biscuit keys for maximum glue surface and zero joint gapping.",
         mappedService: "Custom Doors & Drawer Fronts"
+      },
+      {
+        id: "hs-8b",
+        x: "55%",
+        y: "38%",
+        title: "Floating Panel Expansion Tolerance",
+        spec: "Solid hardwood center panel seated in continuous dado channel with expansion relief to prevent splitting across seasonal humidity shifts.",
+        mappedService: "Custom Doors & Drawer Fronts"
+      },
+      {
+        id: "hs-8c",
+        x: "78%",
+        y: "52%",
+        title: "Power-Fed Architectural Sticking",
+        spec: "Milled with continuous Cantek power feed at 8,500 RPM for chatter-free, crisp Shaker profile geometry.",
+        mappedService: "Custom Doors & Drawer Fronts"
+      },
+      {
+        id: "hs-8d",
+        x: "48%",
+        y: "78%",
+        title: "Calibrated 3/4\" Hardwood & 320-Grit Finish",
+        spec: "Surfaced on industrial Powermatic planer and wide-belt calibrator, then hand-feathered to 320 grit.",
+        mappedService: "Surface Protection Standard"
       }
     ]
   }
