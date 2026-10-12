@@ -8,9 +8,12 @@ import { DoorPreview } from '../components/DoorPreview';
 import {
   DOOR_TYPES, DOOR_STYLES, PANEL_STYLES, WOOD_SPECIES, FINISHES, FINISHES_NEEDING_COLOR, EDGE_PROFILES,
   HINGE_OPTIONS, MIN_DIMENSION, MAX_DIMENSION, type HingeSide, type MeasurementType, type Option,
+  CABINET_THICKNESS, INTERIOR_THICKNESS, CABINET_TYPES, OVERLAYS, HINGE_BORING, FRAME_WIDTHS,
+  INTERIOR_HANGING, LOCK_BORE, DELIVERY,
 } from '../data/doorOptions';
 import { parseInches, formatInches } from '../lib/fractions';
 import { submitToWeb3Forms } from '../lib/submitForm';
+import { BUSINESS } from '../data/business';
 
 /* ───── types & state ───── */
 
@@ -41,9 +44,24 @@ interface OrderState {
   finishColor: string;
   edge: string;
   edgeOther: string;
+  // Fit & hardware
+  thickness: string;
+  cabinetType: string;
+  overlay: string;
+  overlayAmount: string;
+  hingeBoring: string;
+  frameWidth: string;
+  frameWidthCustom: string;
+  hanging: string;
+  jambWidth: string;
+  lockBore: string;
+  // Door list + logistics
   measurement: MeasurementType | '';
   rows: DoorRow[];
   orderNotes: string;
+  neededBy: string;
+  delivery: string;
+  deliveryAddress: string;
 }
 
 const newRow = (): DoorRow => ({
@@ -63,10 +81,33 @@ const emptyOrder = (): OrderState => ({
   species: '', speciesOther: '',
   finish: '', finishColor: '',
   edge: '', edgeOther: '',
+  thickness: '', cabinetType: '', overlay: '', overlayAmount: '', hingeBoring: '',
+  frameWidth: '', frameWidthCustom: '', hanging: '', jambWidth: '', lockBore: '',
   measurement: '',
   rows: [newRow(), newRow(), newRow()],
   orderNotes: '',
+  neededBy: '', delivery: '', deliveryAddress: '',
 });
+
+const isInterior = (o: OrderState) => o.doorType === 'Interior Doors';
+const hasFrame = (o: OrderState) => o.doorStyle !== 'Slab';
+const needsHinges = (o: OrderState) => o.doorType !== 'Drawer Fronts';
+
+// Fit & hardware answers that apply to this order, as label → value (blank ones skipped).
+function fitSummary(o: OrderState): [string, string][] {
+  const rows: [string, string][] = [['Thickness', o.thickness]];
+  if (isInterior(o)) {
+    rows.push(['Hanging', o.hanging]);
+    if (o.hanging === 'Prehung' && o.jambWidth.trim()) rows.push(['Jamb Width', o.jambWidth.trim()]);
+    rows.push(['Lockset Hole', o.lockBore]);
+  } else {
+    rows.push(['Cabinet Type', o.cabinetType]);
+    rows.push(['Overlay', o.overlay + (o.overlayAmount.trim() ? ` (${o.overlayAmount.trim()})` : '')]);
+    if (needsHinges(o)) rows.push(['Hinge Holes', o.hingeBoring]);
+  }
+  if (hasFrame(o)) rows.push(['Frame Width', o.frameWidth === 'Custom' ? `Custom: ${o.frameWidthCustom.trim()}` : o.frameWidth]);
+  return rows.filter(([, v]) => v);
+}
 
 const DRAFT_KEY = 'rbw-door-order-draft-v1';
 
@@ -117,8 +158,14 @@ function rowErrors(r: DoorRow) {
     else if (v === null) errs[key] = 'Use a number like 15 3/8';
     else if (v < MIN_DIMENSION || v > MAX_DIMENSION) errs[key] = `Between ${MIN_DIMENSION}" and ${MAX_DIMENSION}"`;
   }
-  if (!r.hinge) errs.hinge = 'Pick L, R or None';
+  if (!r.hinge) errs.hinge = 'Pick a hinge side';
   return errs;
+}
+
+// "2026-11-03" -> "November 3, 2026" (parsed as a local date, not UTC)
+function formatDate(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -139,10 +186,24 @@ function stepErrors(step: number, o: OrderState): string[] {
     if (!o.edge || (o.edge === 'Other' && !o.edgeOther.trim())) e.push('edge');
   }
   if (step === 3) {
+    if (!o.thickness) e.push('thickness');
+    if (isInterior(o)) {
+      if (!o.hanging) e.push('hanging');
+      if (!o.lockBore) e.push('lockBore');
+    } else {
+      if (!o.cabinetType) e.push('cabinetType');
+      if (!o.overlay) e.push('overlay');
+      if (needsHinges(o) && !o.hingeBoring) e.push('hingeBoring');
+    }
+    if (hasFrame(o) && (!o.frameWidth || (o.frameWidth === 'Custom' && !o.frameWidthCustom.trim()))) e.push('frameWidth');
+  }
+  if (step === 4) {
     if (!o.measurement) e.push('measurement');
     const filled = o.rows.filter(r => !isRowBlank(r));
     if (filled.length === 0) e.push('rows-empty');
     if (filled.some(r => Object.keys(rowErrors(r)).length > 0)) e.push('rows');
+    if (!o.delivery) e.push('delivery');
+    if (o.delivery === 'Delivery' && !o.deliveryAddress.trim()) e.push('deliveryAddress');
   }
   return e;
 }
@@ -153,7 +214,7 @@ function buildDoorList(rows: DoorRow[]) {
     .map((r, i) => {
       const w = formatInches(parseInches(r.width)!);
       const h = formatInches(parseInches(r.height)!);
-      const hinge = r.hinge === 'None' ? 'no hinge' : `hinge ${r.hinge}`;
+      const hinge = r.hinge === 'None' ? 'no hinge' : r.hinge === 'Pair' ? 'pair (L + R)' : `hinge ${r.hinge}`;
       return `${i + 1}) Qty ${r.qty} — ${w} W × ${h} H — ${hinge}${r.notes.trim() ? ` — ${r.notes.trim()}` : ''}`;
     })
     .join('\n');
@@ -162,8 +223,9 @@ function buildDoorList(rows: DoorRow[]) {
 const STEPS = [
   { num: 1, label: 'Your Info' },
   { num: 2, label: 'Door Specs' },
-  { num: 3, label: 'Door List' },
-  { num: 4, label: 'Review & Send' },
+  { num: 3, label: 'Fit & Hardware' },
+  { num: 4, label: 'Door List' },
+  { num: 5, label: 'Review & Send' },
 ];
 
 /* ───── small UI pieces ───── */
@@ -332,7 +394,7 @@ export function OrderPage() {
       return;
     }
     setShowErrors(false);
-    setStep(s => Math.min(4, s + 1));
+    setStep(s => Math.min(STEPS.length, s + 1));
   }
 
   function goTo(target: number) {
@@ -366,10 +428,13 @@ export function OrderPage() {
         wood_species_material: specs.species,
         finish_color: specs.finish,
         profile_edge_detail: specs.edge,
+        fit_and_hardware: fitSummary(order).map(([l, v]) => `${l}: ${v}`).join('\n'),
         measurements_are: order.measurement,
         total_doors: String(totalDoors),
         door_list: buildDoorList(rows),
         order_notes: order.orderNotes.trim() || '-',
+        pickup_or_delivery: order.delivery === 'Delivery' ? `Delivery to: ${order.deliveryAddress.trim()}` : order.delivery,
+        needed_by: order.neededBy ? formatDate(order.neededBy) : 'No deadline given',
       });
       setSubmitted({ order: { ...order, rows }, date: orderDate });
       clearDraft();
@@ -405,6 +470,11 @@ export function OrderPage() {
               <span className="text-white font-semibold">{n} {n === 1 ? 'door' : 'doors'}</span> was sent to Robert. He'll review every
               measurement and contact you at <span className="text-royal-gold">{s.phone}</span> or{' '}
               <span className="text-white">{s.email}</span> with pricing and a build timeline. Nothing is built until you approve the quote.
+            </p>
+            <p className="text-sm text-royal-text-muted max-w-lg mx-auto -mt-6 mb-10 p-4 border border-royal-gold/30 bg-royal-gold/5">
+              <strong className="text-white">Have photos of your cabinets or old doors?</strong> Text them to{' '}
+              <a href={BUSINESS.phoneHref} className="text-royal-gold">{BUSINESS.phoneDisplay}</a> or email{' '}
+              <a href={`mailto:${BUSINESS.email}`} className="text-royal-gold break-all">{BUSINESS.email}</a> with your name — it helps Robert get everything right.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
@@ -486,7 +556,7 @@ export function OrderPage() {
 
           <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             {/* ─── Main panel ─── */}
-            <div className={`${step === 3 ? 'lg:col-span-12' : 'lg:col-span-8'} bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
+            <div className={`${step === 4 ? 'lg:col-span-12' : 'lg:col-span-8'} bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
               {showErrors && errors.length > 0 && (
                 <div className="mb-6 p-3.5 border border-red-400/40 bg-red-400/5 text-red-200 text-sm flex items-start gap-2.5" role="alert">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -612,10 +682,87 @@ export function OrderPage() {
                 </div>
               )}
 
-              {/* STEP 3 — door list */}
+              {/* STEP 3 — fit & hardware */}
               {step === 3 && (
                 <div>
-                  <StepTitle n={3} title="Door List" sub="One line per size. Fractions are fine — type 15 3/8 or 15.375." />
+                  <StepTitle n={3} title="Fit & Hardware"
+                    sub={isInterior(order)
+                      ? 'How the doors will hang. Not sure? Pick "Not sure" — Robert will go over it with you.'
+                      : 'How the doors fit your cabinets. Not sure? Pick "Not sure" — Robert will go over it with you.'} />
+
+                  <div className="space-y-7">
+                    <div>
+                      <FieldLabel required>Door Thickness</FieldLabel>
+                      <ChoiceCards options={isInterior(order) ? INTERIOR_THICKNESS : CABINET_THICKNESS} value={order.thickness}
+                        onChange={v => set('thickness', v)} invalid={err('thickness')} />
+                      {err('thickness') && <ErrorText>Choose a thickness</ErrorText>}
+                    </div>
+
+                    {isInterior(order) ? (
+                      <>
+                        <div>
+                          <FieldLabel required>Door Only or Prehung?</FieldLabel>
+                          <ChoiceCards options={INTERIOR_HANGING} value={order.hanging} onChange={v => set('hanging', v)}
+                            columns="grid-cols-1 sm:grid-cols-3" invalid={err('hanging')} />
+                          {order.hanging === 'Prehung' && (
+                            <input className={`${inputBase} border-royal-border mt-2`} placeholder='Wall / jamb width, if you know it (e.g. 4 9/16")'
+                              value={order.jambWidth} onChange={e => set('jambWidth', e.target.value)} />
+                          )}
+                          {err('hanging') && <ErrorText>Choose one</ErrorText>}
+                        </div>
+                        <div>
+                          <FieldLabel required>Hole for a Knob or Lever?</FieldLabel>
+                          <ChoiceCards options={LOCK_BORE} value={order.lockBore} onChange={v => set('lockBore', v)} invalid={err('lockBore')} />
+                          <p className="text-[11px] text-royal-text-muted mt-1.5">Backset is the distance from the door edge to the centre of the knob — match your other doors.</p>
+                          {err('lockBore') && <ErrorText>Choose one</ErrorText>}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <FieldLabel required>Cabinet Type</FieldLabel>
+                          <ChoiceCards options={CABINET_TYPES} value={order.cabinetType} onChange={v => set('cabinetType', v)}
+                            columns="grid-cols-1 sm:grid-cols-3" invalid={err('cabinetType')} />
+                          {err('cabinetType') && <ErrorText>Choose a cabinet type</ErrorText>}
+                        </div>
+                        <div>
+                          <FieldLabel required>How Do the Doors Sit?</FieldLabel>
+                          <ChoiceCards options={OVERLAYS} value={order.overlay} onChange={v => set('overlay', v)} invalid={err('overlay')} />
+                          {(order.overlay === 'Full Overlay' || order.overlay === 'Partial Overlay') && (
+                            <input className={`${inputBase} border-royal-border mt-2`}
+                              placeholder='How much the door overlaps the frame on each side, if you know it (e.g. 1/2")'
+                              value={order.overlayAmount} onChange={e => set('overlayAmount', e.target.value)} />
+                          )}
+                          {err('overlay') && <ErrorText>Choose how the doors sit</ErrorText>}
+                        </div>
+                        {needsHinges(order) && <div>
+                          <FieldLabel required>Drill Hinge Holes?</FieldLabel>
+                          <ChoiceCards options={HINGE_BORING} value={order.hingeBoring} onChange={v => set('hingeBoring', v)}
+                            columns="grid-cols-1 sm:grid-cols-3" invalid={err('hingeBoring')} />
+                          {err('hingeBoring') && <ErrorText>Choose one</ErrorText>}
+                        </div>}
+                      </>
+                    )}
+
+                    {hasFrame(order) && (
+                      <div>
+                        <FieldLabel required>Frame Width</FieldLabel>
+                        <ChoiceCards options={FRAME_WIDTHS} value={order.frameWidth} onChange={v => set('frameWidth', v)} invalid={err('frameWidth')} />
+                        {order.frameWidth === 'Custom' && (
+                          <input className={`${inputBase} ${fieldBorder(err('frameWidth'))} mt-2`} placeholder='Width of the frame pieces (e.g. 2 1/4")'
+                            value={order.frameWidthCustom} onChange={e => set('frameWidthCustom', e.target.value)} />
+                        )}
+                        {err('frameWidth') && <ErrorText>Choose a frame width{order.frameWidth === 'Custom' ? ' and enter it' : ''}</ErrorText>}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4 — door list */}
+              {step === 4 && (
+                <div>
+                  <StepTitle n={4} title="Door List" sub="One line per size. Fractions are fine — type 15 3/8 or 15.375." />
 
                   <FieldLabel required>Measurements Are</FieldLabel>
                   <div className="grid sm:grid-cols-2 gap-3 mb-2" role="radiogroup">
@@ -644,17 +791,34 @@ export function OrderPage() {
                   </div>
                   {err('measurement') && <ErrorText>Tell us which kind of measurement you're giving</ErrorText>}
 
-                  <div className="flex items-start gap-2 text-[11px] text-royal-text-muted mt-4 mb-6 p-3 bg-white/[0.02] border border-royal-border">
+                  <div className="flex items-start gap-2 text-[11px] text-royal-text-muted mt-4 mb-3 p-3 bg-white/[0.02] border border-royal-border">
                     <Info className="w-3.5 h-3.5 text-royal-gold shrink-0 mt-0.5" />
                     <span>
                       <strong className="text-white">Width</strong> is side to side, <strong className="text-white">height</strong> is top to bottom.
-                      Hinge side is as you face the front of the door; choose <strong className="text-white">None</strong> for drawer fronts or fixed panels.
+                      {isInterior(order)
+                        ? <> Swing side is the hinge side as the door opens toward you. Choose <strong className="text-white">Pair</strong> for double doors.</>
+                        : <> Hinge side is as you face the front of the door. Choose <strong className="text-white">Pair</strong> for two doors sharing one opening (enter the opening once), or <strong className="text-white">None</strong> for drawer fronts.</>}
                     </span>
                   </div>
 
+                  <details className="mb-6 border border-royal-border bg-white/[0.02] group">
+                    <summary className="cursor-pointer select-none p-3 text-xs font-bold text-royal-gold uppercase tracking-wider flex items-center gap-2">
+                      <Ruler className="w-3.5 h-3.5" /> How to measure
+                      <ChevronRight className="w-3.5 h-3.5 ml-auto transition-transform group-open:rotate-90" />
+                    </summary>
+                    <ul className="px-4 pb-4 space-y-2 text-xs text-royal-text-muted leading-relaxed list-disc pl-8">
+                      <li>Use a metal tape and measure to the nearest <strong className="text-white">1/16"</strong>.</li>
+                      <li><strong className="text-white">Replacing doors?</strong> Measure the old doors themselves and choose "Exact Door Size". It's the most reliable way.</li>
+                      <li><strong className="text-white">Measuring openings?</strong> Measure inside the frame at the top, middle and bottom, and use the smallest number.</li>
+                      <li>Measure every door, even ones that look the same — older cabinets often vary.</li>
+                      <li>Write width first, then height.</li>
+                      <li>Photos help a lot. After you send this, text or email photos of your cabinets to Robert at {BUSINESS.phoneDisplay} or {BUSINESS.email}.</li>
+                    </ul>
+                  </details>
+
                   {/* Column headers (desktop) */}
-                  <div className="hidden md:grid grid-cols-[1.5rem_4rem_minmax(6.5rem,1fr)_minmax(6.5rem,1fr)_8.5rem_minmax(8rem,1.6fr)_4.5rem] gap-2 px-1 mb-2 text-[10px] font-bold uppercase tracking-wider text-royal-text-muted">
-                    <span>#</span><span>Qty</span><span>Width</span><span>Height</span><span>Hinge L/R</span><span>Notes</span><span />
+                  <div className="hidden md:grid grid-cols-[1.5rem_4rem_minmax(6.5rem,1fr)_minmax(6.5rem,1fr)_11rem_minmax(8rem,1.6fr)_4.5rem] gap-2 px-1 mb-2 text-[10px] font-bold uppercase tracking-wider text-royal-text-muted">
+                    <span>#</span><span>Qty</span><span>Width</span><span>Height</span><span>{isInterior(order) ? 'Swing L/R' : 'Hinge L/R'}</span><span>Notes</span><span />
                   </div>
 
                   <div className="space-y-3 md:space-y-2">
@@ -665,7 +829,7 @@ export function OrderPage() {
                       const h = parseInches(row.height);
                       return (
                         <div key={row.id}
-                          className="grid grid-cols-[3.5rem_1fr_1fr] md:grid-cols-[1.5rem_4rem_minmax(6.5rem,1fr)_minmax(6.5rem,1fr)_8.5rem_minmax(8rem,1.6fr)_4.5rem] gap-2 items-start p-3 md:p-1 border border-royal-border md:border-0 bg-royal-bg md:bg-transparent">
+                          className="grid grid-cols-[3.5rem_1fr_1fr] md:grid-cols-[1.5rem_4rem_minmax(6.5rem,1fr)_minmax(6.5rem,1fr)_11rem_minmax(8rem,1.6fr)_4.5rem] gap-2 items-start p-3 md:p-1 border border-royal-border md:border-0 bg-royal-bg md:bg-transparent">
                           <span className="hidden md:flex h-11 items-center text-xs text-royal-text-muted font-mono">{i + 1}</span>
 
                           <div>
@@ -696,8 +860,8 @@ export function OrderPage() {
                           })}
 
                           <div className="col-span-3 md:col-span-1">
-                            <span className="md:hidden block text-[10px] uppercase tracking-wider text-royal-text-muted font-bold mb-1">Hinge side</span>
-                            <div className={`grid grid-cols-3 border h-11 ${re.hinge ? 'border-red-400/70' : 'border-royal-border'}`} role="radiogroup" aria-label={`Line ${i + 1} hinge side`}>
+                            <span className="md:hidden block text-[10px] uppercase tracking-wider text-royal-text-muted font-bold mb-1">{isInterior(order) ? 'Swing side' : 'Hinge side'}</span>
+                            <div className={`grid grid-cols-4 border h-11 ${re.hinge ? 'border-red-400/70' : 'border-royal-border'}`} role="radiogroup" aria-label={`Line ${i + 1} hinge side`}>
                               {HINGE_OPTIONS.map(opt => (
                                 <button key={opt.value} type="button" role="radio" aria-checked={row.hinge === opt.value} title={opt.title}
                                   onClick={() => updateRow(row.id, { hinge: opt.value })}
@@ -750,16 +914,35 @@ export function OrderPage() {
                   <div className="mt-8">
                     <FieldLabel htmlFor="orderNotes">Notes for the whole order <span className="normal-case font-normal tracking-normal">(optional)</span></FieldLabel>
                     <textarea id="orderNotes" rows={3} value={order.orderNotes} onChange={e => set('orderNotes', e.target.value)}
-                      placeholder="Grain direction, hinge boring, pickup or delivery, deadlines…"
+                      placeholder="Grain direction, anything that's different about certain doors…"
                       className={`${inputBase} border-royal-border resize-y`} />
+                  </div>
+
+                  <div className="mt-8 grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <FieldLabel required>Pickup or Delivery?</FieldLabel>
+                      <ChoiceCards options={DELIVERY} value={order.delivery} onChange={v => set('delivery', v)} columns="grid-cols-1" invalid={err('delivery')} />
+                      {order.delivery === 'Delivery' && (
+                        <input className={`${inputBase} ${fieldBorder(err('deliveryAddress'))} mt-2`} placeholder="Delivery address or ZIP code" autoComplete="street-address"
+                          value={order.deliveryAddress} onChange={e => set('deliveryAddress', e.target.value)} />
+                      )}
+                      {err('delivery') && <ErrorText>Choose pickup or delivery</ErrorText>}
+                      {err('deliveryAddress') && <ErrorText>Enter where to deliver</ErrorText>}
+                    </div>
+                    <div>
+                      <FieldLabel htmlFor="neededBy">Need Them By <span className="normal-case font-normal tracking-normal">(optional)</span></FieldLabel>
+                      <input id="neededBy" type="date" value={order.neededBy} onChange={e => set('neededBy', e.target.value)}
+                        className={`${inputBase} border-royal-border [color-scheme:dark]`} />
+                      <p className="text-[11px] text-royal-text-muted mt-1.5">Most orders take 2–3 weeks once sizes are confirmed.</p>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* STEP 4 — review */}
-              {step === 4 && (
+              {/* STEP 5 — review */}
+              {step === 5 && (
                 <div>
-                  <StepTitle n={4} title="Review & Send" sub="Check everything below. You can jump back to any section to fix it." />
+                  <StepTitle n={5} title="Review & Send" sub="Check everything below. You can jump back to any section to fix it." />
 
                   <ReviewSection title="Customer" onEdit={() => goTo(1)}>
                     <ReviewRow label="Name" value={order.name} />
@@ -779,7 +962,11 @@ export function OrderPage() {
                     <ReviewRow label="Profile / Edge" value={specs.edge} />
                   </ReviewSection>
 
-                  <ReviewSection title={`Door List — ${order.measurement}`} onEdit={() => goTo(3)}>
+                  <ReviewSection title="Fit & Hardware" onEdit={() => goTo(3)}>
+                    {fitSummary(order).map(([label, value]) => <React.Fragment key={label}><ReviewRow label={label} value={value} /></React.Fragment>)}
+                  </ReviewSection>
+
+                  <ReviewSection title={`Door List — ${order.measurement}`} onEdit={() => goTo(4)}>
                     <div className="overflow-x-auto -mx-1">
                       <table className="w-full text-sm min-w-[460px]">
                         <thead>
@@ -808,6 +995,8 @@ export function OrderPage() {
                       Total: <span className="text-white font-bold">{totalDoors} {totalDoors === 1 ? 'door' : 'doors'}</span>
                     </p>
                     {order.orderNotes.trim() && <ReviewRow label="Order Notes" value={order.orderNotes} />}
+                    <ReviewRow label={order.delivery === 'Delivery' ? 'Deliver To' : 'Pickup / Delivery'} value={order.delivery === 'Delivery' ? order.deliveryAddress : order.delivery} />
+                    {order.neededBy && <ReviewRow label="Needed By" value={formatDate(order.neededBy)} />}
                   </ReviewSection>
 
                   <div className="p-4 bg-royal-gold/5 border border-royal-gold/20 text-xs text-royal-text-muted leading-relaxed flex gap-3">
@@ -835,7 +1024,7 @@ export function OrderPage() {
                     <ChevronLeft className="w-4 h-4" /> Back
                   </button>
                 ) : <span />}
-                {step < 4 ? (
+                {step < STEPS.length ? (
                   <button type="button" onClick={goNext}
                     className="px-7 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center gap-2">
                     Continue <ChevronRight className="w-4 h-4" />
@@ -850,7 +1039,7 @@ export function OrderPage() {
             </div>
 
             {/* ─── Sidebar summary ─── */}
-            <aside className={`${step === 3 ? 'hidden' : 'hidden lg:block'} lg:col-span-4 sticky top-24 space-y-4`}>
+            <aside className={`${step === 4 ? 'hidden' : 'hidden lg:block'} lg:col-span-4 sticky top-24 space-y-4`}>
               <div className="bg-royal-charcoal border border-royal-border p-6">
                 <h3 className="text-[11px] text-royal-gold uppercase tracking-[0.15em] font-bold mb-4 text-center">Your Door</h3>
                 <div className="bg-royal-bg border border-royal-border p-2 mb-5">
@@ -865,6 +1054,7 @@ export function OrderPage() {
                     ['Wood', order.species && specs.species],
                     ['Finish', order.finish && specs.finish],
                     ['Edge', order.edge && specs.edge],
+                    ['Thickness', order.thickness],
                     ['Doors', totalDoors ? `${totalDoors} on ${filledRows.length} ${filledRows.length === 1 ? 'line' : 'lines'}` : ''],
                   ].map(([label, value]) => (
                     <div key={label as string} className="flex justify-between gap-4">
@@ -892,7 +1082,7 @@ export function OrderPage() {
 function StepTitle({ n, title, sub }: { n: number; title: string; sub: string }) {
   return (
     <div className="mb-7 pb-4 border-b border-royal-border">
-      <p className="text-[10px] text-royal-gold uppercase tracking-[0.2em] font-bold mb-1">Step {n} of 4</p>
+      <p className="text-[10px] text-royal-gold uppercase tracking-[0.2em] font-bold mb-1">Step {n} of {STEPS.length}</p>
       <h2 className="font-serif text-2xl text-white font-bold tracking-wide uppercase">{title}</h2>
       <p className="text-royal-text-muted text-xs mt-1.5">{sub}</p>
     </div>
@@ -947,6 +1137,7 @@ function PrintableOrder({ order, date }: { order: OrderState; date: string }) {
       {line('Finish / Color', specs.finish)}
       {line('Profile / Edge Detail', specs.edge)}
       {line('Panel Style', specs.panelStyle)}
+      {fitSummary(order).map(([l, v]) => <React.Fragment key={l}>{line(l, v)}</React.Fragment>)}
       {line('Measurements Are', order.measurement)}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
         <thead>
@@ -969,6 +1160,8 @@ function PrintableOrder({ order, date }: { order: OrderState; date: string }) {
         </tbody>
       </table>
       {order.orderNotes.trim() && <p style={{ marginTop: 12 }}><strong>Notes:</strong> {order.orderNotes}</p>}
+      <p style={{ marginTop: 8 }}><strong>Pickup / Delivery:</strong> {order.delivery === 'Delivery' ? `Delivery to ${order.deliveryAddress}` : order.delivery}</p>
+      {order.neededBy && <p style={{ marginTop: 4 }}><strong>Needed By:</strong> {formatDate(order.neededBy)}</p>}
     </div>
   );
 }
