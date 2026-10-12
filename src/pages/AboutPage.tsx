@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { BUSINESS } from '../data/business';
 import { MapPin, Hammer, Users, Shield, Star, Award, ChevronRight } from 'lucide-react';
 
 export function AboutPage() {
@@ -20,17 +21,17 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
             <div className="w-12 h-[1px] bg-royal-gold" />
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase">
               <Users className="w-4 h-4 inline-block mr-2 -mt-0.5" />
               Meet the Owner
             </span>
             <div className="w-12 h-[1px] bg-royal-gold" />
           </div>
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-bold tracking-widest uppercase mb-6">
-            Our <span className="text-royal-gold">Heritage</span>
+            Meet <span className="text-royal-gold">Robert</span>
           </h1>
           <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
-            A legacy of craftsmanship passed down through three generations — from a small cabinet shop in Romania to award-winning custom woodwork in Portland, Oregon.
+            A third-generation woodworker. His grandfather built cabinets in Romania — now Robert builds them in Portland.
           </p>
         </div>
       </section>
@@ -41,7 +42,7 @@ export function AboutPage() {
           {[
             { icon: <Hammer className="w-5 h-5" />, value: "15+", label: "Years" },
             { icon: <Users className="w-5 h-5" />, value: "3rd", label: "Generation" },
-            { icon: <Shield className="w-5 h-5" />, value: "Licensed", label: "& Insured" },
+            { icon: <Shield className="w-5 h-5" />, value: "Licensed", label: `Bonded & Insured · CCB# ${BUSINESS.ccb}` },
             { icon: <Star className="w-5 h-5" />, value: "5.0", label: "Google Rating" },
           ].map((stat, idx) => (
             <div key={idx} className="text-center flex flex-col items-center">
@@ -49,7 +50,7 @@ export function AboutPage() {
                 {stat.icon}
               </div>
               <p className="font-serif text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
-              <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-royal-text-muted mt-1">{stat.label}</p>
+              <p className="text-xs uppercase tracking-[0.15em] font-bold text-royal-text-muted mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -63,7 +64,7 @@ export function AboutPage() {
             <div className="space-y-6 lg:sticky lg:top-24">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-[1px] bg-royal-gold" />
-                <span className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em]">Owner & Master Craftsman</span>
+                <span className="text-royal-gold text-xs font-bold uppercase tracking-[0.2em]">Owner</span>
               </div>
               <h2 className="font-serif text-4xl md:text-5xl font-bold text-white uppercase tracking-wider">
                 Robert Burlacu
@@ -77,10 +78,10 @@ export function AboutPage() {
               </div>
 
               <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
-                Robert has been refining his carpentry expertise for over 15 years as a third-generation woodworker. His interest began at a young age helping his father in the shop, continuing a craft passed down from his grandfather, who ran a cabinet shop in Romania.
+                Robert has been a carpenter for over 15 years. He got started as a kid, helping his dad in the shop — and his grandfather ran a cabinet business back in Romania.
               </p>
               <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
-                At Royal Brand Woodworking, client satisfaction, meticulous attention to detail, and timely completions are guaranteed. Every project is approached with the same dedication to quality that has defined our family's work for decades.
+                He's known for paying attention to the little things and finishing on time. His favorite part of the job is taking something old and worn out and making it beautiful again.
               </p>
               <p className="text-royal-text-muted/70 text-sm font-light italic pt-4 border-t border-royal-border">
                 Outside the shop, Robert enjoys traveling with his family, exploring the outdoors, and cheering on the Trail Blazers.
@@ -91,7 +92,7 @@ export function AboutPage() {
                   to="/booking"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                 >
-                  Book a Consultation
+                  Book an Estimate
                 </Link>
               </div>
             </div>
@@ -100,27 +101,27 @@ export function AboutPage() {
             <div className="space-y-6">
               <div className="aspect-[4/3] bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                 <img
-                  src="/photos/web/powermatic-planer-shop.jpg"
-                  alt="Robert Burlacu operating Powermatic planer in the Portland shop"
+                  src="/photos/web/surfacing-lumber-planer.jpg"
+                  alt="Robert feeding a board through the planer in his Portland shop"
                   className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-4 left-4">
-                  <span className="text-royal-gold text-[9px] font-bold uppercase tracking-[0.2em] bg-royal-bg/80 px-2 py-1 border border-royal-border">
-                    Robert at the Planer · Portland Shop
+                  <span className="text-xs font-bold text-white bg-royal-bg/80 px-2 py-1">
+                    Robert in his Portland shop
                   </span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                   <img
-                    src="/photos/web/door-components-still-life.jpg"
-                    alt="Precision joinery components dry-fitted on workbench"
+                    src="/photos/web/fine-joint-chisel.jpg"
+                    alt="Robert tapping a door joint together by hand"
                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">The Joinery Detail</span>
+                    <span className="text-xs font-bold text-white bg-royal-bg/80 px-2 py-1">Fitting joints</span>
                   </div>
                 </div>
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
@@ -131,7 +132,7 @@ export function AboutPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em]">320-Grit Hand Finish</span>
+                    <span className="text-xs font-bold text-white bg-royal-bg/80 px-2 py-1">Hand sanding</span>
                   </div>
                 </div>
               </div>
@@ -146,11 +147,11 @@ export function AboutPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
               <div className="w-12 h-[1px] bg-royal-gold" />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Three Generations</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase">The Family</span>
               <div className="w-12 h-[1px] bg-royal-gold" />
             </div>
             <h2 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wider">
-              A Family Legacy
+              Three Generations
             </h2>
           </div>
 
@@ -160,21 +161,21 @@ export function AboutPage() {
                 gen: "1st Generation",
                 name: "Grandfather",
                 location: "Romania",
-                desc: "Established the family's woodworking tradition in a small cabinet shop, laying the foundation for decades of craftsmanship.",
+                desc: "Owned a cabinet business in Romania, where the family's woodworking tradition began.",
                 icon: <Award className="w-5 h-5" />,
               },
               {
                 gen: "2nd Generation",
                 name: "Father",
-                location: "Romania → USA",
-                desc: "Carried the craft across continents, merging old-world techniques with modern precision and expanding the family's expertise.",
+                location: "The family shop",
+                desc: "Kept the craft going in his own shop — where Robert first learned the trade as a kid, working alongside him.",
                 icon: <ChevronRight className="w-5 h-5" />,
               },
               {
                 gen: "3rd Generation",
                 name: "Robert Burlacu",
                 location: "Portland, OR",
-                desc: "Refined 15+ years of inherited mastery into Royal Brand Woodworking — Portland's trusted source for premium custom woodwork.",
+                desc: "More than 15 years in the carpentry trade, now building kitchens, bathrooms, furniture and custom doors as Royal Brand Woodworking.",
                 icon: <Star className="w-5 h-5" />,
               },
             ].map((gen, idx) => (
@@ -187,7 +188,7 @@ export function AboutPage() {
                   <div className="w-10 h-10 rounded-full border border-royal-gold/30 flex items-center justify-center text-royal-gold mb-6 group-hover:border-royal-gold group-hover:shadow-[0_0_15px_rgba(201,164,122,0.15)] transition-all duration-500">
                     {gen.icon}
                   </div>
-                  <p className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-2">{gen.gen}</p>
+                  <p className="text-royal-gold text-xs font-bold uppercase tracking-[0.2em] mb-2">{gen.gen}</p>
                   <h3 className="font-serif text-xl font-bold text-white uppercase tracking-wider mb-1">{gen.name}</h3>
                   <div className="flex items-center gap-1.5 mb-4">
                     <MapPin className="w-3 h-3 text-royal-text-muted/50" />
@@ -201,7 +202,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* The Craftsman Handshake Guarantee */}
+      {/* The Royal Guarantee */}
       <section className="py-20 px-6 bg-royal-bg border-b border-royal-border-light">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-royal-charcoal border border-royal-border p-8 md:p-12 relative overflow-hidden">
@@ -211,21 +212,21 @@ export function AboutPage() {
             <div className="lg:col-span-7 space-y-6">
               <div className="flex items-center gap-3 text-royal-gold">
                 <div className="w-8 h-[1px] bg-royal-gold" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">The Royal Guarantee</span>
+                <span className="text-xs font-bold uppercase tracking-[0.2em]">Our Promise</span>
               </div>
               <h2 className="font-serif text-3xl md:text-4xl text-white font-bold uppercase tracking-wider">
-                Built On Trust. <br />
-                <span className="text-royal-gold">Sealed With A Handshake.</span>
+                You Work <br />
+                <span className="text-royal-gold">With Robert.</span>
               </h2>
               <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
-                In an era of mass-market distributors and faceless sub-contractors, we believe in old-world accountability. When you commission a project with Royal Brand Woodworking, you work directly with Robert from the initial wood selection to the final delivery.
+                No middlemen and no hand-offs. When you hire Royal Brand Woodworking, you work with Robert himself — from the first visit to the day it's done.
               </p>
               <div className="pt-2">
                 <Link
                   to="/booking"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                 >
-                  Schedule Your Shop Consultation
+                  Book an Estimate
                 </Link>
               </div>
             </div>
@@ -233,14 +234,14 @@ export function AboutPage() {
             <div className="lg:col-span-5">
               <div className="aspect-[4/3] bg-royal-bg border border-royal-border overflow-hidden relative group">
                 <img
-                  src="/photos/web/craftsman-handshake.jpg"
-                  alt="Robert Burlacu handshake in workshop with client"
+                  src="/photos/web/measuring-cutlist.jpg"
+                  alt="Robert checking parts against the cut list"
                   className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/60 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-3 left-3">
-                  <span className="text-royal-gold text-[8px] font-bold uppercase tracking-[0.2em] bg-royal-bg/85 px-2 py-1 border border-royal-border">
-                    Direct Master Craftsman Partnership
+                  <span className="text-xs font-bold text-white bg-royal-bg/80 px-2 py-1">
+                    Work Directly With Robert
                   </span>
                 </div>
               </div>

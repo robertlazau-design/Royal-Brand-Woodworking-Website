@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Star, ChevronDown } from 'lucide-react';
+import { Star, ChevronDown, Phone } from 'lucide-react';
+import { BUSINESS } from '../data/business';
 
 export function Hero() {
   return (
@@ -7,18 +8,19 @@ export function Hero() {
       {/* Background Image & Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/photos/web/hand-sanding-door.jpg" 
-          alt="Royal Brand Woodworking master craftsman hand-finishing a custom cabinet door in Portland shop" 
-          className="w-full h-full object-cover object-center scale-105"
+          src="/photos/web/table-saw-feed-cut.jpg" 
+          alt="Robert Burlacu feeding white oak through the table saw in the Royal Brand Woodworking shop" 
+          className="w-full h-full object-cover object-[70%_center] scale-105"
           loading="eager"
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/90 to-royal-bg/40 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/90 via-transparent to-transparent z-10" />
-        <div className="absolute inset-0 bg-royal-bg/30 z-10" />
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/75 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent to-royal-bg/40 z-10" />
+        {/* Extra shade on phones, where the text spans the full width of the photo */}
+        <div className="absolute inset-0 bg-royal-bg/60 md:hidden z-10" />
+              </div>
 
       {/* Decorative left accent line */}
       <div className="absolute left-6 md:left-12 top-1/4 bottom-1/4 w-[1px] bg-gradient-to-b from-transparent via-royal-gold/30 to-transparent z-20 hidden md:block" />
@@ -26,31 +28,19 @@ export function Hero() {
       {/* Content Container */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full">
         <div className="max-w-2xl md:pl-8">
-          {/* Logo badge */}
-          <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-            <img src="/logo.png" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
-            <div className="flex flex-col">
-              <span className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em]">Est. 2009 · 3rd Generation</span>
-              <span className="text-royal-text-muted text-[9px] uppercase tracking-[0.15em] mt-0.5">Portland, Oregon</span>
-            </div>
-          </div>
+          <p className="text-royal-gold text-sm font-bold uppercase tracking-[0.2em] mb-6 animate-fade-in-up">
+            Portland, Oregon
+          </p>
 
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white font-bold leading-[1.05] uppercase mb-4 drop-shadow-lg">
-            <span className="block animate-fade-in-up delay-100">Crafted</span>
-            <span className="block animate-fade-in-up delay-200">To <span className="gold-shimmer">Perfection.</span></span>
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-bold leading-[1.05] uppercase mb-6 drop-shadow-lg">
+            <span className="block animate-fade-in-up delay-100">Custom Cabinets</span>
+            <span className="block animate-fade-in-up delay-200">&amp; Furniture, <span className="gold-shimmer">Built by Hand.</span></span>
           </h1>
 
-          {/* Ornamental divider */}
-          <div className="flex items-center gap-3 my-8 animate-fade-in-up delay-300">
-            <div className="w-12 h-[1px] bg-royal-gold" />
-            <div className="w-1.5 h-1.5 bg-royal-gold rotate-45" />
-            <div className="w-24 h-[1px] bg-gradient-to-r from-royal-gold to-transparent" />
-          </div>
-          
-          <p className="text-lg md:text-xl text-royal-text-muted font-light leading-relaxed mb-10 max-w-xl animate-fade-in-up delay-300">
-            Custom woodworking that elevates your space. Handcrafting luxury furniture & fine cabinetry in Portland, OR.
+          <p className="text-lg md:text-xl text-gray-200 font-light leading-relaxed mb-8 max-w-xl animate-fade-in-up delay-300">
+            Kitchens, bathrooms and furniture made by Robert Burlacu — a third-generation woodworker — in his Portland shop.
           </p>
-          
+
           {/* Mini review */}
           <div className="flex items-center gap-3 mb-10 animate-fade-in-up delay-400">
             <div className="flex gap-0.5">
@@ -59,27 +49,27 @@ export function Hero() {
               ))}
             </div>
             <div className="w-[1px] h-4 bg-royal-border" />
-            <span className="text-royal-text-muted text-xs font-light">5.0 Rating · Google Reviews</span>
+            <span className="text-gray-200 text-sm">5-star reviews on Google</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 animate-fade-in-up delay-500">
-            <Link to="/services" className="group px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.2)] hover:shadow-[0_0_40px_rgba(201,164,122,0.4)]">
-              View Our Work
+            <Link to="/booking" className="px-8 py-4 bg-royal-gold text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.2)]">
+              Book an Estimate
             </Link>
-            <Link to="/booking" className="px-8 py-3.5 bg-transparent text-white font-bold text-xs tracking-[0.15em] uppercase border border-royal-border hover:border-royal-gold hover:text-royal-gold transition-all">
-              Start Your Project
-            </Link>
-            <Link to="/estimator" className="text-royal-text-muted font-bold text-xs tracking-[0.15em] uppercase hover:text-royal-gold transition-all flex items-center gap-2 group">
-              Order Custom Doors
-              <ChevronDown className="w-3.5 h-3.5 -rotate-90 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <a href={BUSINESS.phoneHref} className="px-8 py-4 bg-transparent text-white font-bold text-sm tracking-[0.1em] uppercase border border-white/40 hover:border-royal-gold hover:text-royal-gold transition-all flex items-center gap-2">
+              <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
+            </a>
           </div>
+          <Link to="/order" className="mt-6 inline-flex items-center gap-2 text-royal-text-muted text-sm hover:text-royal-gold transition-colors animate-fade-in-up delay-600 group">
+            Just need custom doors? <span className="text-royal-gold font-bold">Order online</span>
+            <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-royal-gold group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-scroll-bounce">
-        <span className="text-royal-text-muted text-[9px] uppercase tracking-[0.2em] font-bold">Scroll</span>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 animate-scroll-bounce">
+        <span className="text-royal-text-muted text-xs uppercase tracking-[0.2em] font-bold">Scroll</span>
         <ChevronDown className="w-4 h-4 text-royal-gold" />
       </div>
 

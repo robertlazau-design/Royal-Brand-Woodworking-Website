@@ -1,5 +1,6 @@
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { BUSINESS } from '../data/business';
 
 const GoogleIcon = () => (
   <svg className="w-4 h-4 opacity-90" viewBox="0 0 24 24" fill="currentColor">
@@ -66,22 +67,24 @@ export function Testimonials() {
   return (
     <>
       <section id="testimonials" className="py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
-        <div className="w-full relative z-10">
-          <div className="mb-14 text-center px-6">
-            <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
-              <div className="w-12 h-[1px] bg-royal-gold" />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reviews</span>
-              <div className="w-12 h-[1px] bg-royal-gold" />
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-12 text-center">
+            <div className="flex justify-center gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 fill-royal-gold text-royal-gold" />
+              ))}
             </div>
             <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-4 tracking-wide uppercase">
-              Built Beautifully. Built For You.
+              What Customers Say
             </h2>
-            <p className="text-royal-text-muted text-sm md:text-base max-w-2xl mx-auto font-light">
-              Our legacy is built on the words of those who live and work alongside our craftsmanship every day.
+            <p className="text-royal-text-muted text-base max-w-xl mx-auto">
+              Real reviews from Robert's customers on Google.
             </p>
           </div>
 
-          {/* Marquee ticker — edge-to-edge */}
+        </div>
+
+        {/* Marquee ticker — edge-to-edge */}
           <div className="relative w-full overflow-hidden py-4">
             {/* Fade edges */}
             <div className="absolute left-0 top-0 bottom-0 w-24 z-20 bg-gradient-to-r from-royal-bg to-transparent pointer-events-none" />
@@ -101,7 +104,7 @@ export function Testimonials() {
                         </div>
                         <div>
                           <p className="font-bold text-white text-xs tracking-wider uppercase group-hover:text-royal-gold transition-colors duration-500">{testimonial.name}</p>
-                          <p className="text-royal-text-muted text-[9px] font-medium tracking-wide mt-0.5 uppercase">{testimonial.role}</p>
+                          <p className="text-royal-text-muted text-xs font-medium tracking-wide mt-0.5 uppercase">{testimonial.role}</p>
                         </div>
                       </div>
                       <GoogleIcon />
@@ -125,58 +128,34 @@ export function Testimonials() {
               ))}
             </div>
           </div>
-        </div>
       </section>
 
-      {/* CTA Banner Section — Premium Upgrade */}
-      <div className="bg-royal-charcoal border-b border-royal-border-light relative overflow-hidden">
-        {/* Subtle background texture */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a47a' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-
-        {/* Decorative top line */}
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/20 to-transparent" />
-
-        <section className="py-20 text-center relative z-10">
-          <div className="max-w-4xl mx-auto px-6">
-            {/* Ornamental top piece */}
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-royal-gold/40" />
-              <img src="/logo.png" alt="Royal Brand Woodworking" className="w-14 h-14 object-contain" />
-              <div className="w-16 h-[1px] bg-gradient-to-l from-transparent to-royal-gold/40" />
-            </div>
-
-            <h3 className="font-serif text-3xl md:text-5xl text-white font-bold uppercase tracking-wide mb-4">
-              Where Plans Become <span className="text-royal-gold">Woodwork</span>
-            </h3>
-
-            <div className="flex items-center justify-center gap-3 my-6">
-              <div className="w-8 h-[1px] bg-royal-gold/40" />
-              <div className="w-1.5 h-1.5 bg-royal-gold rotate-45" />
-              <div className="w-8 h-[1px] bg-royal-gold/40" />
-            </div>
-
-            <p className="text-royal-text-muted text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed mb-10">
-              Let's bring your ideas to life. Reach out today to start your order with a craftsman you can trust.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="tel:555-0199" 
-                className="inline-block px-10 py-4 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.15)]"
-              >
-                Call Robert Now
-              </a>
-              <Link 
-                to="/estimator" 
-                className="inline-block px-10 py-4 bg-transparent border border-royal-gold text-royal-gold font-bold text-xs uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
-              >
-                Order Custom Doors
-              </Link>
-            </div>
+      {/* Call to action */}
+      <section className="py-20 bg-royal-charcoal border-b border-royal-border-light text-center">
+        <div className="max-w-3xl mx-auto px-6">
+          <img src="/logo.png" alt="" className="w-14 h-14 object-contain mx-auto mb-6" />
+          <h2 className="font-serif text-3xl md:text-5xl text-white font-bold uppercase tracking-wide mb-4">
+            Ready to <span className="text-royal-gold">Get Started?</span>
+          </h2>
+          <p className="text-gray-200 text-base md:text-lg max-w-xl mx-auto leading-relaxed mb-10">
+            Give Robert a call, or book a time for him to come take a look.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href={BUSINESS.phoneHref}
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all"
+            >
+              <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
+            </a>
+            <Link
+              to="/booking"
+              className="inline-flex items-center justify-center px-10 py-4 border border-royal-gold text-royal-gold font-bold text-sm uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
+            >
+              Book an Estimate
+            </Link>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </>
   );
 }

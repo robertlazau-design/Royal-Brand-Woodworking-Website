@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Raw photoshoot originals (kept outside the repo; site uses public/photos/web)
+public/photos/*.jpg

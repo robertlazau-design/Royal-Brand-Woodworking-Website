@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight, Phone } from 'lucide-react';
+import { BUSINESS } from '../data/business';
 import { RoyalLogo } from './RoyalLogo';
 
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
-  { label: 'Estimator', href: '/estimator' },
-  { label: 'Book Estimate', href: '/booking' },
+  { label: 'Custom Doors', href: '/order' },
 ];
 
 export function Navigation() {
@@ -23,7 +23,7 @@ export function Navigation() {
   }, []);
 
   return (
-    <nav className={`sticky top-0 z-50 w-full backdrop-blur-md border-b transition-all duration-500 py-3 px-6 md:px-12 ${
+    <nav className={`print:hidden sticky top-0 z-50 w-full backdrop-blur-md border-b transition-all duration-500 py-3 px-6 md:px-12 ${
       scrolled
         ? 'bg-royal-bg/98 border-royal-border-light shadow-[0_4px_30px_rgba(0,0,0,0.3)]'
         : 'bg-royal-bg/80 border-transparent'
@@ -45,7 +45,7 @@ export function Navigation() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`nav-link-underline text-[11px] font-bold uppercase tracking-[0.15em] transition-colors relative pb-1 ${
+                className={`nav-link-underline text-xs font-bold uppercase tracking-[0.15em] transition-colors relative pb-1 ${
                   isActive
                     ? 'text-white'
                     : 'text-royal-text-muted hover:text-white'
@@ -61,20 +61,28 @@ export function Navigation() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex flex-shrink-0">
-          <Link to="/estimator" className="px-6 py-2.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)] hover:shadow-[0_0_25px_rgba(201,164,122,0.3)]">
-            Get a Quote
+        <div className="hidden md:flex flex-shrink-0 items-center gap-5">
+          <a href={BUSINESS.phoneHref} className="hidden lg:flex items-center gap-2 text-white text-sm font-bold hover:text-royal-gold transition-colors">
+            <Phone className="w-4 h-4 text-royal-gold" /> {BUSINESS.phoneDisplay}
+          </a>
+          <Link to="/booking" className="px-6 py-2.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)] hover:shadow-[0_0_25px_rgba(201,164,122,0.3)]">
+            Book an Estimate
           </Link>
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile: call + menu */}
+        <div className="md:hidden flex items-center gap-1">
+        <a href={BUSINESS.phoneHref} aria-label={`Call ${BUSINESS.phoneDisplay}`} className="p-2 text-royal-gold">
+          <Phone className="w-5 h-5" />
+        </a>
         <button 
-          className="md:hidden flex-shrink-0 p-2"
+          className="flex-shrink-0 p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
+        </div>
 
       </div>
 
@@ -102,8 +110,8 @@ export function Navigation() {
             </Link>
           ))}
           <div className="pt-4 mt-2 border-t border-royal-border-light">
-            <Link to="/estimator" onClick={() => setMobileOpen(false)} className="block text-center w-full px-6 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
-              Get a Quote
+            <Link to="/booking" onClick={() => setMobileOpen(false)} className="block text-center w-full px-6 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+              Book an Estimate
             </Link>
           </div>
         </div>

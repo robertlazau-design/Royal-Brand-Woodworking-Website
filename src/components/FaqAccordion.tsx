@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import { ChevronDown, Phone, Star, Shield, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { BUSINESS } from '../data/business';
 
 const faqs = [
   {
-    question: "What types of woodworking projects do you take on?",
-    answer: "We specialize in custom kitchen cabinetry, cabinet door and drawer front replacements, bathroom vanities, fine handmade furniture (tables, desks, credenzas), custom built-ins, shelving, and architectural trim/millwork."
+    question: "What do you build?",
+    answer: "Kitchen and bathroom cabinets, handmade furniture like dining tables and desks, built-in shelving, and finish carpentry. Robert also makes custom doors you can order online."
   },
   {
-    question: "Do you offer free estimates?",
-    answer: "No, on-site estimates and consultations are billed at $150/hr. You can reserve a day for an estimate using our online booking calendar."
+    question: "Is the estimate free?",
+    answer: "No. Robert comes to your home to measure and talk through your project, and that visit is $150 an hour. You can pick a day and time on our booking page."
   },
   {
-    question: "How long will my custom doors or drawer fronts order take?",
-    answer: "Once dimensions are confirmed over the phone with Robert, standard custom cabinet doors and drawer fronts take 2 to 3 weeks to fabricate, sand, finish, and prep for pick-up or shipping."
+    question: "How do I get started?",
+    answer: "Call Robert or book an estimate online. He'll come out, take measurements, and give you a price before any work starts."
   },
   {
-    question: "Can you help me select the right finish color and profile style?",
-    answer: "Absolutely! Robert Burlacu brings 15+ years of third-generation woodworking experience. He'll help you choose from popular finishes like Classic White, Slate Gray, Navy Blue, or Mahogany Red — and recommend the best profile style (Shaker, Raised Panel, Beveled Edge) to match your kitchen's aesthetic."
+    question: "Can you help me choose colors and styles?",
+    answer: "Yes. Robert has been doing this for over 15 years and will help you pick the wood, color and style that suit your home."
   },
   {
-    question: "How do I get started with ordering custom doors?",
-    answer: "Head to the Custom Door Estimator page, choose your finish color, profile style, and enter your custom dimensions. Then fill in your contact details and click submit to send Robert an email. He'll follow up with a call to confirm the details and finalize your order."
+    question: "How long do custom doors take?",
+    answer: "Usually 2 to 3 weeks once Robert has confirmed your sizes with you."
   },
   {
     question: "Are you licensed and insured?",
-    answer: "Yes, Royal Brand Woodworking is fully licensed, bonded, and insured, guaranteeing structural precision, safety, and client peace of mind."
+    answer: "Yes. Royal Brand Woodworking is licensed, bonded and insured in Oregon — CCB# 210239."
   }
 ];
 
@@ -46,13 +47,13 @@ export function FaqAccordion() {
             <div className="mb-12">
               <div className="flex items-center gap-4 text-royal-gold mb-4">
                 <div className="w-12 h-[1px] bg-royal-gold" />
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Common Questions</span>
+                <span className="text-xs font-bold tracking-[0.2em] uppercase">FAQ</span>
               </div>
               <h2 className="font-serif text-3xl md:text-5xl text-white font-bold tracking-wide uppercase">
-                Frequently Asked<br />Questions
+                Common Questions
               </h2>
               <p className="text-royal-text-muted mt-6 text-sm md:text-base font-light max-w-xl leading-relaxed">
-                Common questions homeowners and contractors ask about ordering custom doors and remodeling.
+                Quick answers to what people ask us most.
               </p>
             </div>
 
@@ -76,7 +77,7 @@ export function FaqAccordion() {
                         <span className={`text-xs font-bold tracking-wider w-6 shrink-0 transition-colors duration-300 ${isOpen ? 'text-royal-gold' : 'text-royal-text-muted/40'}`}>
                           {String(idx + 1).padStart(2, '0')}
                         </span>
-                        <span className={`font-bold text-sm md:text-base transition-colors duration-300 uppercase tracking-wider ${isOpen ? 'text-royal-gold' : 'text-white group-hover:text-royal-gold'}`}>
+                        <span className={`font-bold text-base md:text-lg transition-colors duration-300 ${isOpen ? 'text-royal-gold' : 'text-white group-hover:text-royal-gold'}`}>
                           {faq.question}
                         </span>
                       </div>
@@ -89,7 +90,7 @@ export function FaqAccordion() {
                     
                     <div 
                       className={`transition-all duration-500 ease-in-out overflow-hidden ${
-                        isOpen ? "max-h-[300px]" : "max-h-0"
+                        isOpen ? "max-h-[500px]" : "max-h-0"
                       }`}
                     >
                       <div className="px-6 pb-6 pl-[4.5rem] text-royal-text-muted text-sm md:text-base font-light leading-relaxed border-t border-royal-border/50 pt-4">
@@ -112,7 +113,7 @@ export function FaqAccordion() {
                 <div className="flex items-center gap-4">
                   <img src="/logo.png" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
                   <div>
-                    <p className="text-royal-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Ready to order?</p>
+                    <p className="text-royal-gold text-xs font-bold uppercase tracking-[0.2em] mb-1">Still have questions?</p>
                     <h3 className="font-serif text-xl font-bold leading-tight uppercase tracking-wide">Talk to Robert</h3>
                   </div>
                 </div>
@@ -121,30 +122,30 @@ export function FaqAccordion() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 p-2.5 bg-royal-bg/50 rounded border border-royal-border">
                     <Shield className="w-3.5 h-3.5 text-royal-gold shrink-0" />
-                    <span className="text-[9px] text-royal-text-muted uppercase tracking-wider font-bold">Licensed & Insured</span>
+                    <span className="text-xs text-royal-text-muted uppercase tracking-wider font-bold">Licensed & Insured</span>
                   </div>
                   <div className="flex items-center gap-2 p-2.5 bg-royal-bg/50 rounded border border-royal-border">
                     <Star className="w-3.5 h-3.5 text-royal-gold fill-royal-gold shrink-0" />
-                    <span className="text-[9px] text-royal-text-muted uppercase tracking-wider font-bold">5.0 Google Rating</span>
+                    <span className="text-xs text-royal-text-muted uppercase tracking-wider font-bold">5.0 Google Rating</span>
                   </div>
                 </div>
 
                 <p className="text-royal-text-muted text-sm font-light leading-relaxed">
-                  Robert personally handles every inquiry. Call or fill out the online estimator to get started on your custom doors.
+                  Robert answers the phone himself. Give him a call or book an estimate online.
                 </p>
                 <div className="space-y-3">
                   <a 
-                    href="tel:555-0199" 
+                    href={BUSINESS.phoneHref} 
                     className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                   >
                     <Phone className="w-4 h-4" />
-                    Call (555) 0199
+                    Call {BUSINESS.phoneDisplay}
                   </a>
                   <Link 
-                    to="/estimator" 
+                    to="/booking" 
                     className="flex items-center justify-center gap-2 w-full py-4 border border-royal-border text-white font-bold text-xs tracking-[0.15em] uppercase hover:border-royal-gold hover:text-royal-gold transition-all"
                   >
-                    Order Custom Doors
+                    Book an Estimate
                   </Link>
                 </div>
                 <div className="border-t border-royal-border pt-6 space-y-2">
@@ -155,7 +156,7 @@ export function FaqAccordion() {
                     </p>
                   </div>
                   <p className="text-royal-text-muted text-xs font-light uppercase tracking-wider pl-[22px]">
-                    Workshop in Portland, OR
+                    {BUSINESS.street}, {BUSINESS.cityStateZip}
                   </p>
                 </div>
               </div>

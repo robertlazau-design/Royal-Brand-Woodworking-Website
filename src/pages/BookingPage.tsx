@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { submitToWeb3Forms } from '../lib/submitForm';
+import { BUSINESS } from '../data/business';
 import { Calendar, Clock, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle, CalendarCheck, RotateCcw, Send } from 'lucide-react';
 
 /* ───── helpers ───── */
@@ -14,8 +16,6 @@ function isSameDay(a: Date, b: Date) {
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAY_HEADERS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-// Simulated booked-out dates (random scatter for realism)
-const BOOKED_DATES = new Set([3, 12, 18, 25]);
 
 export function BookingPage() {
   const today = new Date();
@@ -35,6 +35,7 @@ export function BookingPage() {
   // Verification flow state
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   /* ── month grid ── */
   const calendarGrid = useMemo(() => {
@@ -71,7 +72,7 @@ export function BookingPage() {
         isToday: isSameDay(dt, today),
         isPast: dt < new Date(today.getFullYear(), today.getMonth(), today.getDate()),
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
-        isBooked: BOOKED_DATES.has(d),
+        isBooked: false,
       });
     }
 
@@ -160,51 +161,23 @@ export function BookingPage() {
     if (!isFormValid || !selectedFullDate || !selectedTime) return;
     
     setIsSubmitting(true);
-    
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-    
-    // Mock submission if key isn't set yet (for demonstration)
-    if (!accessKey) {
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 1000);
-      return;
-    }
-
+    setSubmitError(null);
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          access_key: accessKey,
-          subject: 'New Consultation Request - Royal Brand Woodworking',
-          from_name: name,
-          name: name,
-          email: email,
-          phone: phone,
-          address: address,
-          notes: notes,
-          requested_date: formattedDate,
-          requested_time: selectedTime,
-        })
+      await submitToWeb3Forms({
+        subject: 'New Consultation Request - Royal Brand Woodworking',
+        from_name: name,
+        name,
+        email,
+        phone,
+        address,
+        notes,
+        requested_date: formattedDate ?? '',
+        requested_time: selectedTime,
       });
-
-      const result = await response.json();
-      if (result.success) {
-        setIsSubmitted(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        console.error("Web3Forms error:", result);
-        alert("Form submission failed: " + result.message);
-      }
+      setIsSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong submitting the form.");
+      setSubmitError(error instanceof Error ? error.message : 'Something went wrong submitting the form.');
     } finally {
       setIsSubmitting(false);
     }
@@ -328,8 +301,8 @@ export function BookingPage() {
             </button>
           </div>
 
-          <p className="text-center text-[10px] text-royal-text-muted mt-6 tracking-wide uppercase">
-            A confirmation email has been sent to {email}
+          <p className="text-center text-xs text-royal-text-muted mt-6 tracking-wide uppercase">
+            Robert will reply to {email} to confirm
           </p>
         </div>
 
@@ -349,8 +322,8 @@ export function BookingPage() {
       {/* Background ambient image */}
       <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
         <img
-          src="/photos/web/craftsman-handshake.jpg"
-          alt="Workshop background"
+          src="/photos/web/planed-hardwood-boards.jpg"
+          alt=""
           className="w-full h-full object-cover opacity-10"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/40 via-royal-bg/85 to-royal-bg" />
@@ -362,25 +335,27 @@ export function BookingPage() {
           <img src="/logo.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-6" />
           <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
             <div className="w-12 h-[1px] bg-royal-gold" />
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Reserve a Consultation</span>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase">Book an Estimate</span>
             <div className="w-12 h-[1px] bg-royal-gold" />
           </div>
           <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-6 tracking-wide uppercase">
-            Book an On-Site Estimate
+            Have Robert Come Take a Look
           </h2>
           <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
-            Robert personally visits your location to assess the project, take precise measurements, and discuss design options.
+            Robert comes to your home or business, measures, and talks through your project with you.
             <br/><br/>
-            <strong className="text-white">Estimates are billed at $150/hr.</strong> Select a preferred date and time below. Robert will verify availability and send you an invoice once confirmed.
+            <strong className="text-white">The visit is $150 an hour.</strong> Pick a day and time below — Robert will confirm by email before anything is charged.
+            <br/><br/>
+            Rather talk first? Call <a href={BUSINESS.phoneHref} className="text-royal-gold font-bold hover:underline">{BUSINESS.phoneDisplay}</a>.
           </p>
         </div>
 
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-0 mb-12 max-w-lg mx-auto">
           {[
-            { num: 1, label: 'Select Date' },
-            { num: 2, label: 'Choose Time' },
-            { num: 3, label: 'Verify & Submit' },
+            { num: 1, label: 'Pick a Day' },
+            { num: 2, label: 'Pick a Time' },
+            { num: 3, label: 'Your Details' },
           ].map((s, i) => (
             <React.Fragment key={s.num}>
               <div className="flex flex-col items-center gap-2">
@@ -391,7 +366,7 @@ export function BookingPage() {
                 }`}>
                   {step > s.num ? <CheckCircle className="w-5 h-5" /> : s.num}
                 </div>
-                <span className={`text-[10px] uppercase tracking-wider font-bold transition-colors ${
+                <span className={`text-xs uppercase tracking-wider font-bold transition-colors ${
                   step >= s.num ? 'text-royal-gold' : 'text-royal-text-muted'
                 }`}>{s.label}</span>
               </div>
@@ -413,14 +388,11 @@ export function BookingPage() {
                 <h3 className="font-serif text-2xl text-white font-bold">
                   {MONTH_NAMES[viewMonth]} <span className="text-royal-gold">{viewYear}</span>
                 </h3>
-                <p className="text-[11px] text-royal-text-muted mt-1 uppercase tracking-wider">
-                  {getDaysInMonth(viewYear, viewMonth) - Array.from(BOOKED_DATES).filter(d => d <= getDaysInMonth(viewYear, viewMonth)).length} days available
-                </p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={goToToday}
-                  className="px-3 py-1.5 text-[10px] uppercase tracking-wider font-bold border border-royal-border text-royal-text-muted hover:border-royal-gold hover:text-royal-gold transition-all"
+                  className="px-3 py-1.5 text-xs uppercase tracking-wider font-bold border border-royal-border text-royal-text-muted hover:border-royal-gold hover:text-royal-gold transition-all"
                 >
                   Today
                 </button>
@@ -444,7 +416,7 @@ export function BookingPage() {
             {/* Day-of-week headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {DAY_HEADERS.map((dh) => (
-                <div key={dh} className={`text-center text-[10px] uppercase tracking-wider font-bold py-2 ${
+                <div key={dh} className={`text-center text-xs uppercase tracking-wider font-bold py-2 ${
                   dh === 'Sun' || dh === 'Sat' ? 'text-royal-text-muted/40' : 'text-royal-text-muted'
                 }`}>
                   {dh}
@@ -485,7 +457,7 @@ export function BookingPage() {
                     )}
                     {/* Booked indicator */}
                     {cell.isBooked && cell.isCurrentMonth && (
-                      <span className="absolute bottom-1 text-[7px] uppercase tracking-wider text-red-400/70 font-bold">Full</span>
+                      <span className="absolute bottom-1 text-xs uppercase tracking-wider text-red-400/70 font-bold">Full</span>
                     )}
                   </button>
                 );
@@ -496,19 +468,15 @@ export function BookingPage() {
             <div className="flex flex-wrap items-center gap-6 mt-6 pt-4 border-t border-royal-border">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-royal-gold" />
-                <span className="text-[10px] text-royal-text-muted uppercase tracking-wider">Today</span>
+                <span className="text-xs text-royal-text-muted uppercase tracking-wider">Today</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-royal-gold shadow-[0_0_8px_rgba(201,164,122,0.5)]" />
-                <span className="text-[10px] text-royal-text-muted uppercase tracking-wider">Selected</span>
+                <span className="text-xs text-royal-text-muted uppercase tracking-wider">Selected</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                <span className="text-[10px] text-royal-text-muted uppercase tracking-wider">Available</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
-                <span className="text-[10px] text-royal-text-muted uppercase tracking-wider">Fully Booked</span>
+                <span className="text-xs text-royal-text-muted uppercase tracking-wider">Available</span>
               </div>
             </div>
 
@@ -519,7 +487,7 @@ export function BookingPage() {
                   <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold flex items-center gap-2">
                     <Clock className="w-4 h-4 text-royal-gold" /> Available Times
                   </h3>
-                  <span className="text-[10px] text-royal-text-muted uppercase tracking-wider">
+                  <span className="text-xs text-royal-text-muted uppercase tracking-wider">
                     {formattedDate}
                   </span>
                 </div>
@@ -535,7 +503,7 @@ export function BookingPage() {
                       }`}
                     >
                       <div className="text-sm font-bold">{slot.time}</div>
-                      <div className={`text-[9px] uppercase tracking-wider mt-1 ${
+                      <div className={`text-xs uppercase tracking-wider mt-1 ${
                         selectedTime === slot.time ? 'text-white/80' : 'text-royal-text-muted'
                       }`}>{slot.label}</div>
                     </button>
@@ -582,7 +550,7 @@ export function BookingPage() {
                   </div>
                    <div className="flex items-start gap-2 mt-3 p-3 bg-royal-gold/5 border border-royal-gold/20">
                     <Shield className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-royal-text-muted leading-relaxed">
+                    <p className="text-xs text-royal-text-muted leading-relaxed">
                       <span className="text-royal-gold font-bold">No payment required now.</span> An invoice will be sent after Robert confirms your appointment.
                     </p>
                   </div>
@@ -662,24 +630,27 @@ export function BookingPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <CheckCircle className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
-                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                  <p className="text-xs text-royal-text-muted leading-relaxed">
                     Robert will review your request and confirm availability within <span className="text-white font-bold">24 hours</span>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <RotateCcw className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
-                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                  <p className="text-xs text-royal-text-muted leading-relaxed">
                     If your selected date doesn't work, you'll be offered <span className="text-white font-bold">alternative available dates</span> to reschedule.
                   </p>
                 </div>
                 <div className="flex items-start gap-3 p-3 bg-white/[0.02] border border-royal-border">
                   <Send className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
-                  <p className="text-[11px] text-royal-text-muted leading-relaxed">
+                  <p className="text-xs text-royal-text-muted leading-relaxed">
                     Once confirmed, an <span className="text-white font-bold">invoice for the consultation</span> will be sent to your email.
                   </p>
                 </div>
               </div>
 
+              {submitError && (
+                <p className="mb-4 p-3 border border-red-400/40 bg-red-400/5 text-red-200 text-xs" role="alert">{submitError}</p>
+              )}
               <button
                 onClick={handleSubmitRequest}
                 disabled={!isFormValid || isSubmitting}
@@ -690,9 +661,9 @@ export function BookingPage() {
                 }`}
               >
                 <CalendarCheck className="w-4 h-4" />
-                {isSubmitting ? 'Submitting...' : 'Submit Consultation Request'}
+                {isSubmitting ? 'Submitting...' : 'Send My Request'}
               </button>
-              <p className="text-center text-[10px] text-royal-text-muted mt-3 tracking-wide uppercase flex items-center justify-center gap-1">
+              <p className="text-center text-xs text-royal-text-muted mt-3 tracking-wide uppercase flex items-center justify-center gap-1">
                 <Shield className="w-3 h-3" /> No payment required · Invoice sent after confirmation
               </p>
             </div>

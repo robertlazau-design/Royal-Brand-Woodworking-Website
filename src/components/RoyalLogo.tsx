@@ -27,7 +27,7 @@ export function RoyalLogo({ className = "", iconOnly = false, size = 'md' }: Roy
             Royal Brand
           </span>
           <span className="font-sans text-[8px] font-bold tracking-[0.2em] uppercase leading-normal mt-0.5 text-royal-text-muted">
-            Woodworking & Custom Doors
+            Woodworking
           </span>
         </div>
       )}
