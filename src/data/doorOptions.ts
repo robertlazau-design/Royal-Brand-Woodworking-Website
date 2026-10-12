@@ -27,32 +27,52 @@ export const PANEL_STYLES: Option[] = [
   { value: 'Flat', label: 'Flat', hint: 'Flat recessed panel' },
   { value: 'Raised', label: 'Raised', hint: 'Bevelled, raised centre' },
   { value: 'Shaker', label: 'Shaker', hint: 'Square inside edge, flat panel' },
+  { value: 'Glass-Ready', label: 'Glass-Ready', hint: 'Open frame for glass (glass not included)' },
   { value: 'Other', label: 'Other' },
 ];
 
+// Lines up with what Robert's door supplier stocks.
+export const PAINT_GRADE = 'Paint-Grade Hardwood';
 export const WOOD_SPECIES: Option[] = [
-  { value: 'White Oak', label: 'White Oak' },
-  { value: 'Red Oak', label: 'Red Oak' },
-  { value: 'Hard Maple', label: 'Hard Maple' },
-  { value: 'Paint-Grade Maple', label: 'Paint-Grade Maple' },
-  { value: 'Walnut', label: 'Walnut' },
+  { value: PAINT_GRADE, label: 'Paint-Grade Hardwood (for painted doors)' },
+  { value: 'Maple', label: 'Maple' },
   { value: 'Cherry', label: 'Cherry' },
-  { value: 'Alder', label: 'Alder' },
-  { value: 'MDF (paint grade)', label: 'MDF (paint grade)' },
+  { value: 'Alder (Clear)', label: 'Alder — Clear' },
+  { value: 'Alder (Knotty)', label: 'Alder — Knotty' },
+  { value: 'Beech', label: 'Beech' },
+  { value: 'Red Oak', label: 'Red Oak' },
+  { value: 'White Oak', label: 'White Oak' },
+  { value: 'White Oak (Rift)', label: 'White Oak — Rift Cut (straight grain)' },
+  { value: 'Walnut', label: 'Walnut' },
   { value: 'Other', label: 'Other' },
 ];
 
 export const FINISHES: Option[] = [
   { value: 'Unfinished', label: 'Unfinished', hint: 'Sanded, ready for your finish' },
-  { value: 'Primed', label: 'Primed', hint: 'Ready to paint' },
-  { value: 'Clear Coat', label: 'Clear Coat', hint: 'Natural wood colour' },
-  { value: 'Stained', label: 'Stained', hint: 'Tell us the stain colour' },
-  { value: 'Painted', label: 'Painted', hint: 'Tell us the paint colour' },
+  { value: 'Primed', label: 'Primed', hint: 'Just scuff-sand and paint' },
+  { value: 'Painted', label: 'Painted', hint: 'Any Sherwin-Williams or Benjamin Moore color' },
+  { value: 'Stained', label: 'Stained', hint: 'Choose from colors for your wood' },
+  { value: 'Clear Coat', label: 'Clear Coat', hint: 'Natural wood color' },
+  { value: 'Clear Coat — Dead Flat', label: 'Clear — Ultra Matte', hint: 'Looks like raw, unfinished wood' },
+  { value: 'Glazed / Distressed', label: 'Glazed / Distressed', hint: 'Aged, farmhouse looks' },
   { value: 'Other', label: 'Other' },
 ];
 
+// Paint-grade wood is made to be painted — it doesn't take stain or clear coats well.
+export const PAINT_GRADE_FINISHES = new Set(['Unfinished', 'Primed', 'Painted', 'Glazed / Distressed', 'Other']);
+
 // Finishes that need a colour name typed in.
-export const FINISHES_NEEDING_COLOR = new Set(['Stained', 'Painted', 'Other']);
+export const FINISHES_NEEDING_COLOR = new Set(['Stained', 'Painted', 'Glazed / Distressed', 'Other']);
+
+// Stain colors by wood, from the supplier's stain program. Woods not listed get a free-text box.
+export const STAINS_BY_SPECIES: Record<string, string[]> = {
+  'Alder (Clear)': ['Natural', 'Mimosa', 'Honey', 'Ginger', 'Toffee', 'Spiced Rum', 'Harvest', 'Sangria', 'Copper', 'Cayenne', 'Bourbon', 'Sedona', 'Hawthorne', 'Kona', 'Kodiak', 'Charcoal', 'Crimson', 'Seaside', 'Beachwood', 'Harbor Mist'],
+  Maple: ['Natural', 'Pecan', 'Mimosa', 'Kaffe', 'Wheat', 'Buckskin', 'Cinnamon', 'Cider', 'Nutmeg', 'Truffle', 'Cabernet', 'Merlot', 'Sedona', 'French Roast', 'Driftwood', 'Coastal Fog'],
+  Cherry: ['Natural', 'Harvest', 'Pecan', 'Ginger', 'Spiced Rum', 'Sorrel', 'Sedona', 'Brandywine', 'Bordeaux', 'Coffee Bean', 'Java', 'French Roast', 'Driftwood', 'Coastal Fog'],
+  Beech: ['Natural', 'Pecan', 'Buckskin', 'Cinnamon', 'Cider', 'Nutmeg', 'Truffle', 'Kaffe', 'Cabernet', 'Merlot', 'Sedona', 'French Roast'],
+  'Red Oak': ['Natural', 'Smoked Paprika', 'Hazelnut', 'Harvest', 'Brandywine', 'Russet', 'Sorrel', 'Gunstock', 'Woodbridge', 'Java', 'Coffee Bean', 'French Roast'],
+};
+STAINS_BY_SPECIES['Alder (Knotty)'] = STAINS_BY_SPECIES['Alder (Clear)'];
 
 export const EDGE_PROFILES: Option[] = [
   { value: 'Square', label: 'Square' },
@@ -115,9 +135,17 @@ export const HINGE_BORING: Option[] = [
 ];
 
 export const FRAME_WIDTHS: Option[] = [
-  { value: 'Standard', label: 'Standard', hint: "Robert's usual frame width" },
-  { value: 'Narrow', label: 'Narrow / Slim', hint: 'Thin modern frame' },
+  { value: 'Standard (2 1/4")', label: 'Standard — 2 1/4"', hint: 'Most common' },
+  { value: 'Wide (3")', label: 'Wide — 3"', hint: 'Bolder, traditional look' },
+  { value: 'Slim (1/2" – 1")', label: 'Slim — 1/2" to 1"', hint: 'Modern "Euro Shaker"' },
   { value: 'Custom', label: 'Custom width', hint: 'Tell us the width' },
+  { value: 'Not sure', label: 'Not sure' },
+];
+
+export const PULL_HOLES: Option[] = [
+  { value: 'No holes', label: 'No holes', hint: "I'll drill them myself" },
+  { value: 'Knobs', label: 'Yes — knobs', hint: 'One hole' },
+  { value: 'Pulls', label: 'Yes — pulls', hint: 'Two holes — tell us the spacing' },
   { value: 'Not sure', label: 'Not sure' },
 ];
 

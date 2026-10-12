@@ -6,7 +6,7 @@ import { BUSINESS } from '../data/business';
 const faqs = [
   {
     question: "What do you build?",
-    answer: "Kitchen and bathroom cabinets, handmade furniture like dining tables and desks, built-in shelving, and finish carpentry. Robert also makes custom doors you can order online."
+    answer: "Kitchen and bathroom cabinets, handmade furniture like dining tables and desks, built-in shelving, and finish carpentry. You can also order custom doors online, built to order in your sizes."
   },
   {
     question: "Is the estimate free?",

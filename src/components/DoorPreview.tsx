@@ -2,22 +2,24 @@ import { useId } from 'react';
 import { formatInches } from '../lib/fractions';
 
 const SPECIES_COLORS: Record<string, { base: string; dark: string; grain: string }> = {
-  'White Oak': { base: '#c8a97e', dark: '#a98a60', grain: '#8a6c45' },
-  'Red Oak': { base: '#c99a74', dark: '#ab7b55', grain: '#8c5e3c' },
-  'Hard Maple': { base: '#e6d3b0', dark: '#cdb88f', grain: '#b39a70' },
-  'Paint-Grade Maple': { base: '#e2d2b4', dark: '#c9b793', grain: '#b09c76' },
-  Walnut: { base: '#6b4a33', dark: '#523726', grain: '#3a2619' },
+  'Paint-Grade Hardwood': { base: '#d9c9a8', dark: '#c4b28e', grain: '#d9c9a8' },
+  Maple: { base: '#e6d3b0', dark: '#cdb88f', grain: '#b39a70' },
   Cherry: { base: '#a45f3e', dark: '#864a2e', grain: '#6b3820' },
-  Alder: { base: '#c98f62', dark: '#ab7448', grain: '#8e5b34' },
-  'MDF (paint grade)': { base: '#b9a58a', dark: '#a08d72', grain: '#b9a58a' },
+  'Alder (Clear)': { base: '#c98f62', dark: '#ab7448', grain: '#8e5b34' },
+  'Alder (Knotty)': { base: '#c48a5c', dark: '#a56d42', grain: '#7a4a28' },
+  Beech: { base: '#dcb98f', dark: '#c29e73', grain: '#a38058' },
+  'Red Oak': { base: '#c99a74', dark: '#ab7b55', grain: '#8c5e3c' },
+  'White Oak': { base: '#c8a97e', dark: '#a98a60', grain: '#8a6c45' },
+  'White Oak (Rift)': { base: '#c9ab82', dark: '#ad8f66', grain: '#937552' },
+  Walnut: { base: '#6b4a33', dark: '#523726', grain: '#3a2619' },
 };
 const DEFAULT_WOOD = { base: '#cdb08a', dark: '#ae916b', grain: '#8f7350' };
 
 function colorsFor(species: string, finish: string) {
-  if (finish === 'Painted') return { base: '#ebe8e1', dark: '#d6d2c8', grain: '#ebe8e1', painted: true };
+  if (finish === 'Painted' || finish === 'Glazed / Distressed') return { base: '#ebe8e1', dark: '#d6d2c8', grain: '#ebe8e1', painted: true };
   if (finish === 'Primed') return { base: '#dededa', dark: '#c9c9c4', grain: '#dededa', painted: true };
   const wood = SPECIES_COLORS[species] ?? DEFAULT_WOOD;
-  return { ...wood, painted: species === 'MDF (paint grade)' };
+  return { ...wood, painted: species === 'Paint-Grade Hardwood' };
 }
 
 interface DoorPreviewProps {

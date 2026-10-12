@@ -110,8 +110,8 @@ export function Home() {
               <span className="text-royal-gold">Order Them Online.</span>
             </h2>
             <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
-              Robert also makes cabinet doors, drawer fronts and interior doors on their own — no remodel needed.
-              Tell us the sizes and the look you want, and he'll call you with a price before building anything.
+              Cabinet doors, drawer fronts and interior doors, built to order — no remodel needed.
+              Tell us the sizes and the look you want, and Robert will check everything and call you with a price before anything is made.
             </p>
             <div className="space-y-3 pt-1">
               {['Pick your style, wood and color', 'Type in your sizes', 'Robert checks everything and calls you with a price'].map(item => (

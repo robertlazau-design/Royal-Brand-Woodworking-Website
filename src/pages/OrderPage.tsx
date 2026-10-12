@@ -9,7 +9,7 @@ import {
   DOOR_TYPES, DOOR_STYLES, PANEL_STYLES, WOOD_SPECIES, FINISHES, FINISHES_NEEDING_COLOR, EDGE_PROFILES,
   HINGE_OPTIONS, MIN_DIMENSION, MAX_DIMENSION, type HingeSide, type MeasurementType, type Option,
   CABINET_THICKNESS, INTERIOR_THICKNESS, CABINET_TYPES, OVERLAYS, HINGE_BORING, FRAME_WIDTHS,
-  INTERIOR_HANGING, LOCK_BORE, DELIVERY,
+  INTERIOR_HANGING, LOCK_BORE, DELIVERY, PULL_HOLES, PAINT_GRADE, PAINT_GRADE_FINISHES, STAINS_BY_SPECIES,
 } from '../data/doorOptions';
 import { parseInches, formatInches } from '../lib/fractions';
 import { submitToWeb3Forms } from '../lib/submitForm';
@@ -42,8 +42,10 @@ interface OrderState {
   speciesOther: string;
   finish: string;
   finishColor: string;
+  finishCustom: boolean; // stain typed in rather than picked from the list
   edge: string;
   edgeOther: string;
+  doorReference: string;
   // Fit & hardware
   thickness: string;
   cabinetType: string;
@@ -55,6 +57,8 @@ interface OrderState {
   hanging: string;
   jambWidth: string;
   lockBore: string;
+  pullHoles: string;
+  pullSpacing: string;
   // Door list + logistics
   measurement: MeasurementType | '';
   rows: DoorRow[];
@@ -79,10 +83,10 @@ const emptyOrder = (): OrderState => ({
   doorStyle: '', doorStyleOther: '',
   panelStyle: '', panelStyleOther: '',
   species: '', speciesOther: '',
-  finish: '', finishColor: '',
-  edge: '', edgeOther: '',
+  finish: '', finishColor: '', finishCustom: false,
+  edge: '', edgeOther: '', doorReference: '',
   thickness: '', cabinetType: '', overlay: '', overlayAmount: '', hingeBoring: '',
-  frameWidth: '', frameWidthCustom: '', hanging: '', jambWidth: '', lockBore: '',
+  frameWidth: '', frameWidthCustom: '', hanging: '', jambWidth: '', lockBore: '', pullHoles: '', pullSpacing: '',
   measurement: '',
   rows: [newRow(), newRow(), newRow()],
   orderNotes: '',
@@ -105,11 +109,12 @@ function fitSummary(o: OrderState): [string, string][] {
     rows.push(['Overlay', o.overlay + (o.overlayAmount.trim() ? ` (${o.overlayAmount.trim()})` : '')]);
     if (needsHinges(o)) rows.push(['Hinge Holes', o.hingeBoring]);
   }
+  if (!isInterior(o)) rows.push(['Knob / Pull Holes', o.pullHoles === 'Pulls' && o.pullSpacing.trim() ? `Pulls, ${o.pullSpacing.trim()} spacing` : o.pullHoles]);
   if (hasFrame(o)) rows.push(['Frame Width', o.frameWidth === 'Custom' ? `Custom: ${o.frameWidthCustom.trim()}` : o.frameWidth]);
   return rows.filter(([, v]) => v);
 }
 
-const DRAFT_KEY = 'rbw-door-order-draft-v1';
+const DRAFT_KEY = 'rbw-door-order-draft-v2';
 
 function loadDraft(): OrderState {
   try {
@@ -194,6 +199,7 @@ function stepErrors(step: number, o: OrderState): string[] {
       if (!o.cabinetType) e.push('cabinetType');
       if (!o.overlay) e.push('overlay');
       if (needsHinges(o) && !o.hingeBoring) e.push('hingeBoring');
+      if (!o.pullHoles) e.push('pullHoles');
     }
     if (hasFrame(o) && (!o.frameWidth || (o.frameWidth === 'Custom' && !o.frameWidthCustom.trim()))) e.push('frameWidth');
   }
@@ -362,6 +368,21 @@ export function OrderPage() {
   const set = <K extends keyof OrderState>(key: K, value: OrderState[K]) =>
     setOrder(o => ({ ...o, [key]: value }));
 
+  // Switching wood can invalidate the finish (paint-grade can't be stained) or the stain color list.
+  const changeSpecies = (species: string) =>
+    setOrder(o => {
+      const next = { ...o, species };
+      if (species === PAINT_GRADE && o.finish && !PAINT_GRADE_FINISHES.has(o.finish)) {
+        next.finish = '';
+        next.finishColor = '';
+      }
+      if (o.finish === 'Stained' && !o.finishCustom) next.finishColor = '';
+      return next;
+    });
+
+  const changeFinish = (finish: string) =>
+    setOrder(o => ({ ...o, finish, finishColor: finish === o.finish ? o.finishColor : '', finishCustom: false }));
+
   const updateRow = (id: string, patch: Partial<DoorRow>) =>
     setOrder(o => ({ ...o, rows: o.rows.map(r => (r.id === id ? { ...r, ...patch } : r)) }));
 
@@ -428,6 +449,7 @@ export function OrderPage() {
         wood_species_material: specs.species,
         finish_color: specs.finish,
         profile_edge_detail: specs.edge,
+        door_reference: order.doorReference.trim() || '-',
         fit_and_hardware: fitSummary(order).map(([l, v]) => `${l}: ${v}`).join('\n'),
         measurements_are: order.measurement,
         total_doors: String(totalDoors),
@@ -650,7 +672,7 @@ export function OrderPage() {
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
                         <FieldLabel htmlFor="species" required>Wood Species / Material</FieldLabel>
-                        <SpecSelect id="species" options={WOOD_SPECIES} value={order.species} onChange={v => set('species', v)} invalid={err('species')} />
+                        <SpecSelect id="species" options={WOOD_SPECIES} value={order.species} onChange={changeSpecies} invalid={err('species')} />
                         {order.species === 'Other' && (
                           <input className={`${inputBase} ${fieldBorder(err('species'))} mt-2`} placeholder="Which wood or material?"
                             value={order.speciesOther} onChange={e => set('speciesOther', e.target.value)} />
@@ -670,13 +692,46 @@ export function OrderPage() {
 
                     <div>
                       <FieldLabel required>Finish / Color</FieldLabel>
-                      <ChoiceCards options={FINISHES} value={order.finish} onChange={v => set('finish', v)} columns="grid-cols-2 sm:grid-cols-3" invalid={err('finish')} />
-                      {FINISHES_NEEDING_COLOR.has(order.finish) && (
+                      <ChoiceCards
+                        options={order.species === PAINT_GRADE ? FINISHES.filter(f => PAINT_GRADE_FINISHES.has(f.value)) : FINISHES}
+                        value={order.finish} onChange={changeFinish} columns="grid-cols-2 sm:grid-cols-4" invalid={err('finish')} />
+                      {order.species === PAINT_GRADE && (
+                        <p className="text-[11px] text-royal-text-muted mt-1.5">Paint-grade wood is made for painting, so stain and clear coats aren't offered.</p>
+                      )}
+                      {order.finish === 'Stained' && STAINS_BY_SPECIES[order.species] && (
+                        <div className="relative mt-2">
+                          <select
+                            aria-label="Stain color"
+                            value={order.finishCustom ? '__other' : order.finishColor}
+                            onChange={e => e.target.value === '__other'
+                              ? setOrder(o => ({ ...o, finishCustom: true, finishColor: '' }))
+                              : setOrder(o => ({ ...o, finishCustom: false, finishColor: e.target.value }))}
+                            className={`${inputBase} ${fieldBorder(err('finish'))} appearance-none cursor-pointer pr-10`}
+                          >
+                            <option value="" disabled>Choose a stain color for {order.species}…</option>
+                            {STAINS_BY_SPECIES[order.species].map(c => <option key={c} value={c}>{c}</option>)}
+                            <option value="__other">Something else — I'll type it</option>
+                          </select>
+                          <ChevronRight className="w-4 h-4 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 text-royal-text-muted pointer-events-none" />
+                        </div>
+                      )}
+                      {FINISHES_NEEDING_COLOR.has(order.finish) && !(order.finish === 'Stained' && STAINS_BY_SPECIES[order.species] && !order.finishCustom) && (
                         <input className={`${inputBase} ${fieldBorder(err('finish'))} mt-2`}
-                          placeholder={order.finish === 'Stained' ? 'Stain colour (e.g. Minwax Early American)' : order.finish === 'Painted' ? 'Paint colour (e.g. SW 7008 Alabaster)' : 'Describe the finish'}
+                          placeholder={
+                            order.finish === 'Stained' ? 'Stain color name (or describe the color you want)'
+                            : order.finish === 'Painted' ? 'Sherwin-Williams or Benjamin Moore color name or number (e.g. SW 7008 Alabaster)'
+                            : order.finish === 'Glazed / Distressed' ? 'Describe the look (e.g. white paint with a brown glaze)'
+                            : 'Describe the finish'}
                           value={order.finishColor} onChange={e => set('finishColor', e.target.value)} />
                       )}
-                      {err('finish') && <ErrorText>Choose a finish{FINISHES_NEEDING_COLOR.has(order.finish) ? ' and enter the colour' : ''}</ErrorText>}
+                      {err('finish') && <ErrorText>Choose a finish{FINISHES_NEEDING_COLOR.has(order.finish) ? ' and pick or enter the color' : ''}</ErrorText>}
+                    </div>
+
+                    <div>
+                      <FieldLabel htmlFor="doorReference">Have a Specific Door in Mind? <span className="normal-case font-normal tracking-normal">(optional)</span></FieldLabel>
+                      <input id="doorReference" className={`${inputBase} border-royal-border`}
+                        placeholder="Model number, a link to a photo, or describe it"
+                        value={order.doorReference} onChange={e => set('doorReference', e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -741,6 +796,16 @@ export function OrderPage() {
                             columns="grid-cols-1 sm:grid-cols-3" invalid={err('hingeBoring')} />
                           {err('hingeBoring') && <ErrorText>Choose one</ErrorText>}
                         </div>}
+                        <div>
+                          <FieldLabel required>Drill Knob or Pull Holes?</FieldLabel>
+                          <ChoiceCards options={PULL_HOLES} value={order.pullHoles} onChange={v => set('pullHoles', v)} invalid={err('pullHoles')} />
+                          {order.pullHoles === 'Pulls' && (
+                            <input className={`${inputBase} border-royal-border mt-2`}
+                              placeholder='Distance between the two screw holes, if you know it (e.g. 3 3/4" or 128mm)'
+                              value={order.pullSpacing} onChange={e => set('pullSpacing', e.target.value)} />
+                          )}
+                          {err('pullHoles') && <ErrorText>Choose one</ErrorText>}
+                        </div>
                       </>
                     )}
 
@@ -960,6 +1025,7 @@ export function OrderPage() {
                     <ReviewRow label="Wood / Material" value={specs.species} />
                     <ReviewRow label="Finish / Color" value={specs.finish} />
                     <ReviewRow label="Profile / Edge" value={specs.edge} />
+                    {order.doorReference.trim() && <ReviewRow label="Door in Mind" value={order.doorReference} />}
                   </ReviewSection>
 
                   <ReviewSection title="Fit & Hardware" onEdit={() => goTo(3)}>
@@ -1137,6 +1203,7 @@ function PrintableOrder({ order, date }: { order: OrderState; date: string }) {
       {line('Finish / Color', specs.finish)}
       {line('Profile / Edge Detail', specs.edge)}
       {line('Panel Style', specs.panelStyle)}
+      {order.doorReference.trim() && line('Door Reference', order.doorReference)}
       {fitSummary(order).map(([l, v]) => <React.Fragment key={l}>{line(l, v)}</React.Fragment>)}
       {line('Measurements Are', order.measurement)}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>

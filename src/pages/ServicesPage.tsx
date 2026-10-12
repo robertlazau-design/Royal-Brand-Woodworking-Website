@@ -13,7 +13,7 @@ const DOOR_STEPS = [
   { img: '/photos/web/table-saw-rip-fence.jpg', title: 'Cut', text: 'Solid wood is cut to your exact sizes.' },
   { img: '/photos/web/shaper-table-profile.jpg', title: 'Shape', text: 'The edges are shaped so every piece matches.' },
   { img: '/photos/web/squaring-clamp-rack.jpg', title: 'Glue', text: 'The door is glued and clamped perfectly square.' },
-  { img: '/photos/web/wide-belt-sander-feed.jpg', title: 'Sand & Check', text: 'Sanded smooth, then checked by Robert before it goes out.' },
+  { img: '/photos/web/wide-belt-sander-feed.jpg', title: 'Sand & Check', text: 'Sanded smooth and ready for finish.' },
 ];
 
 const ALSO = [
@@ -111,7 +111,7 @@ export function ServicesPage() {
               </div>
               <h2 className="font-serif text-3xl md:text-5xl font-bold text-white uppercase tracking-wide">Custom Doors</h2>
               <p className="text-gray-200 text-base md:text-lg max-w-2xl leading-relaxed mt-4">
-                Just need new doors? Robert makes cabinet doors, drawer fronts and interior doors to your sizes. Here's how.
+                Just need new doors? Cabinet doors, drawer fronts and interior doors, built to order in your sizes. Here's how a door comes together.
               </p>
             </div>
             <Link to="/order" className="shrink-0 px-7 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
