@@ -61,7 +61,7 @@ export function Hero() {
             </a>
           </div>
           <Link to="/order" className="mt-6 inline-flex items-center gap-2 text-royal-text-muted text-sm hover:text-royal-gold transition-colors animate-fade-in-up delay-600 group">
-            Just need custom doors? <span className="text-royal-gold font-bold">Order online</span>
+            Just need new cabinet doors? <span className="text-royal-gold font-bold">Order online</span>
             <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-royal-gold group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

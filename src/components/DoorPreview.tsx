@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { formatInches } from '../lib/fractions';
+import { findPaintSwatch, STAIN_TINTS } from '../data/finishColors';
 
 const SPECIES_COLORS: Record<string, { base: string; dark: string; grain: string }> = {
   'Paint-Grade Hardwood': { base: '#d9c9a8', dark: '#c4b28e', grain: '#d9c9a8' },
@@ -15,10 +16,25 @@ const SPECIES_COLORS: Record<string, { base: string; dark: string; grain: string
 };
 const DEFAULT_WOOD = { base: '#cdb08a', dark: '#ae916b', grain: '#8f7350' };
 
-function colorsFor(species: string, finish: string) {
-  if (finish === 'Painted' || finish === 'Glazed / Distressed') return { base: '#ebe8e1', dark: '#d6d2c8', grain: '#ebe8e1', painted: true };
-  if (finish === 'Primed') return { base: '#dededa', dark: '#c9c9c4', grain: '#dededa', painted: true };
+// Shift a #rrggbb color toward black (amount < 0) or white (amount > 0).
+function shade(hex: string, amount: number) {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (v: number) => Math.round(amount < 0 ? v * (1 + amount) : v + (255 - v) * amount);
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(ch);
+  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+}
+
+const fromBase = (base: string, painted: boolean) => ({ base, dark: shade(base, -0.12), grain: shade(base, -0.32), painted });
+
+function colorsFor(species: string, finish: string, finishColor: string) {
+  if (finish === 'Painted' || finish === 'Glazed / Distressed') {
+    return fromBase(findPaintSwatch(finishColor)?.hex ?? '#ebe8e1', true);
+  }
+  if (finish === 'Primed') return fromBase('#dededa', true);
   const wood = SPECIES_COLORS[species] ?? DEFAULT_WOOD;
+  if (finish === 'Stained' && STAIN_TINTS[finishColor]) return fromBase(STAIN_TINTS[finishColor], false);
+  if (finish === 'Clear Coat') return { ...wood, base: shade(wood.base, -0.05), painted: false }; // clear coat deepens the tone a little
+  if (finish === 'Clear Coat — Dead Flat' || finish === 'Unfinished') return { ...wood, base: shade(wood.base, 0.06), painted: false };
   return { ...wood, painted: species === 'Paint-Grade Hardwood' };
 }
 
@@ -28,13 +44,16 @@ interface DoorPreviewProps {
   species: string;
   finish: string;
   edgeProfile: string;
+  finishColor?: string;
+  compact?: boolean; // small thumbnail: no dimension marks
   widthIn?: number | null;
   heightIn?: number | null;
 }
 
-export function DoorPreview({ doorStyle, panelStyle, species, finish, edgeProfile, widthIn, heightIn }: DoorPreviewProps) {
+export function DoorPreview({ doorStyle, panelStyle, species, finish, edgeProfile, finishColor = '', compact = false, widthIn, heightIn }: DoorPreviewProps) {
   const uid = useId().replace(/:/g, '');
-  const c = colorsFor(species, finish);
+  const c = colorsFor(species, finish, finishColor);
+  const glass = panelStyle === 'Glass-Ready';
 
   const wIn = widthIn && widthIn > 0 ? widthIn : 18;
   const hIn = heightIn && heightIn > 0 ? heightIn : 30;
@@ -108,7 +127,16 @@ export function DoorPreview({ doorStyle, panelStyle, species, finish, edgeProfil
             strokeDasharray={panelStyle === 'Other' ? '4 3' : undefined}
             style={{ filter: 'brightness(0.88)' }}
           />
-          {!c.painted && <rect x={x + f} y={y + f} width={w - f * 2} height={h - f * 2} fill={grain} opacity="0.7" pointerEvents="none" />}
+          {!c.painted && !glass && <rect x={x + f} y={y + f} width={w - f * 2} height={h - f * 2} fill={grain} opacity="0.7" pointerEvents="none" />}
+
+          {glass && (
+            <g pointerEvents="none">
+              <rect x={x + f} y={y + f} width={w - f * 2} height={h - f * 2} fill="#1a2329" stroke="rgba(0,0,0,0.5)" strokeWidth="1.5" />
+              <rect x={x + f} y={y + f} width={w - f * 2} height={h - f * 2} fill="#a9c2cc" opacity="0.22" />
+              <line x1={x + f + (w - f * 2) * 0.2} y1={y + h - f} x2={x + f + (w - f * 2) * 0.75} y2={y + f} stroke="#ffffff" strokeOpacity="0.18" strokeWidth="6" />
+              <line x1={x + f + (w - f * 2) * 0.45} y1={y + h - f} x2={x + f + (w - f * 2) * 0.95} y2={y + f + (h - f * 2) * 0.15} stroke="#ffffff" strokeOpacity="0.1" strokeWidth="3" />
+            </g>
+          )}
 
           {panelStyle === 'Raised' && (() => {
             const b = Math.min(14, (w - f * 2) * 0.18, (h - f * 2) * 0.18);
@@ -132,6 +160,8 @@ export function DoorPreview({ doorStyle, panelStyle, species, finish, edgeProfil
         </>
       )}
 
+      {!compact && (
+        <>
       {/* Dimension lines */}
       <g stroke="#c9a47a" strokeWidth="1.2">
         <line x1={x} y1={y - 12} x2={x + w} y2={y - 12} />
@@ -143,6 +173,8 @@ export function DoorPreview({ doorStyle, panelStyle, species, finish, edgeProfil
       </g>
       <text x={x + w / 2} y={y - 20} fill="#c9a47a" textAnchor="middle" fontSize="11" fontWeight="700">{widthIn ? formatInches(widthIn) : 'W'}</text>
       <text x={x - 22} y={y + h / 2} fill="#c9a47a" textAnchor="middle" fontSize="11" fontWeight="700" transform={`rotate(-90 ${x - 22} ${y + h / 2})`}>{heightIn ? formatInches(heightIn) : 'H'}</text>
+        </>
+      )}
     </svg>
   );
 }

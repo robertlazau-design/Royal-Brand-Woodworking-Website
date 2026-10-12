@@ -15,6 +15,11 @@ export const DOOR_TYPES: Option[] = [
   { value: 'Other', label: 'Other', hint: 'Describe what you need' },
 ];
 
+// Which door types customers can order right now. Starting with cabinet doors only —
+// add 'Drawer Fronts' and/or 'Interior Doors' here to switch them on (their questions are already built).
+export const ENABLED_DOOR_TYPES = ['Cabinet Doors'];
+export const AVAILABLE_DOOR_TYPES = DOOR_TYPES.filter(t => t.value === 'Other' ? ENABLED_DOOR_TYPES.length > 1 : ENABLED_DOOR_TYPES.includes(t.value));
+
 export const DOOR_STYLES: Option[] = [
   { value: 'Mitered 5-Piece', label: 'Mitered 5-Piece', hint: 'Frame corners joined at 45°' },
   { value: 'Cope & Stick 5-Piece', label: 'Cope & Stick 5-Piece', hint: 'Classic square-cornered frame' },

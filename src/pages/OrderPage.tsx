@@ -5,8 +5,9 @@ import {
   Plus, Copy, Trash2, Send, Printer, RotateCcw, AlertCircle, Ruler, Info, Pencil,
 } from 'lucide-react';
 import { DoorPreview } from '../components/DoorPreview';
+import { PAINT_SWATCHES, STAIN_TINTS, findPaintSwatch } from '../data/finishColors';
 import {
-  DOOR_TYPES, DOOR_STYLES, PANEL_STYLES, WOOD_SPECIES, FINISHES, FINISHES_NEEDING_COLOR, EDGE_PROFILES,
+  AVAILABLE_DOOR_TYPES, ENABLED_DOOR_TYPES, DOOR_STYLES, PANEL_STYLES, WOOD_SPECIES, FINISHES, FINISHES_NEEDING_COLOR, EDGE_PROFILES,
   HINGE_OPTIONS, MIN_DIMENSION, MAX_DIMENSION, type HingeSide, type MeasurementType, type Option,
   CABINET_THICKNESS, INTERIOR_THICKNESS, CABINET_TYPES, OVERLAYS, HINGE_BORING, FRAME_WIDTHS,
   INTERIOR_HANGING, LOCK_BORE, DELIVERY, PULL_HOLES, PAINT_GRADE, PAINT_GRADE_FINISHES, STAINS_BY_SPECIES,
@@ -79,7 +80,7 @@ const newRow = (): DoorRow => ({
 
 const emptyOrder = (): OrderState => ({
   name: '', company: '', phone: '', email: '', project: '',
-  doorType: '', doorTypeOther: '',
+  doorType: ENABLED_DOOR_TYPES.length === 1 ? ENABLED_DOOR_TYPES[0] : '', doorTypeOther: '',
   doorStyle: '', doorStyleOther: '',
   panelStyle: '', panelStyleOther: '',
   species: '', speciesOther: '',
@@ -122,7 +123,10 @@ function loadDraft(): OrderState {
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<OrderState>;
       const base = emptyOrder();
-      return { ...base, ...parsed, rows: parsed.rows?.length ? parsed.rows : base.rows };
+      const merged = { ...base, ...parsed, rows: parsed.rows?.length ? parsed.rows : base.rows };
+      // A type that's been switched off since the draft was saved falls back to the default.
+      if (merged.doorType !== 'Other' && merged.doorType && !ENABLED_DOOR_TYPES.includes(merged.doorType)) merged.doorType = base.doorType;
+      return merged;
     }
   } catch { /* storage unavailable — start fresh */ }
   return emptyOrder();
@@ -523,7 +527,7 @@ export function OrderPage() {
 
   return (
     <>
-      <section className="py-20 md:py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-hidden print:hidden">
+      <section className="py-20 md:py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-clip print:hidden">
         {/* Ambient header image */}
         <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
           <img src="/photos/web/wide-belt-sander-exit.jpg" alt="" className="w-full h-full object-cover opacity-10" />
@@ -539,7 +543,7 @@ export function OrderPage() {
               <div className="w-12 h-[1px] bg-royal-gold" />
             </div>
             <h1 className="font-serif text-3xl md:text-5xl text-white font-bold mb-5 tracking-wide uppercase">
-              Custom Door Order
+              {ENABLED_DOOR_TYPES.length === 1 ? `Custom ${ENABLED_DOOR_TYPES[0].replace(/s$/, '')} Order` : 'Custom Door Order'}
             </h1>
             <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
               Tell us the style, wood and finish once, then list every door you need. Robert checks each measurement and
@@ -578,7 +582,22 @@ export function OrderPage() {
 
           <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             {/* ─── Main panel ─── */}
-            <div className={`${step === 4 ? 'lg:col-span-12' : 'lg:col-span-8'} bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
+            <div className={`${step === 4 ? 'lg:col-span-12' : 'lg:col-span-8'} min-w-0 bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
+              {/* Live door preview that stays on screen while choosing (phones/tablets, and the full-width door list) */}
+              {step >= 2 && step <= 4 && (
+                <div className={`${step === 4 ? '' : 'lg:hidden'} sticky top-[65px] z-30 -mx-5 sm:-mx-8 -mt-5 sm:-mt-8 mb-6 px-5 sm:px-8 py-3 bg-royal-charcoal/95 backdrop-blur-md border-b border-royal-border flex items-center gap-4`}>
+                  <div className="w-[76px] shrink-0 bg-royal-bg border border-royal-border">
+                    <DoorPreview compact doorStyle={order.doorStyle} panelStyle={order.panelStyle} species={order.species}
+                      finish={order.finish} finishColor={order.finishColor} edgeProfile={order.edge} widthIn={previewW} heightIn={previewH} />
+                  </div>
+                  <div className="min-w-0 text-xs leading-relaxed">
+                    <p className="text-[10px] text-royal-gold uppercase tracking-[0.15em] font-bold">Your Door</p>
+                    <p className="text-white truncate">{[order.doorStyle && specs.doorStyle, order.doorStyle !== 'Slab' && order.panelStyle && `${specs.panelStyle} panel`].filter(Boolean).join(' · ') || 'Pick a style below'}</p>
+                    <p className="text-royal-text-muted truncate">{[order.species && specs.species, order.finish && specs.finish].filter(Boolean).join(' · ') || 'Wood and color not chosen yet'}</p>
+                    <p className="text-[10px] text-royal-text-muted/60">Colors are approximate</p>
+                  </div>
+                </div>
+              )}
               {showErrors && errors.length > 0 && (
                 <div className="mb-6 p-3.5 border border-red-400/40 bg-red-400/5 text-red-200 text-sm flex items-start gap-2.5" role="alert">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -631,21 +650,16 @@ export function OrderPage() {
                 <div>
                   <StepTitle n={2} title="Door Specifications" sub="These apply to every door in this order. Need a different style? Place a second order or add a note." />
 
-                  {/* Mobile preview */}
-                  <div className="lg:hidden max-w-[220px] mx-auto mb-6 border border-royal-border bg-royal-bg p-2">
-                    <DoorPreview doorStyle={order.doorStyle} panelStyle={order.panelStyle} species={order.species} finish={order.finish} edgeProfile={order.edge} />
-                  </div>
-
                   <div className="space-y-7">
-                    <div>
+                    {AVAILABLE_DOOR_TYPES.length > 1 && <div>
                       <FieldLabel required>What Are You Ordering?</FieldLabel>
-                      <ChoiceCards options={DOOR_TYPES} value={order.doorType} onChange={v => set('doorType', v)} invalid={err('doorType')} />
+                      <ChoiceCards options={AVAILABLE_DOOR_TYPES} value={order.doorType} onChange={v => set('doorType', v)} invalid={err('doorType')} />
                       {order.doorType === 'Other' && (
                         <input className={`${inputBase} ${fieldBorder(err('doorType'))} mt-2`} placeholder="What kind of door?"
                           value={order.doorTypeOther} onChange={e => set('doorTypeOther', e.target.value)} />
                       )}
                       {err('doorType') && <ErrorText>Choose what you're ordering{order.doorType === 'Other' ? ' and describe it' : ''}</ErrorText>}
-                    </div>
+                    </div>}
 
                     <div>
                       <FieldLabel required>Door Style</FieldLabel>
@@ -699,28 +713,55 @@ export function OrderPage() {
                         <p className="text-[11px] text-royal-text-muted mt-1.5">Paint-grade wood is made for painting, so stain and clear coats aren't offered.</p>
                       )}
                       {order.finish === 'Stained' && STAINS_BY_SPECIES[order.species] && (
-                        <div className="relative mt-2">
-                          <select
-                            aria-label="Stain color"
-                            value={order.finishCustom ? '__other' : order.finishColor}
-                            onChange={e => e.target.value === '__other'
-                              ? setOrder(o => ({ ...o, finishCustom: true, finishColor: '' }))
-                              : setOrder(o => ({ ...o, finishCustom: false, finishColor: e.target.value }))}
-                            className={`${inputBase} ${fieldBorder(err('finish'))} appearance-none cursor-pointer pr-10`}
-                          >
-                            <option value="" disabled>Choose a stain color for {order.species}…</option>
-                            {STAINS_BY_SPECIES[order.species].map(c => <option key={c} value={c}>{c}</option>)}
-                            <option value="__other">Something else — I'll type it</option>
-                          </select>
-                          <ChevronRight className="w-4 h-4 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 text-royal-text-muted pointer-events-none" />
+                        <div className="mt-3">
+                          <p className="text-[11px] text-royal-text-muted mb-2">Stain colors for {order.species} — tap one to see it on your door:</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5" role="radiogroup" aria-label="Stain color">
+                            {STAINS_BY_SPECIES[order.species].map(name => {
+                              const selected = !order.finishCustom && order.finishColor === name;
+                              return (
+                                <button key={name} type="button" role="radio" aria-checked={selected} aria-label={name}
+                                  onClick={() => setOrder(o => ({ ...o, finishCustom: false, finishColor: name }))}
+                                  className={`flex items-center gap-2 px-2 py-1.5 border text-left text-xs transition-colors ${
+                                    selected ? 'border-royal-gold bg-royal-gold/10 text-white' : 'border-royal-border text-gray-300 hover:border-royal-gold/60'}`}>
+                                  <span className="w-5 h-5 rounded-full border border-black/30 shrink-0"
+                                    style={{ background: STAIN_TINTS[name] ?? 'linear-gradient(135deg,#e2c9a0,#b8935f)' }} />
+                                  {name}
+                                </button>
+                              );
+                            })}
+                            <button type="button" role="radio" aria-checked={order.finishCustom} aria-label="Other stain"
+                              onClick={() => setOrder(o => ({ ...o, finishCustom: true, finishColor: '' }))}
+                              className={`px-2 py-1.5 border text-left text-xs ${order.finishCustom ? 'border-royal-gold bg-royal-gold/10 text-white' : 'border-royal-border text-gray-300 hover:border-royal-gold/60'}`}>
+                              Something else…
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {(order.finish === 'Painted' || order.finish === 'Glazed / Distressed') && (
+                        <div className="mt-3">
+                          <p className="text-[11px] text-royal-text-muted mb-2">Popular cabinet colors — tap one to see it on your door:</p>
+                          <div className="grid grid-cols-5 sm:grid-cols-9 gap-1.5" role="radiogroup" aria-label="Paint color">
+                            {PAINT_SWATCHES.map(sw => {
+                              const selected = findPaintSwatch(order.finishColor)?.label === sw.label;
+                              return (
+                                <button key={sw.label} type="button" role="radio" aria-checked={selected} aria-label={sw.label} title={sw.label}
+                                  onClick={() => set('finishColor', sw.label)}
+                                  className={`aspect-square border-2 transition-transform hover:scale-110 ${selected ? 'border-royal-gold scale-110' : 'border-black/40'}`}
+                                  style={{ background: sw.hex }} />
+                              );
+                            })}
+                          </div>
+                          {findPaintSwatch(order.finishColor) && (
+                            <p className="text-xs text-white mt-2">Selected: <span className="text-royal-gold font-bold">{findPaintSwatch(order.finishColor)!.label}</span></p>
+                          )}
                         </div>
                       )}
                       {FINISHES_NEEDING_COLOR.has(order.finish) && !(order.finish === 'Stained' && STAINS_BY_SPECIES[order.species] && !order.finishCustom) && (
                         <input className={`${inputBase} ${fieldBorder(err('finish'))} mt-2`}
                           placeholder={
                             order.finish === 'Stained' ? 'Stain color name (or describe the color you want)'
-                            : order.finish === 'Painted' ? 'Sherwin-Williams or Benjamin Moore color name or number (e.g. SW 7008 Alabaster)'
-                            : order.finish === 'Glazed / Distressed' ? 'Describe the look (e.g. white paint with a brown glaze)'
+                            : order.finish === 'Painted' ? 'Or type any Sherwin-Williams or Benjamin Moore color (e.g. SW 7036 Accessible Beige)'
+                            : order.finish === 'Glazed / Distressed' ? 'Base color and glaze, e.g. "Alabaster with a brown glaze"'
                             : 'Describe the finish'}
                           value={order.finishColor} onChange={e => set('finishColor', e.target.value)} />
                       )}
@@ -862,7 +903,7 @@ export function OrderPage() {
                       <strong className="text-white">Width</strong> is side to side, <strong className="text-white">height</strong> is top to bottom.
                       {isInterior(order)
                         ? <> Swing side is the hinge side as the door opens toward you. Choose <strong className="text-white">Pair</strong> for double doors.</>
-                        : <> Hinge side is as you face the front of the door. Choose <strong className="text-white">Pair</strong> for two doors sharing one opening (enter the opening once), or <strong className="text-white">None</strong> for drawer fronts.</>}
+                        : <> Hinge side is as you face the front of the door. Choose <strong className="text-white">Pair</strong> for two doors sharing one opening (enter the opening once), or <strong className="text-white">None</strong> for {ENABLED_DOOR_TYPES.includes('Drawer Fronts') ? 'drawer fronts' : 'fixed panels with no hinges'}.</>}
                     </span>
                   </div>
 
@@ -1108,11 +1149,12 @@ export function OrderPage() {
             <aside className={`${step === 4 ? 'hidden' : 'hidden lg:block'} lg:col-span-4 sticky top-24 space-y-4`}>
               <div className="bg-royal-charcoal border border-royal-border p-6">
                 <h3 className="text-[11px] text-royal-gold uppercase tracking-[0.15em] font-bold mb-4 text-center">Your Door</h3>
-                <div className="bg-royal-bg border border-royal-border p-2 mb-5">
+                <div className="bg-royal-bg border border-royal-border p-2 mb-5 max-w-[250px] mx-auto">
                   <DoorPreview doorStyle={order.doorStyle} panelStyle={order.panelStyle} species={order.species}
-                    finish={order.finish} edgeProfile={order.edge} widthIn={previewW} heightIn={previewH} />
+                    finish={order.finish} finishColor={order.finishColor} edgeProfile={order.edge} widthIn={previewW} heightIn={previewH} />
                 </div>
-                <dl className="space-y-2.5 text-xs">
+                <p className="text-[10px] text-royal-text-muted/70 text-center -mt-3 mb-5">Colors on screen are approximate.</p>
+                <dl className="space-y-1.5 text-xs">
                   {[
                     ['Type', order.doorType && specs.doorType],
                     ['Style', order.doorStyle && specs.doorStyle],
@@ -1130,11 +1172,12 @@ export function OrderPage() {
                   ))}
                 </dl>
               </div>
-              <div className="bg-royal-charcoal border border-royal-border p-5 text-xs text-royal-text-muted leading-relaxed">
+              {/* Only when there's room — while choosing colors the door preview needs the whole column */}
+              {(step === 1 || step === 5) && <div className="bg-royal-charcoal border border-royal-border p-5 text-xs text-royal-text-muted leading-relaxed">
                 <p className="text-white font-bold mb-1.5">Not sure about something?</p>
                 Pick your best guess and add a note — Robert confirms every detail before building. Prefer to have him measure?{' '}
                 <Link to="/booking" className="text-royal-gold hover:underline">Book an on-site estimate</Link>.
-              </div>
+              </div>}
             </aside>
           </div>
         </div>

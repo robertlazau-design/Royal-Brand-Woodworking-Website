@@ -106,11 +106,11 @@ export function Home() {
               </span>
             </div>
             <h2 className="font-serif text-3xl md:text-5xl font-bold text-white uppercase tracking-tight">
-              Need New Doors? <br />
+              Need New Cabinet Doors? <br />
               <span className="text-royal-gold">Order Them Online.</span>
             </h2>
             <p className="text-royal-text-muted font-light leading-relaxed text-sm md:text-base">
-              Cabinet doors, drawer fronts and interior doors, built to order — no remodel needed.
+              Custom cabinet doors, built to order — no remodel needed.
               Tell us the sizes and the look you want, and Robert will check everything and call you with a price before anything is made.
             </p>
             <div className="space-y-3 pt-1">

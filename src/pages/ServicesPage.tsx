@@ -111,7 +111,7 @@ export function ServicesPage() {
               </div>
               <h2 className="font-serif text-3xl md:text-5xl font-bold text-white uppercase tracking-wide">Custom Doors</h2>
               <p className="text-gray-200 text-base md:text-lg max-w-2xl leading-relaxed mt-4">
-                Just need new doors? Cabinet doors, drawer fronts and interior doors, built to order in your sizes. Here's how a door comes together.
+                Just need new cabinet doors? They're built to order in your sizes. Here's how a door comes together.
               </p>
             </div>
             <Link to="/order" className="shrink-0 px-7 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
