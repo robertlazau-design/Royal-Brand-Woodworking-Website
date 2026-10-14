@@ -2,7 +2,16 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RoyalLogo } from './RoyalLogo';
 import { BUSINESS } from '../data/business';
-import { Mail, Phone, MapPin, Clock, Star, ChevronRight, X } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Star, ChevronRight, X, Instagram } from 'lucide-react';
+
+const FOOTER_LINKS = [
+  { label: 'Home', to: '/' },
+  { label: 'About Us', to: '/about' },
+  { label: 'Services', to: '/services' },
+  { label: 'Gallery', to: '/gallery' },
+  { label: 'Custom Doors', to: '/order' },
+  { label: 'Book an Estimate', to: '/booking' },
+];
 
 export function Footer() {
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
@@ -13,10 +22,54 @@ export function Footer() {
       {/* Decorative gold top line */}
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/60 to-transparent" />
 
-      <div className="pt-20 pb-12">
+      <div className="pt-10 pb-8 md:pt-20 md:pb-12">
         <div className="max-w-7xl mx-auto px-6">
-          {/* Main grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+          {/* ── Phones: short footer ── */}
+          <div className="md:hidden space-y-7 mb-8">
+            <div className="flex items-center gap-3">
+              <Link to="/" aria-label="Royal Brand Woodworking home"><RoyalLogo size="sm" /></Link>
+            </div>
+            <p className="text-royal-text-muted text-sm leading-relaxed -mt-3">
+              Third-generation woodworker building kitchens, bathrooms and furniture in Portland.
+            </p>
+
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { href: BUSINESS.phoneHref, icon: <Phone className="w-5 h-5" />, label: 'Call' },
+                { href: `mailto:${BUSINESS.email}`, icon: <Mail className="w-5 h-5" />, label: 'Email' },
+                { href: BUSINESS.mapsUrl, icon: <MapPin className="w-5 h-5" />, label: 'Directions', external: true },
+              ].map(a => (
+                <a key={a.label} href={a.href} {...(a.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="flex flex-col items-center justify-center gap-1.5 py-3.5 border border-royal-border bg-royal-bg/50 text-white text-xs font-bold uppercase tracking-wider active:border-royal-gold">
+                  <span className="text-royal-gold">{a.icon}</span>{a.label}
+                </a>
+              ))}
+            </div>
+
+            <p className="flex items-start gap-2 text-sm text-gray-300">
+              <Clock className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
+              <span>Mon–Fri 7am–5pm · Sat by appointment<br /><span className="text-royal-text-muted">{BUSINESS.street}, {BUSINESS.cityStateZip}</span></span>
+            </p>
+
+            <ul className="grid grid-cols-2 gap-x-4 text-sm border-t border-royal-border pt-4">
+              {FOOTER_LINKS.map(link => (
+                <li key={link.to}>
+                  <Link to={link.to} className="block py-2.5 text-royal-text-muted active:text-royal-gold">{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex items-center justify-between gap-4 text-xs text-royal-text-muted border-t border-royal-border pt-4">
+              <span>Licensed · Bonded · Insured<br />CCB# {BUSINESS.ccb}</span>
+              <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                className="flex items-center gap-1.5 text-royal-gold py-2">
+                <Instagram className="w-4 h-4" /> Instagram
+              </a>
+            </div>
+          </div>
+
+          {/* ── Tablets & desktop: full footer ── */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
             
             {/* Brand Column */}
             <div className="lg:col-span-4 space-y-6">
@@ -51,17 +104,10 @@ export function Footer() {
                 <div className="w-4 h-[1px] bg-royal-gold" />
                 Navigate
               </h4>
-              <ul className="grid grid-cols-2 gap-x-4 md:grid-cols-1 md:space-y-3.5 text-sm">
-                {[
-                  { label: 'Home', to: '/' },
-                  { label: 'About Us', to: '/about' },
-                  { label: 'Services', to: '/services' },
-                  { label: 'Gallery', to: '/gallery' },
-                  { label: 'Custom Doors', to: '/order' },
-                  { label: 'Book an Estimate', to: '/booking' },
-                ].map((link) => (
+              <ul className="space-y-3.5 text-sm">
+                {FOOTER_LINKS.map((link) => (
                   <li key={link.to}>
-                    <Link to={link.to} className="text-royal-text-muted font-light hover:text-royal-gold transition-colors group flex items-center gap-2 py-2.5 md:py-0">
+                    <Link to={link.to} className="text-royal-text-muted font-light hover:text-royal-gold transition-colors group flex items-center gap-2">
                       <ChevronRight className="w-3 h-3 text-royal-gold/0 group-hover:text-royal-gold transition-all -ml-4 group-hover:ml-0 opacity-0 group-hover:opacity-100" />
                       {link.label}
                     </Link>
@@ -157,7 +203,7 @@ export function Footer() {
           </div>
           
           {/* Divider with logo */}
-          <div className="flex items-center gap-6 mb-8">
+          <div className="hidden md:flex items-center gap-6 mb-8">
             <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-royal-border" />
             <img src="/logo-sm.png" alt="Royal Brand" className="w-8 h-8 object-contain opacity-30" />
             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-royal-border" />
@@ -165,12 +211,12 @@ export function Footer() {
 
           {/* Copyright strip */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-royal-text-muted/60 text-xs font-light tracking-wide">
-              &copy; {new Date().getFullYear()} Royal Brand Woodworking. All rights reserved. Handcrafted with pride in Portland, OR.
+            <p className="text-royal-text-muted/60 text-xs font-light tracking-wide text-center md:text-left">
+              &copy; {new Date().getFullYear()} Royal Brand Woodworking. All rights reserved.<span className="hidden md:inline"> Handcrafted with pride in Portland, OR.</span>
             </p>
             <div className="flex gap-8">
-              <button onClick={() => setLegalModal('privacy')} className="text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Privacy Policy</button>
-              <button onClick={() => setLegalModal('terms')} className="text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Terms of Service</button>
+              <button onClick={() => setLegalModal('privacy')} className="py-2 md:py-0 text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Privacy Policy</button>
+              <button onClick={() => setLegalModal('terms')} className="py-2 md:py-0 text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Terms of Service</button>
             </div>
           </div>
         </div>

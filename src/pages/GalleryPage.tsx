@@ -65,7 +65,7 @@ export function GalleryPage() {
           <div className="mt-10 text-center space-y-4">
             <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-royal-gold font-bold text-sm uppercase tracking-wider py-3 hover:text-white">
-              <Instagram className="w-4 h-4" /> More on Instagram {BUSINESS.instagramHandle}
+              <Instagram className="w-4 h-4" /> More on Instagram<span className="hidden sm:inline"> {BUSINESS.instagramHandle}</span>
             </a>
             <div>
               <Link to="/booking" className="inline-block px-8 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
