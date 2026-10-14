@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { Analytics } from '@vercel/analytics/react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
+import { MobileActionBar, useShowMobileActionBar } from './components/MobileActionBar';
 
 // Pages
 import { Home } from './pages/Home';
@@ -10,6 +11,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { OrderPage } from './pages/OrderPage';
 import { BookingPage } from './pages/BookingPage';
 import { AboutPage } from './pages/AboutPage';
+import { GalleryPage } from './pages/GalleryPage';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -18,6 +20,11 @@ function ScrollToTop() {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
+}
+
+// Keeps the fixed phone action bar from covering the bottom of the footer.
+function MobileActionBarSpacer() {
+  return useShowMobileActionBar() ? <div className="h-20 md:hidden print:hidden" aria-hidden /> : null;
 }
 
 export default function App() {
@@ -35,10 +42,13 @@ export default function App() {
             <Route path="/estimator" element={<Navigate to="/order" replace />} />
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
           </Routes>
         </main>
 
         <Footer />
+        <MobileActionBarSpacer />
+        <MobileActionBar />
       </div>
       <Analytics />
     </Router>

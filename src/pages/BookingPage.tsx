@@ -194,7 +194,7 @@ export function BookingPage() {
   /* ── Submitted Confirmation Screen ── */
   if (isSubmitted) {
     return (
-      <section className="py-24 bg-royal-bg text-royal-text min-h-screen">
+      <section className="py-14 md:py-24 bg-royal-bg text-royal-text min-h-screen">
         <div className="max-w-2xl mx-auto px-6">
           <div className="text-center mb-12" style={{ animation: 'fadeSlideUp 0.6s ease-out' }}>
             <div className="w-20 h-20 rounded-full bg-royal-gold/15 flex items-center justify-center mx-auto mb-8 border border-royal-gold/30">
@@ -318,7 +318,7 @@ export function BookingPage() {
   }
 
   return (
-    <section className="py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-hidden">
+    <section className="py-14 md:py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-hidden">
       {/* Background ambient image */}
       <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
         <img
@@ -345,6 +345,8 @@ export function BookingPage() {
             Robert comes to your home or business, measures, and talks through your project with you.
             <br/><br/>
             <strong className="text-white">The visit is $150 an hour.</strong> Pick a day and time below — Robert will confirm by email before anything is charged.
+            <br/><br/>
+            <span className="inline-block px-4 py-2 border border-royal-gold/40 bg-royal-gold/10 text-white">Your time is valuable. If you go ahead with the project, <strong className="text-royal-gold">your $150 estimate fee is credited toward it.</strong></span>
             <br/><br/>
             Rather talk first? Call <a href={BUSINESS.phoneHref} className="text-royal-gold font-bold hover:underline">{BUSINESS.phoneDisplay}</a>.
           </p>
@@ -551,7 +553,7 @@ export function BookingPage() {
                    <div className="flex items-start gap-2 mt-3 p-3 bg-royal-gold/5 border border-royal-gold/20">
                     <Shield className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
                     <p className="text-xs text-royal-text-muted leading-relaxed">
-                      <span className="text-royal-gold font-bold">No payment required now.</span> An invoice will be sent after Robert confirms your appointment.
+                      <span className="text-royal-gold font-bold">No payment required now.</span> An invoice will be sent after Robert confirms your appointment. If you go ahead with the project, the $150 is credited toward it.
                     </p>
                   </div>
                 </div>

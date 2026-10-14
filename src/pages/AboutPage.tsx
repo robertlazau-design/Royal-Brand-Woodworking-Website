@@ -7,7 +7,7 @@ export function AboutPage() {
   return (
     <div className="w-full bg-royal-bg text-white min-h-screen">
       {/* Header Section with background image */}
-      <section className="relative pt-32 pb-20 px-6 border-b border-royal-border-light overflow-hidden">
+      <section className="relative pt-14 pb-12 md:pt-32 md:pb-20 px-6 border-b border-royal-border-light overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -57,7 +57,7 @@ export function AboutPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-20 px-6">
+      <section className="py-14 md:py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Bio */}
@@ -142,7 +142,7 @@ export function AboutPage() {
       </section>
 
       {/* Heritage Timeline */}
-      <section className="py-20 px-6 bg-royal-charcoal border-y border-royal-border-light">
+      <section className="py-14 md:py-20 px-6 bg-royal-charcoal border-y border-royal-border-light">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
@@ -203,7 +203,7 @@ export function AboutPage() {
       </section>
 
       {/* The Royal Guarantee */}
-      <section className="py-20 px-6 bg-royal-bg border-b border-royal-border-light">
+      <section className="py-14 md:py-20 px-6 bg-royal-bg border-b border-royal-border-light">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-royal-charcoal border border-royal-border p-8 md:p-12 relative overflow-hidden">
             {/* Top gold accent */}

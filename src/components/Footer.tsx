@@ -56,6 +56,7 @@ export function Footer() {
                   { label: 'Home', to: '/' },
                   { label: 'About Us', to: '/about' },
                   { label: 'Services', to: '/services' },
+                  { label: 'Gallery', to: '/gallery' },
                   { label: 'Custom Doors', to: '/order' },
                   { label: 'Book an Estimate', to: '/booking' },
                 ].map((link) => (

@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: "Is the estimate free?",
-    answer: "No. Robert comes to your home to measure and talk through your project, and that visit is $150 an hour. You can pick a day and time on our booking page."
+    answer: "Robert comes to your home to measure and talk through your project, and that visit is $150 an hour. If you go ahead with the project, the $150 is credited toward it — so it ends up costing you nothing extra. You can pick a day and time on our booking page."
   },
   {
     question: "How do I get started?",
@@ -38,7 +38,7 @@ export function FaqAccordion() {
   };
 
   return (
-    <section className="py-24 bg-royal-bg text-royal-text border-b border-royal-border-light">
+    <section className="py-14 md:py-24 bg-royal-bg text-royal-text border-b border-royal-border-light">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
           
@@ -103,8 +103,8 @@ export function FaqAccordion() {
             </div>
           </div>
 
-          {/* Right: Sticky contact sidebar */}
-          <div className="lg:sticky lg:top-24">
+          {/* Right: Sticky contact sidebar (desktop only — on phones the call-to-action below covers it) */}
+          <div className="hidden lg:block lg:sticky lg:top-24">
             <div className="bg-royal-charcoal text-white rounded-none border border-royal-border overflow-hidden shadow-xl">
               {/* Gold top accent */}
               <div className="h-[2px] bg-gradient-to-r from-royal-gold via-royal-gold/60 to-transparent" />

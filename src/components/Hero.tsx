@@ -4,9 +4,10 @@ import { BUSINESS } from '../data/business';
 
 export function Hero() {
   return (
-    <section id="overview" className="relative w-full h-[90vh] min-h-[650px] flex items-center bg-royal-bg overflow-hidden">
+    <section id="overview" className="relative w-full md:h-[90vh] md:min-h-[650px] flex items-center bg-royal-bg overflow-hidden">
       {/* Background Image & Overlay */}
-      <div className="absolute inset-0 z-0">
+      {/* Phones: photo is a clear band across the top. Desktop: full-bleed behind the text. */}
+      <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-0 z-0 overflow-hidden">
         <img 
           src="/photos/web/table-saw-feed-cut.jpg" 
           alt="Robert Burlacu feeding white oak through the table saw in the Royal Brand Woodworking shop" 
@@ -16,17 +17,17 @@ export function Hero() {
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/75 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent to-royal-bg/40 z-10" />
-        {/* Extra shade on phones, where the text spans the full width of the photo */}
-        <div className="absolute inset-0 bg-royal-bg/60 md:hidden z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/75 to-transparent z-10 hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent to-royal-bg/40 z-10 hidden md:block" />
+        {/* Phones: fade the bottom of the photo band into the page */}
+        <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/20 via-transparent via-45% to-royal-bg to-90% md:hidden z-10" />
               </div>
 
       {/* Decorative left accent line */}
       <div className="absolute left-6 md:left-12 top-1/4 bottom-1/4 w-[1px] bg-gradient-to-b from-transparent via-royal-gold/30 to-transparent z-20 hidden md:block" />
 
       {/* Content Container */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 pt-[245px] pb-12 md:py-0 flex flex-col justify-center h-full">
         <div className="max-w-2xl md:pl-8">
           <p className="text-royal-gold text-sm font-bold uppercase tracking-[0.2em] mb-6 animate-fade-in-up">
             Portland, Oregon
@@ -52,15 +53,15 @@ export function Hero() {
             <span className="text-gray-200 text-sm">5-star reviews on Google</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 animate-fade-in-up delay-500">
-            <Link to="/booking" className="px-8 py-4 bg-royal-gold text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.2)]">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-4 animate-fade-in-up delay-500">
+            <Link to="/booking" className="text-center px-8 py-4 bg-royal-gold text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.2)]">
               Book an Estimate
             </Link>
-            <a href={BUSINESS.phoneHref} className="px-8 py-4 bg-transparent text-white font-bold text-sm tracking-[0.1em] uppercase border border-white/40 hover:border-royal-gold hover:text-royal-gold transition-all flex items-center gap-2">
+            <a href={BUSINESS.phoneHref} className="px-8 py-4 bg-transparent text-white font-bold text-sm tracking-[0.1em] uppercase border border-white/40 hover:border-royal-gold hover:text-royal-gold transition-all flex items-center justify-center gap-2">
               <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
             </a>
           </div>
-          <Link to="/order" className="mt-6 inline-flex items-center gap-2 text-royal-text-muted text-sm hover:text-royal-gold transition-colors animate-fade-in-up delay-600 group">
+          <Link to="/order" className="mt-5 py-2 inline-flex items-center gap-2 text-royal-text-muted text-sm hover:text-royal-gold transition-colors animate-fade-in-up delay-600 group">
             Just need new cabinet doors? <span className="text-royal-gold font-bold">Order online</span>
             <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-royal-gold group-hover:translate-x-1 transition-transform" />
           </Link>

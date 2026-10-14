@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { Testimonials } from '../components/Testimonials';
 import { FaqAccordion } from '../components/FaqAccordion';
 import { ArrowRight, CheckCircle2, ChefHat, Bath, Armchair, Hammer, ShieldCheck, DoorOpen } from 'lucide-react';
 import { BUSINESS } from '../data/business';
+import { GALLERY_CATEGORIES, GALLERY_PHOTOS, photosFor, type GalleryCategory } from '../data/gallery';
+import { Lightbox } from '../components/Lightbox';
 
-const SERVICES = [
-  { icon: <ChefHat className="w-5 h-5" />, title: 'Kitchen Remodels', text: 'Custom cabinetry designed, built and installed to fit the way you cook and live.' },
-  { icon: <Bath className="w-5 h-5" />, title: 'Bathroom Remodels', text: 'Vanities and storage sized to your space and built to handle a humid room.' },
-  { icon: <Armchair className="w-5 h-5" />, title: 'Handmade Furniture', text: 'Dining tables, desks and pieces made from solid hardwood to last generations.' },
-  { icon: <Hammer className="w-5 h-5" />, title: 'Built-Ins & Carpentry', text: 'Shelving, bedroom built-ins, trim and finish carpentry, indoors or out.' },
-];
+const CATEGORY_ICONS: Record<GalleryCategory, React.ReactNode> = {
+  kitchens: <ChefHat className="w-5 h-5" />,
+  bathrooms: <Bath className="w-5 h-5" />,
+  furniture: <Armchair className="w-5 h-5" />,
+  'built-ins': <Hammer className="w-5 h-5" />,
+};
 
 const DOOR_PHOTOS = [
   { src: '/photos/web/wide-belt-sander-exit.jpg', alt: 'Finished mitered door coming off the wide-belt sander', label: 'Finished door', span: 'col-span-2 aspect-[3/2]' },
@@ -22,12 +24,15 @@ const DOOR_PHOTOS = [
 ];
 
 export function Home() {
+  const [openCategory, setOpenCategory] = useState<GalleryCategory | null>(null);
+  const openCat = GALLERY_CATEGORIES.find(c => c.id === openCategory);
+
   return (
     <div className="w-full">
       <Hero />
 
       {/* Heritage + what we build */}
-      <section className="py-24 bg-royal-bg border-b border-royal-border-light">
+      <section className="py-14 md:py-24 bg-royal-bg border-b border-royal-border-light">
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-3 text-royal-gold">
@@ -65,7 +70,7 @@ export function Home() {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="relative aspect-[3/2] border border-royal-border overflow-hidden mb-4 group">
+            <div className={`relative aspect-[3/2] border border-royal-border overflow-hidden mb-4 group ${GALLERY_PHOTOS.length ? 'hidden sm:block' : ''}`}>
               <img
                 src="/photos/web/powermatic-planer-shop.jpg"
                 alt="Robert at the planer in the Royal Brand Woodworking shop"
@@ -77,26 +82,64 @@ export function Home() {
                 The Shop · NE Portland
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {SERVICES.map(s => (
-                <div key={s.title} className="bg-royal-charcoal border border-royal-border p-5 hover:border-royal-gold/40 transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-royal-gold">{s.icon}</span>
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">{s.title}</h3>
-                  </div>
-                  <p className="text-xs text-royal-text-muted leading-relaxed">{s.text}</p>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {GALLERY_CATEGORIES.map(c => {
+                const photos = photosFor(c.id);
+                const has = photos.length > 0;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    disabled={!has}
+                    onClick={() => setOpenCategory(c.id)}
+                    aria-label={has ? `See ${photos.length} ${c.title} photos` : c.title}
+                    className={`group text-left bg-royal-charcoal border border-royal-border overflow-hidden transition-colors ${has ? 'hover:border-royal-gold/60 cursor-pointer' : 'cursor-default'}`}
+                  >
+                    {has && (
+                      <div className="relative aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
+                        <img src={photos[0].src} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <span className="absolute bottom-2 right-2 bg-royal-bg/85 text-white text-xs font-bold px-2 py-1">{photos.length} photos</span>
+                      </div>
+                    )}
+                    <div className="p-3 sm:p-5">
+                      <div className="flex items-center gap-2 sm:gap-3 sm:mb-2">
+                        <span className="text-royal-gold hidden sm:inline">{CATEGORY_ICONS[c.id]}</span>
+                        <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">{c.title}</h3>
+                      </div>
+                      <p className="hidden sm:block text-xs text-royal-text-muted leading-relaxed">{c.text}</p>
+                      {has && <p className="text-royal-gold text-xs font-bold mt-1 sm:mt-2">See photos →</p>}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-            <Link to="/services" className="inline-flex items-center gap-2 mt-5 text-royal-gold text-xs font-bold uppercase tracking-[0.15em] hover:text-white transition-colors">
+            <Link to="/services" className="inline-flex items-center gap-2 mt-3 py-3 text-royal-gold text-xs font-bold uppercase tracking-[0.15em] hover:text-white transition-colors">
               See All Services <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
       </section>
 
+      {/* Estimate fee credit */}
+      <section className="py-10 md:py-12 bg-royal-charcoal border-b border-royal-border-light">
+        <div className="max-w-5xl mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div className="flex-1">
+            <p className="text-royal-gold text-xs font-bold uppercase tracking-[0.2em] mb-2">Your time is valuable</p>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-white uppercase tracking-wide mb-3">
+              Your Estimate Pays for Itself
+            </h2>
+            <p className="text-gray-200 text-base leading-relaxed">
+              Robert's on-site estimate is $150. If you go ahead with the project, <strong className="text-white">that $150 is credited toward it.</strong>
+            </p>
+          </div>
+          <Link to="/booking" className="shrink-0 text-center px-8 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+            Book an Estimate
+          </Link>
+        </div>
+      </section>
+
       {/* Custom doors — made-to-order line */}
-      <section className="py-20 bg-royal-charcoal border-b border-royal-border-light relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-royal-charcoal border-b border-royal-border-light relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-3 text-royal-gold">
@@ -132,8 +175,8 @@ export function Home() {
           </div>
 
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-            {DOOR_PHOTOS.map(photo => (
-              <div key={photo.src} className={`relative ${photo.span} bg-royal-bg border border-royal-border overflow-hidden group`}>
+            {DOOR_PHOTOS.map((photo, i) => (
+              <div key={photo.src} className={`relative ${photo.span} ${i >= 3 ? 'hidden sm:block' : ''} bg-royal-bg border border-royal-border overflow-hidden group`}>
                 <img src={photo.src} alt={photo.alt} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/80 via-transparent to-transparent pointer-events-none" />
                 <span className="absolute bottom-2 left-2 text-xs font-bold text-white bg-royal-bg/70 px-2 py-0.5">{photo.label}</span>
@@ -142,6 +185,10 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      {openCat && (
+        <Lightbox photos={photosFor(openCat.id)} startIndex={0} title={openCat.title} onClose={() => setOpenCategory(null)} />
+      )}
 
       <Testimonials />
       <FaqAccordion />

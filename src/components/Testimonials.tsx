@@ -66,7 +66,7 @@ const testimonials = [
 export function Testimonials() {
   return (
     <>
-      <section id="testimonials" className="py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
+      <section id="testimonials" className="py-14 md:py-24 bg-royal-bg relative overflow-hidden text-white border-y border-royal-border-light">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-12 text-center">
             <div className="flex justify-center gap-1 mb-4">
@@ -92,7 +92,7 @@ export function Testimonials() {
             
             <div className="flex items-start w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3 py-6">
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div key={idx} className="group w-[380px] shrink-0 bg-royal-charcoal p-7 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-20 cursor-pointer">
+                <div key={idx} className="group w-[300px] sm:w-[380px] shrink-0 bg-royal-charcoal p-7 flex flex-col justify-between transition-all duration-500 ease-out border border-royal-border hover:border-royal-gold hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)] hover:-translate-y-2 relative z-10 hover:z-20 cursor-pointer">
                   <div>
                     {/* Decorative quote icon */}
                     <Quote className="w-6 h-6 text-royal-gold/15 mb-3 group-hover:text-royal-gold/30 transition-colors duration-500" />
@@ -116,7 +116,7 @@ export function Testimonials() {
                       ))}
                     </div>
 
-                    <div className="relative transition-all duration-500 ease-in-out overflow-hidden max-h-[78px] group-hover:max-h-[300px]">
+                    <div className="relative transition-all duration-500 ease-in-out overflow-hidden max-h-[190px] sm:max-h-[78px] group-hover:max-h-[300px]">
                       <blockquote className="text-royal-text-muted font-light text-xs leading-relaxed italic">
                         "{testimonial.quote}"
                       </blockquote>
@@ -131,7 +131,7 @@ export function Testimonials() {
       </section>
 
       {/* Call to action */}
-      <section className="py-20 bg-royal-charcoal border-b border-royal-border-light text-center">
+      <section className="py-14 md:py-20 bg-royal-charcoal border-b border-royal-border-light text-center">
         <div className="max-w-3xl mx-auto px-6">
           <img src="/logo.png" alt="" className="w-14 h-14 object-contain mx-auto mb-6" />
           <h2 className="font-serif text-3xl md:text-5xl text-white font-bold uppercase tracking-wide mb-4">

@@ -31,7 +31,7 @@ export function ServicesPage() {
   return (
     <div className="w-full bg-royal-bg text-white">
       {/* Header Banner */}
-      <section className="relative pt-32 pb-20 px-6 border-b border-royal-border-light overflow-hidden">
+      <section className="relative pt-14 pb-12 md:pt-32 md:pb-20 px-6 border-b border-royal-border-light overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="/photos/web/sliding-table-saw-action.jpg"
@@ -60,7 +60,7 @@ export function ServicesPage() {
       </section>
 
       {/* Core services */}
-      <section className="py-20 px-6 border-b border-royal-border-light">
+      <section className="py-14 md:py-20 px-6 border-b border-royal-border-light">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 text-royal-gold mb-3">
             <div className="w-8 h-[1px] bg-royal-gold" />
@@ -69,12 +69,14 @@ export function ServicesPage() {
           <h2 className="font-serif text-3xl md:text-5xl font-bold text-white uppercase tracking-wide mb-10">
             What We Build
           </h2>
-          <div className="grid md:grid-cols-3 gap-5 mb-12">
+          <div className="grid md:grid-cols-3 gap-3 md:gap-5 mb-8 md:mb-12">
             {SPECIALTIES.map(item => (
-              <div key={item.title} className="bg-royal-charcoal border border-royal-border p-7 hover:border-royal-gold/40 transition-colors">
-                <div className="w-11 h-11 rounded-full border border-royal-gold/30 flex items-center justify-center text-royal-gold mb-5">{item.icon}</div>
-                <h3 className="font-serif text-xl font-bold text-white uppercase tracking-wider mb-3">{item.title}</h3>
-                <p className="text-sm text-royal-text-muted font-light leading-relaxed">{item.text}</p>
+              <div key={item.title} className="bg-royal-charcoal border border-royal-border p-5 md:p-7 hover:border-royal-gold/40 transition-colors flex gap-4 md:block">
+                <div className="w-11 h-11 shrink-0 rounded-full border border-royal-gold/30 flex items-center justify-center text-royal-gold md:mb-5">{item.icon}</div>
+                <div>
+                  <h3 className="font-serif text-lg md:text-xl font-bold text-white uppercase tracking-wider mb-2 md:mb-3">{item.title}</h3>
+                  <p className="text-sm text-royal-text-muted font-light leading-relaxed">{item.text}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -99,7 +101,7 @@ export function ServicesPage() {
       </section>
 
       {/* Custom doors */}
-      <section className="py-20 px-6 bg-royal-charcoal border-b border-royal-border-light">
+      <section className="py-14 md:py-20 px-6 bg-royal-charcoal border-b border-royal-border-light">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
@@ -119,13 +121,13 @@ export function ServicesPage() {
             </Link>
           </div>
 
-          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {DOOR_STEPS.map((step, i) => (
-              <li key={step.title} className="bg-royal-bg border border-royal-border">
-                <div className="aspect-[3/2] overflow-hidden">
+              <li key={step.title} className="bg-royal-bg border border-royal-border flex sm:block">
+                <div className="w-28 shrink-0 aspect-square sm:w-auto sm:aspect-[3/2] overflow-hidden">
                   <img src={step.img} alt={step.text} loading="lazy" className="w-full h-full object-cover" />
                 </div>
-                <div className="p-5">
+                <div className="p-4 sm:p-5">
                   <p className="text-royal-gold text-sm font-bold mb-1">Step {i + 1}</p>
                   <h3 className="font-serif text-xl font-bold text-white uppercase tracking-wider mb-2">{step.title}</h3>
                   <p className="text-sm text-gray-300 leading-relaxed">{step.text}</p>
@@ -137,7 +139,7 @@ export function ServicesPage() {
       </section>
 
       {/* Bottom call to action */}
-      <section className="py-20 px-6 bg-royal-charcoal border-b border-royal-border-light">
+      <section className="py-14 md:py-20 px-6 bg-royal-charcoal border-b border-royal-border-light">
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 text-royal-gold mb-4">
             <div className="w-8 h-[1px] bg-royal-gold" />
