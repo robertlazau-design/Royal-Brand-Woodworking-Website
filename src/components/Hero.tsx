@@ -6,19 +6,21 @@ export function Hero() {
   return (
     <section id="overview" className="relative w-full md:h-[90vh] md:min-h-[650px] flex items-center bg-royal-bg overflow-hidden">
       {/* Background Image & Overlay */}
-      {/* Phones: photo is a clear band across the top. Desktop: full-bleed behind the text. */}
-      <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-0 z-0 overflow-hidden">
+      {/* Phones: photo is a clear band across the top. Desktop: photo fills the right side, beside the text. */}
+      <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-y-0 md:left-[34%] lg:left-[42%] xl:left-[34%] md:right-0 z-0 overflow-hidden">
         <img 
-          src="/photos/web/table-saw-feed-cut.jpg" 
-          alt="Robert Burlacu feeding white oak through the table saw in the Royal Brand Woodworking shop" 
-          className="w-full h-full object-cover object-[70%_center] scale-105"
+          src="/photos/web/crosscutting-lumber.jpg" 
+          alt="Robert Burlacu crosscutting a board on the miter saw in the Royal Brand Woodworking shop" 
+          className="w-full h-full object-cover object-[45%_center] md:object-[18%_center] scale-105"
           loading="eager"
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-royal-bg via-royal-bg/75 to-transparent z-10 hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent to-royal-bg/40 z-10 hidden md:block" />
+        <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-royal-bg to-transparent z-10 hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent via-40% to-royal-bg/30 z-10 hidden md:block" />
+        {/* Tablets: the headline overlaps the photo, so shade it more */}
+        <div className="absolute inset-0 bg-royal-bg/55 hidden md:block lg:hidden z-10" />
         {/* Phones: fade the bottom of the photo band into the page */}
         <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/20 via-transparent via-45% to-royal-bg to-90% md:hidden z-10" />
               </div>

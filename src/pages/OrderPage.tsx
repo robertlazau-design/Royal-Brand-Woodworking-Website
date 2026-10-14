@@ -546,8 +546,8 @@ export function OrderPage() {
               {ENABLED_DOOR_TYPES.length === 1 ? `Custom ${ENABLED_DOOR_TYPES[0].replace(/s$/, '')} Order` : 'Custom Door Order'}
             </h1>
             <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
-              Tell us the style, wood and finish once, then list every door you need. Robert checks each measurement and
-              contacts you with a quote — <span className="text-white">nothing is built or charged until you approve it.</span>
+              Choose your door style, wood and color, then enter the size of each door you need. Robert will double-check your
+              measurements and send you a price — <span className="text-white">nothing is made or charged until you say yes.</span>
             </p>
           </div>
 

@@ -39,14 +39,14 @@ export function Navigation() {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center justify-center gap-8 flex-1">
+        <div className="hidden md:flex items-center justify-center gap-5 lg:gap-6 xl:gap-8 flex-1 px-4">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.href;
             return (
               <Link
                 key={link.href}
                 to={link.href}
-                className={`nav-link-underline text-xs font-bold uppercase tracking-[0.15em] transition-colors relative pb-1 ${
+                className={`nav-link-underline whitespace-nowrap text-xs font-bold uppercase tracking-[0.12em] xl:tracking-[0.15em] transition-colors relative pb-1 ${
                   isActive
                     ? 'text-white'
                     : 'text-royal-text-muted hover:text-white'
@@ -63,7 +63,7 @@ export function Navigation() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex flex-shrink-0 items-center gap-5">
-          <a href={BUSINESS.phoneHref} className="hidden lg:flex items-center gap-2 text-white text-sm font-bold hover:text-royal-gold transition-colors">
+          <a href={BUSINESS.phoneHref} className="hidden xl:flex items-center gap-2 text-white text-sm font-bold hover:text-royal-gold transition-colors">
             <Phone className="w-4 h-4 text-royal-gold" /> {BUSINESS.phoneDisplay}
           </a>
           <Link to="/booking" className="px-6 py-2.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)] hover:shadow-[0_0_25px_rgba(201,164,122,0.3)]">
