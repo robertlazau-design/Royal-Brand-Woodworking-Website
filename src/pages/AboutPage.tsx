@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BUSINESS } from '../data/business';
 import { MapPin, Hammer, Users, Shield, Star, Award, ChevronRight } from 'lucide-react';
 import { srcSetFor, smallPhoto } from '../lib/images';
+import { Lightbox } from '../components/Lightbox';
+
+// Family photos (supplied by Robert). object-position keeps faces in frame in the square tiles.
+const FAMILY_PHOTOS = [
+  { src: '/photos/family/robert-and-dad-shop.jpg', alt: 'Robert and his dad in the shop', pos: 'center' },
+  { src: '/photos/family/dad-in-his-shop.jpg', alt: "Robert's dad at his workbench", pos: 'center 30%' },
+  { src: '/photos/family/robert-and-dad-lumber-yard.jpg', alt: 'Robert and his dad', pos: 'center 25%' },
+  { src: '/photos/family/family-album.jpg', alt: 'From the family album', pos: 'left center' },
+];
 
 export function AboutPage() {
+  const [openPhoto, setOpenPhoto] = useState<number | null>(null);
+
   return (
     <div className="w-full bg-royal-bg text-white min-h-screen">
       {/* Header Section with background image */}
@@ -209,8 +220,30 @@ export function AboutPage() {
               </div>
             ))}
           </div>
+
+          {/* Robert & his dad */}
+          <div className="mt-14 md:mt-16">
+            <h3 className="font-serif text-2xl md:text-3xl text-white font-bold uppercase tracking-wider text-center mb-2">
+              Robert &amp; His Dad
+            </h3>
+            <p className="text-royal-text-muted text-sm md:text-base text-center mb-8">The craft runs in the family. Tap a photo to see it bigger.</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              {FAMILY_PHOTOS.map((p, i) => (
+                <button key={p.src} type="button" onClick={() => setOpenPhoto(i)}
+                  className="relative aspect-square overflow-hidden border border-royal-border bg-royal-bg group">
+                  <img src={p.src} alt={p.alt} loading="lazy" style={{ objectPosition: p.pos }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <span className="absolute bottom-2 left-2 right-2 text-left text-xs font-bold text-white bg-royal-bg/80 px-2 py-1 w-fit">{p.alt}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
+
+      {openPhoto !== null && (
+        <Lightbox photos={FAMILY_PHOTOS} startIndex={openPhoto} title="Robert & His Dad" onClose={() => setOpenPhoto(null)} />
+      )}
 
       {/* The Royal Guarantee */}
       <section className="py-14 md:py-20 px-6 bg-royal-bg border-b border-royal-border-light">

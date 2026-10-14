@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { GalleryPhoto } from '../data/gallery';
 import { srcSetFor } from '../lib/images';
 import { useDialog } from '../lib/useDialog';
 
 interface LightboxProps {
-  photos: GalleryPhoto[];
+  photos: { src: string; alt: string }[];
   startIndex: number;
   title?: string;
   onClose: () => void;
