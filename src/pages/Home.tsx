@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { Testimonials } from '../components/Testimonials';
 import { FaqAccordion } from '../components/FaqAccordion';
-import { ArrowRight, CheckCircle2, ChefHat, Bath, Armchair, Hammer, ShieldCheck, DoorOpen } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, DoorOpen } from 'lucide-react';
 import { BUSINESS } from '../data/business';
-import { GALLERY_CATEGORIES, GALLERY_PHOTOS, photosFor, type GalleryCategory } from '../data/gallery';
-import { Lightbox } from '../components/Lightbox';
+import { ProjectShowcase } from '../components/ProjectShowcase';
 
-const CATEGORY_ICONS: Record<GalleryCategory, React.ReactNode> = {
-  kitchens: <ChefHat className="w-5 h-5" />,
-  bathrooms: <Bath className="w-5 h-5" />,
-  furniture: <Armchair className="w-5 h-5" />,
-  'built-ins': <Hammer className="w-5 h-5" />,
-};
 
 const DOOR_PHOTOS = [
   { src: '/photos/web/wide-belt-sander-exit.jpg', alt: 'Finished mitered door coming off the wide-belt sander', label: 'Finished door', span: 'col-span-2 aspect-[3/2]' },
@@ -24,9 +17,6 @@ const DOOR_PHOTOS = [
 ];
 
 export function Home() {
-  const [openCategory, setOpenCategory] = useState<GalleryCategory | null>(null);
-  const openCat = GALLERY_CATEGORIES.find(c => c.id === openCategory);
-
   return (
     <div className="w-full">
       <Hero />
@@ -70,52 +60,7 @@ export function Home() {
           </div>
 
           <div className="lg:col-span-7">
-            <div className={`relative aspect-[3/2] border border-royal-border overflow-hidden mb-4 group ${GALLERY_PHOTOS.length ? 'hidden sm:block' : ''}`}>
-              <img
-                src="/photos/web/powermatic-planer-shop.jpg"
-                alt="Robert at the planer in the Royal Brand Woodworking shop"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/70 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-3 left-3 text-xs font-bold uppercase tracking-[0.2em] text-royal-gold bg-royal-bg/80 px-2 py-1 border border-royal-border">
-                The Shop · NE Portland
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {GALLERY_CATEGORIES.map(c => {
-                const photos = photosFor(c.id);
-                const has = photos.length > 0;
-                return (
-                  <button
-                    key={c.id}
-                    type="button"
-                    disabled={!has}
-                    onClick={() => setOpenCategory(c.id)}
-                    aria-label={has ? `See ${photos.length} ${c.title} photos` : c.title}
-                    className={`group text-left bg-royal-charcoal border border-royal-border overflow-hidden transition-colors ${has ? 'hover:border-royal-gold/60 cursor-pointer' : 'cursor-default'}`}
-                  >
-                    {has && (
-                      <div className="relative aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
-                        <img src={photos[0].thumb} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <span className="absolute bottom-2 right-2 bg-royal-bg/85 text-white text-xs font-bold px-2 py-1">{photos.length} photos</span>
-                      </div>
-                    )}
-                    <div className="p-3 sm:p-5">
-                      <div className="flex items-center gap-2 sm:gap-3 sm:mb-2">
-                        <span className="text-royal-gold hidden sm:inline">{CATEGORY_ICONS[c.id]}</span>
-                        <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">{c.title}</h3>
-                      </div>
-                      <p className="hidden sm:block text-xs text-royal-text-muted leading-relaxed">{c.text}</p>
-                      {has && <p className="text-royal-gold text-xs font-bold mt-1 sm:mt-2">See photos →</p>}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <Link to="/services" className="inline-flex items-center gap-2 mt-3 py-3 text-royal-gold text-xs font-bold uppercase tracking-[0.15em] hover:text-white transition-colors">
-              See All Services <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <ProjectShowcase />
           </div>
         </div>
       </section>
@@ -185,10 +130,6 @@ export function Home() {
           </div>
         </div>
       </section>
-
-      {openCat && (
-        <Lightbox photos={photosFor(openCat.id)} startIndex={0} title={openCat.title} onClose={() => setOpenCategory(null)} />
-      )}
 
       <Testimonials />
       <FaqAccordion />

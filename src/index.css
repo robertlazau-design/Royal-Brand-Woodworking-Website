@@ -103,6 +103,15 @@ body {
   animation: fadeInUp 0.7s ease-out both;
 }
 
+/* Quick crossfade when a photo is swapped */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out both;
+}
+
 /* Stagger delays */
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }

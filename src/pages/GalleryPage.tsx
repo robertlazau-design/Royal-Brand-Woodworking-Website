@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
 import { GALLERY_CATEGORIES, GALLERY_PHOTOS, type GalleryCategory } from '../data/gallery';
 import { Lightbox } from '../components/Lightbox';
@@ -11,7 +11,12 @@ const FILTERS: { id: GalleryCategory | 'all'; label: string }[] = [
 ];
 
 export function GalleryPage() {
-  const [filter, setFilter] = useState<GalleryCategory | 'all'>('all');
+  // ?c=kitchens opens the page already filtered (used by the home page "See all" link).
+  const [params] = useSearchParams();
+  const fromUrl = params.get('c');
+  const [filter, setFilter] = useState<GalleryCategory | 'all'>(
+    GALLERY_CATEGORIES.some(c => c.id === fromUrl) ? (fromUrl as GalleryCategory) : 'all',
+  );
   const [open, setOpen] = useState<number | null>(null);
   const photos = filter === 'all' ? GALLERY_PHOTOS : GALLERY_PHOTOS.filter(p => p.category === filter);
   const current = FILTERS.find(f => f.id === filter)!;
