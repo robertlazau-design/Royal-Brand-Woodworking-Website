@@ -17,7 +17,7 @@ export function RoyalLogo({ className = "", iconOnly = false, size = 'md' }: Roy
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <img
-        src="/logo.png"
+        src="/logo-sm.png"
         alt="Royal Brand Woodworking"
         className={`${sizeMap[size]} object-contain rounded-sm`}
       />

@@ -111,7 +111,7 @@ export function FaqAccordion() {
 
               <div className="p-8 md:p-10 space-y-8">
                 <div className="flex items-center gap-4">
-                  <img src="/logo.png" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
+                  <img src="/logo-sm.png" alt="Royal Brand Woodworking" className="w-12 h-12 object-contain" />
                   <div>
                     <p className="text-royal-gold text-xs font-bold uppercase tracking-[0.2em] mb-1">Still have questions?</p>
                     <h3 className="font-serif text-xl font-bold leading-tight uppercase tracking-wide">Talk to Robert</h3>

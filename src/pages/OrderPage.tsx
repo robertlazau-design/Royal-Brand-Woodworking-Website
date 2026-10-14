@@ -15,6 +15,7 @@ import {
 import { parseInches, formatInches } from '../lib/fractions';
 import { submitToWeb3Forms } from '../lib/submitForm';
 import { BUSINESS } from '../data/business';
+import { smallPhoto } from '../lib/images';
 
 /* ───── types & state ───── */
 
@@ -241,7 +242,7 @@ const STEPS = [
 /* ───── small UI pieces ───── */
 
 const inputBase =
-  'w-full bg-royal-bg border text-white px-3.5 py-3 text-sm focus:outline-none focus:border-royal-gold transition-colors placeholder:text-royal-text-muted/40';
+  'w-full bg-royal-bg border text-white px-3.5 py-3 text-base sm:text-sm focus:outline-none focus:border-royal-gold transition-colors placeholder:text-royal-text-muted/40';
 
 function fieldBorder(invalid: boolean) {
   return invalid ? 'border-red-400/70' : 'border-royal-border';
@@ -530,7 +531,7 @@ export function OrderPage() {
       <section className="py-20 md:py-24 bg-royal-bg text-royal-text min-h-screen relative overflow-clip print:hidden">
         {/* Ambient header image */}
         <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
-          <img src="/photos/web/wide-belt-sander-exit.jpg" alt="" className="w-full h-full object-cover opacity-10" />
+          <img src={smallPhoto("/photos/web/wide-belt-sander-exit.jpg")} alt="" className="w-full h-full object-cover opacity-10" />
           <div className="absolute inset-0 bg-gradient-to-b from-royal-bg/40 via-royal-bg/85 to-royal-bg" />
         </div>
 

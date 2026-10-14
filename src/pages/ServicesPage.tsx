@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layers, ChefHat, Bath, Armchair, Hammer, DoorOpen, Phone } from 'lucide-react';
 import { BUSINESS } from '../data/business';
+import { srcSetFor, smallPhoto } from '../lib/images';
 
 const SPECIALTIES = [
   { icon: <ChefHat className="w-5 h-5" />, title: 'Kitchen Remodels', text: "New cabinets designed for your kitchen, built in Robert's shop and installed by him." },
@@ -34,7 +35,7 @@ export function ServicesPage() {
       <section className="relative pt-14 pb-12 md:pt-32 md:pb-20 px-6 border-b border-royal-border-light overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/photos/web/sliding-table-saw-action.jpg"
+            src={smallPhoto("/photos/web/sliding-table-saw-action.jpg")}
             alt=""
             className="w-full h-full object-cover opacity-15"
           />
@@ -125,7 +126,7 @@ export function ServicesPage() {
             {DOOR_STEPS.map((step, i) => (
               <li key={step.title} className="bg-royal-bg border border-royal-border flex sm:block">
                 <div className="w-28 shrink-0 aspect-square sm:w-auto sm:aspect-[3/2] overflow-hidden">
-                  <img src={step.img} alt={step.text} loading="lazy" className="w-full h-full object-cover" />
+                  <img src={step.img} srcSet={srcSetFor(step.img)} sizes="(max-width: 639px) 112px, (max-width: 1023px) 50vw, 25vw" alt={step.text} loading="lazy" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4 sm:p-5">
                   <p className="text-royal-gold text-sm font-bold mb-1">Step {i + 1}</p>

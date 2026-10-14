@@ -6,6 +6,7 @@ import { FaqAccordion } from '../components/FaqAccordion';
 import { CheckCircle2, ShieldCheck, DoorOpen } from 'lucide-react';
 import { BUSINESS } from '../data/business';
 import { ProjectShowcase } from '../components/ProjectShowcase';
+import { srcSetFor } from '../lib/images';
 
 
 const DOOR_PHOTOS = [
@@ -122,7 +123,7 @@ export function Home() {
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
             {DOOR_PHOTOS.map((photo, i) => (
               <div key={photo.src} className={`relative ${photo.span} ${i >= 3 ? 'hidden sm:block' : ''} bg-royal-bg border border-royal-border overflow-hidden group`}>
-                <img src={photo.src} alt={photo.alt} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src={photo.src} srcSet={srcSetFor(photo.src)} sizes="(max-width: 1023px) 50vw, 25vw" alt={photo.alt} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-bg/80 via-transparent to-transparent pointer-events-none" />
                 <span className="absolute bottom-2 left-2 text-xs font-bold text-white bg-royal-bg/70 px-2 py-0.5">{photo.label}</span>
               </div>

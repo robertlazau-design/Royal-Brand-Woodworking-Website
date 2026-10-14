@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BUSINESS } from '../data/business';
 import { MapPin, Hammer, Users, Shield, Star, Award, ChevronRight } from 'lucide-react';
+import { srcSetFor, smallPhoto } from '../lib/images';
 
 export function AboutPage() {
   return (
@@ -11,7 +12,7 @@ export function AboutPage() {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/photos/web/door-clamp-overview.jpg"
+            src={smallPhoto("/photos/web/door-clamp-overview.jpg")}
             alt="Royal Brand Woodworking workshop in Portland"
             className="w-full h-full object-cover opacity-20"
           />
@@ -102,6 +103,9 @@ export function AboutPage() {
               <div className="aspect-[4/3] bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                 <img
                   src="/photos/web/surfacing-lumber-planer.jpg"
+                  srcSet={srcSetFor("/photos/web/surfacing-lumber-planer.jpg")}
+                  sizes="(max-width: 1023px) 100vw, 45vw"
+                  loading="lazy"
                   alt="Robert feeding a board through the planer in his Portland shop"
                   className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 />
@@ -116,6 +120,9 @@ export function AboutPage() {
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                   <img
                     src="/photos/web/fine-joint-chisel.jpg"
+                  srcSet={srcSetFor("/photos/web/fine-joint-chisel.jpg")}
+                  sizes="(max-width: 1023px) 50vw, 22vw"
+                  loading="lazy"
                     alt="Robert tapping a door joint together by hand"
                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                   />
@@ -127,6 +134,9 @@ export function AboutPage() {
                 <div className="aspect-square bg-royal-charcoal border border-royal-border overflow-hidden relative group">
                   <img
                     src="/photos/web/hand-sanding-door.jpg"
+                  srcSet={srcSetFor("/photos/web/hand-sanding-door.jpg")}
+                  sizes="(max-width: 1023px) 50vw, 22vw"
+                  loading="lazy"
                     alt="Hand sanding custom shaker door in shop"
                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                   />
@@ -235,6 +245,9 @@ export function AboutPage() {
               <div className="aspect-[4/3] bg-royal-bg border border-royal-border overflow-hidden relative group">
                 <img
                   src="/photos/web/measuring-cutlist.jpg"
+                  srcSet={srcSetFor("/photos/web/measuring-cutlist.jpg")}
+                  sizes="(max-width: 1023px) 100vw, 35vw"
+                  loading="lazy"
                   alt="Robert checking parts against the cut list"
                   className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 />

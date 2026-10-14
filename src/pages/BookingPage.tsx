@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { submitToWeb3Forms } from '../lib/submitForm';
 import { BUSINESS } from '../data/business';
 import { Calendar, Clock, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle, CalendarCheck, RotateCcw, Send } from 'lucide-react';
+import { smallPhoto } from '../lib/images';
 
 /* ───── helpers ───── */
 function getDaysInMonth(year: number, month: number) {
@@ -36,6 +37,17 @@ export function BookingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // On phones the next step appears below the fold — glide to it so the tap visibly "does something".
+  const timesRef = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const isNarrow = () => window.matchMedia('(max-width: 1023px)').matches;
+  useEffect(() => {
+    if (selectedFullDate && isNarrow()) timesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [selectedFullDate]);
+  useEffect(() => {
+    if (selectedTime && isNarrow()) detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [selectedTime]);
 
   /* ── month grid ── */
   const calendarGrid = useMemo(() => {
@@ -322,7 +334,7 @@ export function BookingPage() {
       {/* Background ambient image */}
       <div className="absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden pointer-events-none">
         <img
-          src="/photos/web/planed-hardwood-boards.jpg"
+          src={smallPhoto("/photos/web/planed-hardwood-boards.jpg")}
           alt=""
           className="w-full h-full object-cover opacity-10"
         />
@@ -332,7 +344,7 @@ export function BookingPage() {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <img src="/logo.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-6" />
+          <img src="/logo-sm.png" alt="Royal Brand Woodworking" className="w-16 h-16 object-contain mx-auto mb-6" />
           <div className="flex items-center justify-center gap-4 text-royal-gold mb-4">
             <div className="w-12 h-[1px] bg-royal-gold" />
             <span className="text-xs font-bold tracking-[0.2em] uppercase">Book an Estimate</span>
@@ -484,7 +496,7 @@ export function BookingPage() {
 
             {/* Time Slots — shown after date is selected */}
             {selectedFullDate && (
-              <div className="mt-8 pt-6 border-t border-royal-border" style={{ animation: 'fadeSlideUp 0.4s ease-out' }}>
+              <div ref={timesRef} className="mt-8 pt-6 border-t border-royal-border scroll-mt-24" style={{ animation: 'fadeSlideUp 0.4s ease-out' }}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold flex items-center gap-2">
                     <Clock className="w-4 h-4 text-royal-gold" /> Available Times
@@ -516,9 +528,9 @@ export function BookingPage() {
           </div>
 
           {/* ─── Right Sidebar (2 cols) ─── */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Booking Summary Card */}
-            <div className="bg-royal-charcoal border border-royal-border p-6">
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            {/* Booking Summary Card (after the form on phones, first on desktop) */}
+            <div className="order-3 lg:order-1 bg-royal-charcoal border border-royal-border p-6">
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-royal-gold" /> Booking Summary
               </h3>
@@ -561,7 +573,7 @@ export function BookingPage() {
             </div>
 
             {/* Contact & Project Details */}
-            <div className={`bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
+            <div ref={detailsRef} className={`order-1 lg:order-2 scroll-mt-24 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
               step >= 3 ? 'opacity-100' : 'opacity-40 pointer-events-none'
             }`}>
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
@@ -575,7 +587,7 @@ export function BookingPage() {
                     placeholder="Full Name *"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -585,7 +597,7 @@ export function BookingPage() {
                     placeholder="Email Address *"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -595,7 +607,7 @@ export function BookingPage() {
                     placeholder="Phone Number *"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -605,7 +617,7 @@ export function BookingPage() {
                     placeholder="Project Address *"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
                   />
                 </div>
                 <div className="relative">
@@ -615,14 +627,14 @@ export function BookingPage() {
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     rows={3}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-sm resize-none"
+                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm resize-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Submit for Verification */}
-            <div className={`bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
+            <div className={`order-2 lg:order-3 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
               step >= 3 ? 'opacity-100' : 'opacity-40 pointer-events-none'
             }`}>
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">

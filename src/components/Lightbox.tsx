@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { GalleryPhoto } from '../data/gallery';
+import { srcSetFor } from '../lib/images';
 
 interface LightboxProps {
   photos: GalleryPhoto[];
@@ -63,6 +64,8 @@ export function Lightbox({ photos, startIndex, title, onClose }: LightboxProps) 
         <img
           key={photo.src}
           src={photo.src}
+          srcSet={srcSetFor(photo.src)}
+          sizes="100vw"
           alt={photo.alt}
           className="max-w-full max-h-full object-contain animate-fade-in-up"
           style={{ animationDuration: '0.25s' }}

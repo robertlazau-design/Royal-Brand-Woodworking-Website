@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight, Phone } from 'lucide-react';
 import { BUSINESS } from '../data/business';
@@ -15,6 +16,13 @@ const navLinks = [
 export function Navigation() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Phone menu: close on any navigation, and stop the page scrolling underneath while it's open.
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -79,6 +87,7 @@ export function Navigation() {
         <button 
           className="flex-shrink-0 p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-expanded={mobileOpen}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
@@ -86,6 +95,13 @@ export function Navigation() {
         </div>
 
       </div>
+
+      {/* Tap outside the phone menu to close it */}
+      {/* (Rendered on <body>: the nav's blur effect would otherwise shrink a fixed overlay to the nav's size.) */}
+      {mobileOpen && createPortal(
+        <div className="md:hidden fixed inset-0 bg-black/60 z-40" onClick={() => setMobileOpen(false)} aria-hidden />,
+        document.body,
+      )}
 
       {/* Mobile Nav Menu */}
       <div className={`md:hidden absolute top-full left-0 w-full bg-royal-charcoal border-b border-royal-border-light shadow-xl overflow-hidden transition-all duration-500 ease-in-out ${

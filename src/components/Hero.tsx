@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Star, ChevronDown, Phone } from 'lucide-react';
 import { BUSINESS } from '../data/business';
+import { srcSetFor } from '../lib/images';
 
 export function Hero() {
   return (
@@ -9,7 +10,9 @@ export function Hero() {
       {/* Phones: photo is a clear band across the top. Desktop: photo fills the right side, beside the text. */}
       <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-y-0 md:left-[34%] lg:left-[42%] xl:left-[34%] md:right-0 z-0 overflow-hidden">
         <img 
-          src="/photos/web/crosscutting-lumber.jpg" 
+          src="/photos/web/crosscutting-lumber.jpg"
+          srcSet={srcSetFor("/photos/web/crosscutting-lumber.jpg")}
+          sizes="(max-width: 767px) 100vw, 66vw"
           alt="Robert Burlacu crosscutting a board on the miter saw in the Royal Brand Woodworking shop" 
           className="w-full h-full object-cover object-[45%_center] md:object-[18%_center] scale-105"
           loading="eager"

@@ -12,6 +12,7 @@ import { OrderPage } from './pages/OrderPage';
 import { BookingPage } from './pages/BookingPage';
 import { AboutPage } from './pages/AboutPage';
 import { GalleryPage } from './pages/GalleryPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/estimator" element={<Navigate to="/order" replace />} />
+            <Route path="*" element={<NotFoundPage />} />
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/gallery" element={<GalleryPage />} />

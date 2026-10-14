@@ -51,7 +51,7 @@ export function Footer() {
                 <div className="w-4 h-[1px] bg-royal-gold" />
                 Navigate
               </h4>
-              <ul className="space-y-3.5 text-sm">
+              <ul className="grid grid-cols-2 gap-x-4 md:grid-cols-1 md:space-y-3.5 text-sm">
                 {[
                   { label: 'Home', to: '/' },
                   { label: 'About Us', to: '/about' },
@@ -61,7 +61,7 @@ export function Footer() {
                   { label: 'Book an Estimate', to: '/booking' },
                 ].map((link) => (
                   <li key={link.to}>
-                    <Link to={link.to} className="text-royal-text-muted font-light hover:text-royal-gold transition-colors group flex items-center gap-2">
+                    <Link to={link.to} className="text-royal-text-muted font-light hover:text-royal-gold transition-colors group flex items-center gap-2 py-2.5 md:py-0">
                       <ChevronRight className="w-3 h-3 text-royal-gold/0 group-hover:text-royal-gold transition-all -ml-4 group-hover:ml-0 opacity-0 group-hover:opacity-100" />
                       {link.label}
                     </Link>
@@ -101,7 +101,7 @@ export function Footer() {
                   </div>
                   <div>
                     <p className="text-white text-xs font-bold uppercase tracking-wider mb-0.5">Workshop</p>
-                    <p className="text-royal-text-muted font-light">{BUSINESS.street}<br />{BUSINESS.cityStateZip}</p>
+                    <a href={BUSINESS.mapsUrl} target="_blank" rel="noopener noreferrer" className="block text-royal-text-muted font-light hover:text-royal-gold transition-colors">{BUSINESS.street}<br />{BUSINESS.cityStateZip}</a>
                     <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="text-royal-gold/80 text-xs hover:text-royal-gold transition-colors">{BUSINESS.instagramHandle}</a>
                   </div>
                 </li>
@@ -159,7 +159,7 @@ export function Footer() {
           {/* Divider with logo */}
           <div className="flex items-center gap-6 mb-8">
             <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-royal-border" />
-            <img src="/logo.png" alt="Royal Brand" className="w-8 h-8 object-contain opacity-30" />
+            <img src="/logo-sm.png" alt="Royal Brand" className="w-8 h-8 object-contain opacity-30" />
             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-royal-border" />
           </div>
 

@@ -133,7 +133,7 @@ export function Testimonials() {
       {/* Call to action */}
       <section className="py-14 md:py-20 bg-royal-charcoal border-b border-royal-border-light text-center">
         <div className="max-w-3xl mx-auto px-6">
-          <img src="/logo.png" alt="" className="w-14 h-14 object-contain mx-auto mb-6" />
+          <img src="/logo-sm.png" alt="" className="w-14 h-14 object-contain mx-auto mb-6" />
           <h2 className="font-serif text-3xl md:text-5xl text-white font-bold uppercase tracking-wide mb-4">
             Ready to <span className="text-royal-gold">Get Started?</span>
           </h2>

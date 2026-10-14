@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChefHat, Bath, Armchair, Hammer, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { GALLERY_CATEGORIES, photosFor, type GalleryCategory } from '../data/gallery';
+import { srcSetFor } from '../lib/images';
 
 const ICONS: Record<GalleryCategory, React.ReactNode> = {
   kitchens: <ChefHat className="w-5 h-5" />,
@@ -57,6 +58,8 @@ export function ProjectShowcase() {
         <img
           key={current.src}
           src={current.src}
+          srcSet={srcSetFor(current.src)}
+          sizes="(max-width: 1023px) 100vw, 55vw"
           alt={current.alt}
           className="w-full h-full object-cover animate-fade-in group-hover:scale-[1.02] transition-transform duration-700"
           loading="lazy"

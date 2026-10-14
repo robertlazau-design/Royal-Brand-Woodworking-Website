@@ -9,6 +9,7 @@ export const BUSINESS = {
   street: '6712 NE 46th Ave',
   cityStateZip: 'Portland, OR 97218',
   ccb: '210239',
+  mapsUrl: 'https://maps.google.com/?q=6712+NE+46th+Ave,+Portland,+OR+97218',
   instagram: 'https://www.instagram.com/royalbrandwoodworking/',
   instagramHandle: '@royalbrandwoodworking',
 };
