@@ -97,7 +97,7 @@ export function Home() {
                   >
                     {has && (
                       <div className="relative aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
-                        <img src={photos[0].src} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <img src={photos[0].thumb} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <span className="absolute bottom-2 right-2 bg-royal-bg/85 text-white text-xs font-bold px-2 py-1">{photos.length} photos</span>
                       </div>
                     )}

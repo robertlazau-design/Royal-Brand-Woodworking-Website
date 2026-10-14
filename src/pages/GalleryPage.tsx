@@ -49,7 +49,7 @@ export function GalleryPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
               {photos.map((p, i) => (
                 <button key={p.src} onClick={() => setOpen(i)} className="relative aspect-square overflow-hidden bg-royal-charcoal group">
-                  <img src={p.src} alt={p.alt} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={p.thumb} alt={p.alt} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </button>
               ))}
             </div>

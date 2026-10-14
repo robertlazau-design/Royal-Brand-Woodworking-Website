@@ -37,7 +37,7 @@ export function Lightbox({ photos, startIndex, title, onClose }: LightboxProps) 
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/95 flex flex-col print:hidden"
+      className="fixed inset-0 z-[100] bg-black flex flex-col print:hidden"
       role="dialog"
       aria-modal="true"
       aria-label={title ? `${title} photos` : 'Photos'}
