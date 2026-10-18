@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { MobileActionBar, useShowMobileActionBar } from './components/MobileActionBar';
+import { PageMeta } from './components/PageMeta';
 
 // Pages
 import { Home } from './pages/Home';
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <PageMeta />
       <div className="min-h-screen bg-royal-bg text-royal-text font-sans selection:bg-royal-gold selection:text-royal-charcoal relative">
         <Navigation />
 
