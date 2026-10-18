@@ -11,7 +11,9 @@ export async function submitToWeb3Forms(fields: Record<string, string>): Promise
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ access_key: accessKey, ...fields }),
+      // replyto lets the shop hit Reply and answer the customer directly.
+      // botcheck is Web3Forms' spam trap; real visitors never fill it.
+      body: JSON.stringify({ access_key: accessKey, ...(fields.email ? { replyto: fields.email } : {}), botcheck: '', ...fields }),
     });
     result = await response.json();
   } catch {
