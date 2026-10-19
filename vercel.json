@@ -1,5 +1,25 @@
 {
+  "redirects": [
+    {
+      "source": "/contact",
+      "destination": "/booking",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/booking",
+      "permanent": true
+    },
+    {
+      "source": "/estimator",
+      "destination": "/order",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }

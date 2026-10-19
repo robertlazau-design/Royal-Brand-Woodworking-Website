@@ -12,4 +12,9 @@ export const BUSINESS = {
   mapsUrl: 'https://maps.google.com/?q=6712+NE+46th+Ave,+Portland,+OR+97218',
   instagram: 'https://www.instagram.com/royalbrandwoodworking/',
   instagramHandle: '@royalbrandwoodworking',
+  siteUrl: 'https://www.royalbrandwoodworking.com',
+  // Home page hero video. Put a short, silent, looping clip in public/video/
+  // (an .mp4 under ~6 MB) and set its path here, e.g. '/video/hero.mp4'.
+  // Leave it null to show the photo.
+  heroVideo: null as string | null,
 };

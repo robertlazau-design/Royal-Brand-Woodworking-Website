@@ -19,6 +19,21 @@ export function Hero() {
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
+        {/* Optional hero video (set BUSINESS.heroVideo). The photo above stays as
+            the poster and the fallback; people who prefer reduced motion keep the photo. */}
+        {BUSINESS.heroVideo && (
+          <video
+            className="absolute inset-0 w-full h-full object-cover object-[45%_center] md:object-[18%_center] motion-reduce:hidden"
+            src={BUSINESS.heroVideo}
+            poster="/photos/web/crosscutting-lumber.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+        )}
         {/* Layered overlays for depth */}
         <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-royal-bg to-transparent z-10 hidden md:block" />
         <div className="absolute inset-0 bg-gradient-to-t from-royal-bg via-transparent via-40% to-royal-bg/30 z-10 hidden md:block" />
