@@ -1,10 +1,10 @@
 // Sends a form to the shop's inbox through Web3Forms.
-// The inbox is whichever email the VITE_WEB3FORMS_ACCESS_KEY was created for.
+// The inbox is whichever email this access key was created for.
+// Web3Forms keys are public by design (they always end up in the page), so it lives here.
+const WEB3FORMS_ACCESS_KEY = 'd5683ef0-75e8-4719-9574-0dddca02c49d';
+
 export async function submitToWeb3Forms(fields: Record<string, string>): Promise<void> {
-  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-  if (!accessKey) {
-    throw new Error('Online submissions are not set up yet. Please call or email us directly.');
-  }
+  const accessKey = WEB3FORMS_ACCESS_KEY;
 
   let result: { success?: boolean; message?: string };
   try {
