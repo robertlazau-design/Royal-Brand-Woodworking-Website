@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Star, ChevronDown, Phone } from 'lucide-react';
 import { BUSINESS } from '../data/business';
-import { srcSetFor } from '../lib/images';
 
 export function Hero() {
   return (
@@ -10,11 +9,11 @@ export function Hero() {
       {/* Phones: photo is a clear band across the top. Desktop: photo fills the right side, beside the text. */}
       <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-y-0 md:left-[34%] lg:left-[42%] xl:left-[34%] md:right-0 z-0 overflow-hidden">
         <img 
-          src="/photos/web/crosscutting-lumber.jpg"
-          srcSet={srcSetFor("/photos/web/crosscutting-lumber.jpg")}
+          src="/photos/web/kitchen-hero.jpg"
+          srcSet="/photos/web/kitchen-hero-sm.jpg 800w, /photos/web/kitchen-hero.jpg 1920w"
           sizes="(max-width: 767px) 100vw, 66vw"
-          alt="Robert Burlacu crosscutting a board on the miter saw in the Royal Brand Woodworking shop" 
-          className="w-full h-full object-cover object-[45%_center] md:object-[18%_center] scale-105"
+          alt="Custom kitchen by Royal Brand Woodworking: wood cabinetry, a long island with a white countertop and a panel-front fridge" 
+          className="w-full h-full object-cover object-[50%_60%] scale-105"
           loading="eager"
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
@@ -23,9 +22,9 @@ export function Hero() {
             the poster and the fallback; people who prefer reduced motion keep the photo. */}
         {BUSINESS.heroVideo && (
           <video
-            className="absolute inset-0 w-full h-full object-cover object-[45%_center] md:object-[18%_center] motion-reduce:hidden"
+            className="absolute inset-0 w-full h-full object-cover object-[50%_60%] motion-reduce:hidden"
             src={BUSINESS.heroVideo}
-            poster="/photos/web/crosscutting-lumber.jpg"
+            poster="/photos/web/kitchen-hero.jpg"
             autoPlay
             muted
             loop
