@@ -18,3 +18,15 @@ export const BUSINESS = {
   // Leave it null to show the photo.
   heroVideo: null as string | null,
 };
+
+// "How did you find us?" choices on the booking and door order forms (optional for the customer).
+// The answer comes through in each form email as found_us, so we can see which channels bring work.
+export const LEAD_SOURCES = [
+  'Google search',
+  'Google Maps',
+  'Instagram',
+  'Friend or family',
+  'Past customer',
+  'Contractor or designer',
+  'Other',
+];

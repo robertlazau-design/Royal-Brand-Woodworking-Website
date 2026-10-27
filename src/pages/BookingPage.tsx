@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { submitToWeb3Forms } from '../lib/submitForm';
-import { BUSINESS } from '../data/business';
-import { Calendar, Clock, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle, CalendarCheck, RotateCcw, Send } from 'lucide-react';
+import { BUSINESS, LEAD_SOURCES } from '../data/business';
+import { Calendar, Clock, ChevronRight, ChevronLeft, MapPin, User, Phone, Mail, FileText, Shield, CheckCircle, CalendarCheck, RotateCcw, Send, Search } from 'lucide-react';
 import { smallPhoto } from '../lib/images';
 
 /* ───── helpers ───── */
@@ -32,6 +32,7 @@ export function BookingPage() {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
+  const [foundUs, setFoundUs] = useState('');
 
   // Verification flow state
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -183,6 +184,7 @@ export function BookingPage() {
         phone,
         address,
         notes,
+        found_us: foundUs || 'Not answered',
         requested_date: formattedDate ?? '',
         requested_time: selectedTime,
       });
@@ -350,9 +352,9 @@ export function BookingPage() {
             <span className="text-xs font-bold tracking-[0.2em] uppercase">Book an Estimate</span>
             <div className="w-12 h-[1px] bg-royal-gold" />
           </div>
-          <h2 className="font-serif text-3xl md:text-5xl text-white font-bold mb-6 tracking-wide uppercase">
+          <h1 className="font-serif text-3xl md:text-5xl text-white font-bold mb-6 tracking-wide uppercase">
             Have Robert Come Take a Look
-          </h2>
+          </h1>
           <p className="text-royal-text-muted text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
             Robert comes to your home or business, measures, and talks through your project with you.
             <br/><br/>
@@ -585,6 +587,7 @@ export function BookingPage() {
                   <input
                     type="text"
                     placeholder="Full Name *"
+                    aria-label="Full Name"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
@@ -595,6 +598,7 @@ export function BookingPage() {
                   <input
                     type="email"
                     placeholder="Email Address *"
+                    aria-label="Email Address"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
@@ -605,6 +609,7 @@ export function BookingPage() {
                   <input
                     type="tel"
                     placeholder="Phone Number *"
+                    aria-label="Phone Number"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
@@ -615,6 +620,7 @@ export function BookingPage() {
                   <input
                     type="text"
                     placeholder="Project Address *"
+                    aria-label="Project Address"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
@@ -624,11 +630,25 @@ export function BookingPage() {
                   <FileText className="absolute left-3 top-3 w-4 h-4 text-royal-text-muted/50" />
                   <textarea
                     placeholder="Brief project description (optional)"
+                    aria-label="Brief project description (optional)"
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     rows={3}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm resize-none"
                   />
+                </div>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50 pointer-events-none" />
+                  <select
+                    aria-label="How did you find us? (optional)"
+                    value={foundUs}
+                    onChange={e => setFoundUs(e.target.value)}
+                    className={`w-full bg-royal-charcoal border border-royal-border pl-10 pr-10 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm appearance-none cursor-pointer ${foundUs ? 'text-white' : 'text-royal-text-muted'}`}
+                  >
+                    <option value="">How did you find us?</option>
+                    {LEAD_SOURCES.map(s => <option key={s} value={s} className="text-white">{s}</option>)}
+                  </select>
+                  <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 w-4 h-4 text-royal-text-muted pointer-events-none" />
                 </div>
               </div>
             </div>
