@@ -645,7 +645,7 @@ export function BookingPage() {
                     onChange={e => setFoundUs(e.target.value)}
                     className={`w-full bg-royal-charcoal border border-royal-border pl-10 pr-10 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm appearance-none cursor-pointer ${foundUs ? 'text-white' : 'text-royal-text-muted'}`}
                   >
-                    <option value="">How did you find us? (optional)</option>
+                    <option value="">How did you find us?</option>
                     {LEAD_SOURCES.map(s => <option key={s} value={s} className="text-white">{s}</option>)}
                   </select>
                   <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 w-4 h-4 text-royal-text-muted pointer-events-none" />
