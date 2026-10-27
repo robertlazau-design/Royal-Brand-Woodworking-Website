@@ -57,6 +57,8 @@ export function BookingPage() {
     const prevMonthDays = getDaysInMonth(viewYear, viewMonth - 1);
 
     const cells: { date: number; month: number; year: number; isCurrentMonth: boolean; isToday: boolean; isPast: boolean; isWeekend: boolean; isBooked: boolean }[] = [];
+    // No same-day visits: the earliest day a customer can pick is tomorrow.
+    const firstBookable = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
     // Previous month trailing days
     for (let i = firstDay - 1; i >= 0; i--) {
@@ -68,7 +70,7 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: false,
         isToday: isSameDay(dt, today),
-        isPast: dt < new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        isPast: dt < firstBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
@@ -83,7 +85,7 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: true,
         isToday: isSameDay(dt, today),
-        isPast: dt < new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        isPast: dt < firstBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
@@ -99,7 +101,7 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: false,
         isToday: isSameDay(dt, today),
-        isPast: dt < new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        isPast: dt < firstBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
@@ -177,7 +179,7 @@ export function BookingPage() {
     setSubmitError(null);
     try {
       await submitToWeb3Forms({
-        subject: 'New Consultation Request - Royal Brand Woodworking',
+        subject: `Estimate Request — ${name.trim()} — ${selectedFullDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${selectedTime}`,
         from_name: name,
         name,
         email,
