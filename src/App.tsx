@@ -29,9 +29,11 @@ function MobileActionBarSpacer() {
   return useShowMobileActionBar() ? <div className="h-20 md:hidden print:hidden" aria-hidden /> : null;
 }
 
-export default function App() {
+// The whole site, minus the router. In the browser it runs inside BrowserRouter (below);
+// at build time src/entry-server.tsx renders it inside StaticRouter to pre-render each page.
+export function AppShell() {
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <PageMeta />
       <div className="min-h-screen bg-royal-bg text-royal-text font-sans selection:bg-royal-gold selection:text-royal-charcoal relative">
@@ -55,6 +57,14 @@ export default function App() {
         <MobileActionBar />
       </div>
       <Analytics />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <AppShell />
     </Router>
   );
 }

@@ -1,0 +1,13 @@
+{
+  "name": "Royal Brand Woodworking",
+  "short_name": "Royal Brand",
+  "description": "Custom cabinets, vanities, built-ins and furniture, handmade in Portland, OR.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "64x64", "type": "image/png" }
+  ]
+}

@@ -14,7 +14,7 @@ import {
 } from '../data/doorOptions';
 import { parseInches, formatInches } from '../lib/fractions';
 import { submitToWeb3Forms } from '../lib/submitForm';
-import { BUSINESS } from '../data/business';
+import { BUSINESS, LEAD_SOURCES } from '../data/business';
 import { smallPhoto } from '../lib/images';
 
 /* ───── types & state ───── */
@@ -34,6 +34,7 @@ interface OrderState {
   phone: string;
   email: string;
   project: string;
+  foundUs: string;
   doorType: string;
   doorTypeOther: string;
   doorStyle: string;
@@ -80,7 +81,7 @@ const newRow = (): DoorRow => ({
 });
 
 const emptyOrder = (): OrderState => ({
-  name: '', company: '', phone: '', email: '', project: '',
+  name: '', company: '', phone: '', email: '', project: '', foundUs: '',
   doorType: ENABLED_DOOR_TYPES.length === 1 ? ENABLED_DOOR_TYPES[0] : '', doorTypeOther: '',
   doorStyle: '', doorStyleOther: '',
   panelStyle: '', panelStyleOther: '',
@@ -447,6 +448,7 @@ export function OrderPage() {
         phone: order.phone.trim(),
         email: order.email.trim(),
         job_project_name: order.project.trim() || '-',
+        found_us: order.foundUs || 'Not answered',
         order_date: orderDate,
         door_type: specs.doorType,
         door_style: specs.doorStyle,
@@ -638,6 +640,21 @@ export function OrderPage() {
                       <FieldLabel htmlFor="project">Job / Project Name <span className="normal-case font-normal tracking-normal">(optional)</span></FieldLabel>
                       <IconInput id="project" icon={<FolderOpen className="w-4 h-4" />} placeholder="e.g. Miller kitchen remodel"
                         value={order.project} onChange={e => set('project', e.target.value)} />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <FieldLabel htmlFor="foundUs">How did you find us? <span className="normal-case font-normal tracking-normal">(optional)</span></FieldLabel>
+                      <div className="relative">
+                        <select
+                          id="foundUs"
+                          value={order.foundUs}
+                          onChange={e => set('foundUs', e.target.value)}
+                          className={`${inputBase} ${fieldBorder(false)} appearance-none cursor-pointer pr-10`}
+                        >
+                          <option value="">Choose one…</option>
+                          {LEAD_SOURCES.map(src => <option key={src} value={src}>{src}</option>)}
+                        </select>
+                        <ChevronRight className="w-4 h-4 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 text-royal-text-muted pointer-events-none" />
+                      </div>
                     </div>
                     <div className="sm:col-span-2 flex items-center gap-2 text-xs text-royal-text-muted">
                       <CalendarDays className="w-4 h-4 text-royal-gold" /> Order date: <span className="text-white">{orderDate}</span>

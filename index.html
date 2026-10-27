@@ -3,16 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Royal Brand Woodworking — Custom Cabinetry, Furniture & Carpentry | Portland, OR</title>
-    <meta name="description" content="Third-generation woodworker Robert Burlacu builds custom kitchens, bathroom vanities, built-ins and handmade furniture in Portland, OR. Licensed, bonded &amp; insured (CCB# 210239). Custom doors made to order." />
+    <!-- Title, description, og:title/description/url and canonical are swapped per page at build time
+         (scripts/prerender.mjs, from src/data/pages.ts). These are the home page's. -->
+    <title>Portland Cabinet Maker &amp; Carpenter | Royal Brand Woodworking</title>
+    <meta name="description" content="Custom kitchen cabinets, bathroom vanities, built-ins and furniture, handmade in Portland, OR by third-generation woodworker Robert Burlacu. CCB# 210239." />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#111111" />
     <!-- Link previews (texts, Facebook, etc.) point at the custom domain, royalbrandwoodworking.com. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Royal Brand Woodworking" />
-    <meta property="og:title" content="Royal Brand Woodworking — Custom Cabinets &amp; Furniture, Portland OR" />
-    <meta property="og:description" content="Kitchens, bathrooms and handmade furniture by third-generation woodworker Robert Burlacu. Licensed, bonded &amp; insured." />
+    <meta property="og:title" content="Portland Cabinet Maker &amp; Carpenter | Royal Brand Woodworking" />
+    <meta property="og:description" content="Custom kitchen cabinets, bathroom vanities, built-ins and furniture, handmade in Portland, OR by third-generation woodworker Robert Burlacu. CCB# 210239." />
     <meta property="og:url" content="https://www.royalbrandwoodworking.com/" />
     <link rel="canonical" href="https://www.royalbrandwoodworking.com/" />
     <meta property="og:image" content="https://www.royalbrandwoodworking.com/og-image.jpg" />
@@ -21,6 +24,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts load here, in parallel with the site's CSS (an @import inside the CSS made them wait for it). -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" />
     <!-- Business details for Google (one entity; matches the Google Business Profile) -->
     <script type="application/ld+json">
 {
