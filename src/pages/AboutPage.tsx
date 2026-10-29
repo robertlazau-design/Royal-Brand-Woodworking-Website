@@ -46,13 +46,11 @@ const GENERATIONS: { gen: string; name: string; location: string; desc: string; 
   },
 ];
 
-export function AboutPage() {
-  const [openPhoto, setOpenPhoto] = useState<number | null>(null);
-  const open = (p: FamilyPhoto) => setOpenPhoto(FAMILY_ORDER.indexOf(p));
-
-  // A family photo that opens the viewer when tapped.
-  const PhotoButton = ({ photo, className, caption = true }: { photo: FamilyPhoto; className: string; caption?: boolean }) => (
-    <button type="button" onClick={() => open(photo)} aria-label={`View photo: ${photo.alt}`}
+// A family photo that opens the viewer when tapped. (Kept outside AboutPage so the button
+// survives the viewer opening and gets focus back when it closes.)
+function PhotoButton({ photo, className, caption = true, onOpen }: { photo: FamilyPhoto; className: string; caption?: boolean; onOpen: (p: FamilyPhoto) => void }) {
+  return (
+    <button type="button" onClick={() => onOpen(photo)} aria-label={`View photo: ${photo.alt}`}
       className={`relative overflow-hidden border border-royal-border bg-royal-charcoal group ${className}`}>
       <img src={photo.src} alt={photo.alt} loading="lazy" style={{ objectPosition: photo.pos }}
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -64,6 +62,11 @@ export function AboutPage() {
       </span>
     </button>
   );
+}
+
+export function AboutPage() {
+  const [openPhoto, setOpenPhoto] = useState<number | null>(null);
+  const open = (p: FamilyPhoto) => setOpenPhoto(FAMILY_ORDER.indexOf(p));
 
   return (
     <div className="w-full bg-royal-bg text-white min-h-screen">
@@ -91,7 +94,7 @@ export function AboutPage() {
             </ul>
           </div>
           <div className="order-1 lg:order-2">
-            <PhotoButton photo={FAMILY.today} className="block w-full aspect-[16/10]" />
+            <PhotoButton onOpen={open} photo={FAMILY.today} className="block w-full aspect-[16/10]" />
           </div>
         </div>
       </section>
@@ -133,7 +136,7 @@ export function AboutPage() {
           </div>
 
           <div className="space-y-4 md:space-y-6">
-            <PhotoButton photo={FAMILY.album} className="block w-full aspect-[16/9]" />
+            <PhotoButton onOpen={open} photo={FAMILY.album} className="block w-full aspect-[16/9]" />
             {/* Craft close-ups — desktop/tablet only; phones already have plenty of photos on this page */}
             <div className="hidden sm:grid grid-cols-2 gap-4 md:gap-6">
               {[
@@ -170,7 +173,7 @@ export function AboutPage() {
               <li key={g.name} className="bg-royal-bg border border-royal-border flex md:block overflow-hidden">
                 {/* Photo: small square on phones, full-width on top from tablet up */}
                 {g.photo ? (
-                  <PhotoButton photo={g.photo} caption={false} className="block w-28 shrink-0 self-stretch md:w-full md:aspect-[4/3] border-0 md:border-b" />
+                  <PhotoButton onOpen={open} photo={g.photo} caption={false} className="block w-28 shrink-0 self-stretch md:w-full md:aspect-[4/3] border-0 md:border-b" />
                 ) : (
                   <div className="w-28 shrink-0 self-stretch md:w-full md:aspect-[4/3] md:border-b border-royal-border bg-gradient-to-br from-[#2a2117] to-royal-bg flex flex-col items-center justify-center text-center p-3">
                     <MapPin className="w-5 h-5 text-royal-gold mb-1.5" />
