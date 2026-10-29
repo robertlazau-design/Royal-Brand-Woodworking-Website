@@ -43,7 +43,7 @@ export function GalleryPage() {
               return (
                 <button key={f.id} role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
                   className={`shrink-0 px-5 py-3 text-sm font-bold uppercase tracking-wider border transition-colors ${
-                    active ? 'bg-royal-gold border-royal-gold text-white' : 'border-royal-border text-gray-300 hover:border-royal-gold hover:text-white'}`}>
+                    active ? 'bg-royal-gold border-royal-gold text-royal-charcoal' : 'border-royal-border text-gray-300 hover:border-royal-gold hover:text-white'}`}>
                   {f.label} <span className={active ? 'text-white/80' : 'text-royal-text-muted'}>({n})</span>
                 </button>
               );
@@ -68,7 +68,7 @@ export function GalleryPage() {
               <Instagram className="w-4 h-4" /> More on Instagram<span className="hidden sm:inline"> {BUSINESS.instagramHandle}</span>
             </a>
             <div>
-              <Link to="/booking" className="inline-block px-8 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+              <Link to="/booking" className="inline-block px-8 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
                 Start Your Project
               </Link>
             </div>

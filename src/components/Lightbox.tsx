@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { GalleryPhoto } from '../data/gallery';
 import { srcSetFor } from '../lib/images';
+import { useDialog } from '../lib/useDialog';
 
 interface LightboxProps {
   photos: GalleryPhoto[];
@@ -14,12 +15,13 @@ interface LightboxProps {
 export function Lightbox({ photos, startIndex, title, onClose }: LightboxProps) {
   const [index, setIndex] = useState(startIndex);
   const touchX = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialog(true, dialogRef, onClose);
   const count = photos.length;
   const go = (delta: number) => setIndex(i => (i + delta + count) % count);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') go(1);
       if (e.key === 'ArrowLeft') go(-1);
     };
@@ -38,7 +40,9 @@ export function Lightbox({ photos, startIndex, title, onClose }: LightboxProps) 
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black flex flex-col print:hidden"
+      ref={dialogRef}
+      tabIndex={-1}
+      className="fixed inset-0 z-[100] bg-black flex flex-col print:hidden outline-none"
       role="dialog"
       aria-modal="true"
       aria-label={title ? `${title} photos` : 'Photos'}

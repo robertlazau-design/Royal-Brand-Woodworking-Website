@@ -91,7 +91,7 @@ export function AboutPage() {
               <div className="pt-6">
                 <Link
                   to="/booking"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                 >
                   Book an Estimate
                 </Link>
@@ -234,7 +234,7 @@ export function AboutPage() {
               <div className="pt-2">
                 <Link
                   to="/booking"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                 >
                   Book an Estimate
                 </Link>

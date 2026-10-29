@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight, Phone } from 'lucide-react';
 import { BUSINESS } from '../data/business';
 import { RoyalLogo } from './RoyalLogo';
+import { useDialog } from '../lib/useDialog';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -16,6 +17,9 @@ const navLinks = [
 export function Navigation() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Keyboard: Tab cycles through the bar and the open menu, Escape closes it.
+  const navRef = useRef<HTMLElement>(null);
+  useDialog(mobileOpen, navRef, () => setMobileOpen(false));
 
   // Phone menu: close on any navigation, and stop the page scrolling underneath while it's open.
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
@@ -32,7 +36,7 @@ export function Navigation() {
   }, []);
 
   return (
-    <nav className={`print:hidden sticky top-0 z-50 w-full backdrop-blur-md border-b transition-all duration-500 py-3 px-6 md:px-12 ${
+    <nav ref={navRef} className={`print:hidden sticky top-0 z-50 w-full backdrop-blur-md border-b transition-all duration-500 py-3 px-6 md:px-12 ${
       scrolled
         ? 'bg-royal-bg/98 border-royal-border-light shadow-[0_4px_30px_rgba(0,0,0,0.3)]'
         : 'bg-royal-bg/80 border-transparent'
@@ -74,7 +78,7 @@ export function Navigation() {
           <a href={BUSINESS.phoneHref} className="hidden xl:flex items-center gap-2 text-white text-sm font-bold hover:text-royal-gold transition-colors">
             <Phone className="w-4 h-4 text-royal-gold" /> {BUSINESS.phoneDisplay}
           </a>
-          <Link to="/booking" className="px-6 py-2.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)] hover:shadow-[0_0_25px_rgba(201,164,122,0.3)]">
+          <Link to="/booking" className="px-6 py-2.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)] hover:shadow-[0_0_25px_rgba(201,164,122,0.3)]">
             Book an Estimate
           </Link>
         </div>
@@ -88,7 +92,8 @@ export function Navigation() {
           className="flex-shrink-0 p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-expanded={mobileOpen}
-          aria-label="Toggle menu"
+          aria-controls="mobile-menu"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
@@ -104,7 +109,8 @@ export function Navigation() {
       )}
 
       {/* Mobile Nav Menu */}
-      <div className={`md:hidden absolute top-full left-0 w-full bg-royal-charcoal border-b border-royal-border-light shadow-xl overflow-hidden transition-all duration-500 ease-in-out ${
+      {/* Closed: inert so its links drop out of the Tab order. */}
+      <div id="mobile-menu" inert={!mobileOpen} className={`md:hidden absolute top-full left-0 w-full bg-royal-charcoal border-b border-royal-border-light shadow-xl overflow-hidden transition-all duration-500 ease-in-out ${
         mobileOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
       }`}>
         <div className="px-6 py-6 space-y-1">
@@ -113,6 +119,7 @@ export function Navigation() {
               key={link.href}
               to={link.href}
               onClick={() => setMobileOpen(false)}
+              data-autofocus={idx === 0 ? true : undefined}
               className={`flex items-center justify-between py-3 px-4 text-sm font-bold uppercase tracking-wider transition-all rounded ${
                 location.pathname === link.href
                   ? 'text-royal-gold bg-royal-gold/5'
@@ -127,7 +134,7 @@ export function Navigation() {
             </Link>
           ))}
           <div className="pt-4 mt-2 border-t border-royal-border-light">
-            <Link to="/booking" onClick={() => setMobileOpen(false)} className="block text-center w-full px-6 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+            <Link to="/booking" onClick={() => setMobileOpen(false)} className="block text-center w-full px-6 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
               Book an Estimate
             </Link>
           </div>

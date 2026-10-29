@@ -136,7 +136,7 @@ export function FaqAccordion() {
                 <div className="space-y-3">
                   <a 
                     href={BUSINESS.phoneHref} 
-                    className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-white font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-royal-gold text-royal-charcoal font-bold text-xs tracking-[0.15em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.15)]"
                   >
                     <Phone className="w-4 h-4" />
                     Call {BUSINESS.phoneDisplay}

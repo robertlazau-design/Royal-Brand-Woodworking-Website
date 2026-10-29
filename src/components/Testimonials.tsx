@@ -143,13 +143,13 @@ export function Testimonials() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href={BUSINESS.phoneHref}
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all"
             >
               <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
             </a>
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center px-10 py-4 border border-royal-gold text-royal-gold font-bold text-sm uppercase tracking-wider hover:bg-royal-gold hover:text-white transition-all"
+              className="inline-flex items-center justify-center px-10 py-4 border border-royal-gold text-royal-gold font-bold text-sm uppercase tracking-wider hover:bg-royal-gold hover:text-royal-charcoal transition-all"
             >
               Book an Estimate
             </Link>

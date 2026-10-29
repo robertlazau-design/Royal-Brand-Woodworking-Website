@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RoyalLogo } from './RoyalLogo';
 import { BUSINESS } from '../data/business';
+import { useDialog } from '../lib/useDialog';
 import { Mail, Phone, MapPin, Clock, Star, ChevronRight, X, Instagram } from 'lucide-react';
 
 const FOOTER_LINKS = [
@@ -15,6 +16,13 @@ const FOOTER_LINKS = [
 
 export function Footer() {
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
+  const legalRef = useRef<HTMLDivElement>(null);
+  useDialog(legalModal !== null, legalRef, () => setLegalModal(null));
+  useEffect(() => {
+    if (!legalModal) return;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, [legalModal]);
 
   return (
     <>
@@ -176,10 +184,10 @@ export function Footer() {
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Clock className="w-3.5 h-3.5 text-royal-text-muted/30 shrink-0" />
+                  <Clock className="w-3.5 h-3.5 text-royal-text-muted/70 shrink-0" />
                   <div className="flex justify-between w-full">
-                    <span className="text-royal-text-muted/50 font-light">Sunday</span>
-                    <span className="text-royal-text-muted/50 font-light">Closed</span>
+                    <span className="text-royal-text-muted font-light">Sunday</span>
+                    <span className="text-royal-text-muted font-light">Closed</span>
                   </div>
                 </li>
               </ul>
@@ -188,7 +196,7 @@ export function Footer() {
               <div className="pt-2 space-y-3">
                 <Link
                   to="/booking"
-                  className="block w-full text-center px-6 py-3 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all"
+                  className="block w-full text-center px-6 py-3 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all"
                 >
                   Book an Estimate
                 </Link>
@@ -211,12 +219,12 @@ export function Footer() {
 
           {/* Copyright strip */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-royal-text-muted/60 text-xs font-light tracking-wide text-center md:text-left">
+            <p className="text-royal-text-muted text-xs font-light tracking-wide text-center md:text-left">
               &copy; {new Date().getFullYear()} Royal Brand Woodworking. All rights reserved.<span className="hidden md:inline"> Handcrafted with pride in Portland, OR.</span>
             </p>
             <div className="flex gap-8">
-              <button onClick={() => setLegalModal('privacy')} className="py-2 md:py-0 text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Privacy Policy</button>
-              <button onClick={() => setLegalModal('terms')} className="py-2 md:py-0 text-royal-text-muted/60 font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Terms of Service</button>
+              <button onClick={() => setLegalModal('privacy')} className="py-2 md:py-0 text-royal-text-muted font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Privacy Policy</button>
+              <button onClick={() => setLegalModal('terms')} className="py-2 md:py-0 text-royal-text-muted font-light hover:text-royal-gold text-xs transition-colors tracking-wide uppercase">Terms of Service</button>
             </div>
           </div>
         </div>
@@ -226,12 +234,12 @@ export function Footer() {
       {legalModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setLegalModal(null)} />
-          <div className="bg-royal-charcoal border border-royal-border w-full max-w-2xl max-h-[80vh] overflow-y-auto relative z-10 shadow-2xl">
+          <div ref={legalRef} role="dialog" aria-modal="true" aria-labelledby="legal-title" tabIndex={-1} className="bg-royal-charcoal border border-royal-border w-full max-w-2xl max-h-[80vh] overflow-y-auto relative z-10 shadow-2xl outline-none">
             <div className="sticky top-0 bg-royal-charcoal border-b border-royal-border p-6 flex items-center justify-between z-20">
-              <h2 className="font-serif text-2xl text-white uppercase tracking-wider font-bold">
+              <h2 id="legal-title" className="font-serif text-2xl text-white uppercase tracking-wider font-bold">
                 {legalModal === 'privacy' ? 'Privacy Policy' : 'Terms of Service'}
               </h2>
-              <button onClick={() => setLegalModal(null)} className="p-2 text-royal-text-muted hover:text-white transition-colors">
+              <button onClick={() => setLegalModal(null)} aria-label="Close" className="p-2 text-royal-text-muted hover:text-white transition-colors">
                 <X className="w-6 h-6" />
               </button>
             </div>

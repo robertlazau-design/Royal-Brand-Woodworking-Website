@@ -51,7 +51,7 @@ export function Home() {
               ))}
             </div>
             <div className="pt-4 flex flex-wrap items-center gap-4">
-              <Link to="/booking" className="px-6 py-3 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.2)]">
+              <Link to="/booking" className="px-6 py-3 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.2)]">
                 Book an Estimate
               </Link>
               <Link to="/about" className="px-6 py-3 border border-royal-border text-white font-bold text-xs uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all">
@@ -78,7 +78,7 @@ export function Home() {
               Robert's on-site estimate is $150. If you go ahead with the project, <strong className="text-white">that $150 is credited toward it.</strong>
             </p>
           </div>
-          <Link to="/booking" className="shrink-0 text-center px-8 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+          <Link to="/booking" className="shrink-0 text-center px-8 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
             Book an Estimate
           </Link>
         </div>
@@ -111,7 +111,7 @@ export function Home() {
               ))}
             </div>
             <div className="pt-4 flex flex-wrap items-center gap-4">
-              <Link to="/order" className="px-6 py-3 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+              <Link to="/order" className="px-6 py-3 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
                 Order Custom Doors
               </Link>
               <Link to="/services" className="px-6 py-3 border border-royal-border text-white font-bold text-xs uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all">
