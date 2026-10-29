@@ -117,7 +117,7 @@ export function ServicesPage() {
                 Just need new cabinet doors? They're built to order in your sizes. Here's how a door comes together.
               </p>
             </div>
-            <Link to="/order" className="shrink-0 px-7 py-4 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
+            <Link to="/order" className="shrink-0 px-7 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all">
               Order Doors Online
             </Link>
           </div>
@@ -156,7 +156,7 @@ export function ServicesPage() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/booking"
-              className="px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-[0.15em] hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.2)]"
+              className="px-8 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-[0.15em] hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_20px_rgba(201,164,122,0.2)]"
             >
               Book an Estimate
             </Link>

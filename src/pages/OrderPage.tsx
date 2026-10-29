@@ -259,7 +259,7 @@ function FieldLabel({ children, required, htmlFor }: { children: React.ReactNode
 
 function ErrorText({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-red-300 text-[11px] mt-1.5 flex items-center gap-1">
+    <p data-field-error className="text-red-300 text-[11px] mt-1.5 flex items-center gap-1">
       <AlertCircle className="w-3 h-3 shrink-0" /> {children}
     </p>
   );
@@ -271,7 +271,7 @@ function IconInput({
   return (
     <div className="relative">
       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-royal-text-muted/50 pointer-events-none">{icon}</span>
-      <input id={id} {...props} className={`${inputBase} pl-10 ${fieldBorder(!!invalid)}`} />
+      <input id={id} aria-invalid={invalid || undefined} {...props} className={`${inputBase} pl-10 ${fieldBorder(!!invalid)}`} />
     </div>
   );
 }
@@ -280,7 +280,7 @@ function ChoiceCards({
   options, value, onChange, columns = 'grid-cols-2 sm:grid-cols-4', invalid,
 }: { options: Option[]; value: string; onChange: (v: string) => void; columns?: string; invalid?: boolean }) {
   return (
-    <div className={`grid ${columns} gap-2`} role="radiogroup">
+    <div className={`grid ${columns} gap-2`} role="radiogroup" aria-invalid={invalid || undefined}>
       {options.map(opt => {
         const selected = value === opt.value;
         return (
@@ -316,6 +316,7 @@ function SpecSelect({
     <div className="relative">
       <select
         id={id}
+        aria-invalid={invalid || undefined}
         value={value}
         onChange={e => onChange(e.target.value)}
         className={`${inputBase} ${fieldBorder(!!invalid)} appearance-none cursor-pointer pr-10`}
@@ -415,9 +416,26 @@ export function OrderPage() {
   const previewW = firstSized ? parseInches(firstSized.width) : null;
   const previewH = firstSized ? parseInches(firstSized.height) : null;
 
+  // Continue with something missing: glide to the first problem and put the cursor on it,
+  // instead of leaving a phone user to scroll around looking for the red.
+  const panelRef = useRef<HTMLDivElement>(null);
+  function jumpToFirstError() {
+    requestAnimationFrame(() => {
+      const first = panelRef.current?.querySelector<HTMLElement>('[aria-invalid="true"], [data-field-error]');
+      if (!first) return;
+      const field = first.hasAttribute('data-field-error') ? first.parentElement ?? first : first;
+      field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const target = field.matches('input, select, textarea, button')
+        ? field
+        : field.querySelector<HTMLElement>('input, select, textarea, button');
+      target?.focus({ preventScroll: true });
+    });
+  }
+
   function goNext() {
     if (errors.length) {
       setShowErrors(true);
+      jumpToFirstError();
       return;
     }
     setShowErrors(false);
@@ -428,7 +446,7 @@ export function OrderPage() {
     // Allow jumping back freely; jumping forward only through valid steps.
     if (target < step) { setShowErrors(false); setStep(target); return; }
     for (let s = step; s < target; s++) {
-      if (stepErrors(s, order).length) { setStep(s); setShowErrors(true); return; }
+      if (stepErrors(s, order).length) { setStep(s); setShowErrors(true); jumpToFirstError(); return; }
     }
     setShowErrors(false);
     setStep(target);
@@ -508,7 +526,7 @@ export function OrderPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={() => window.print()}
-                className="px-8 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center justify-center gap-2"
+                className="px-8 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center justify-center gap-2"
               >
                 <Printer className="w-4 h-4" /> Print / Save a Copy
               </button>
@@ -563,7 +581,7 @@ export function OrderPage() {
                     <span
                       className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
                         step === s.num
-                          ? 'bg-royal-gold text-white shadow-[0_0_20px_rgba(201,164,122,0.3)]'
+                          ? 'bg-royal-gold text-royal-charcoal shadow-[0_0_20px_rgba(201,164,122,0.3)]'
                           : step > s.num
                             ? 'bg-royal-gold/20 text-royal-gold border border-royal-gold/40'
                             : 'border border-royal-border text-royal-text-muted group-hover:border-royal-gold/50'
@@ -585,7 +603,7 @@ export function OrderPage() {
 
           <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             {/* ─── Main panel ─── */}
-            <div className={`${step === 4 ? 'lg:col-span-12' : 'lg:col-span-8'} min-w-0 bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
+            <div ref={panelRef} className={`${step === 4 ? 'lg:col-span-12' : 'lg:col-span-8'} min-w-0 bg-royal-charcoal border border-royal-border p-5 sm:p-8`}>
               {/* Live door preview that stays on screen while choosing (phones/tablets, and the full-width door list) */}
               {step >= 2 && step <= 4 && (
                 <div className={`${step === 4 ? '' : 'lg:hidden'} sticky top-[65px] z-30 -mx-5 sm:-mx-8 -mt-5 sm:-mt-8 mb-6 px-5 sm:px-8 py-3 bg-royal-charcoal/95 backdrop-blur-md border-b border-royal-border flex items-center gap-4`}>
@@ -889,7 +907,7 @@ export function OrderPage() {
                   <StepTitle n={4} title="Door List" sub="One line per size. Fractions are fine — type 15 3/8 or 15.375." />
 
                   <FieldLabel required>Measurements Are</FieldLabel>
-                  <div className="grid sm:grid-cols-2 gap-3 mb-2" role="radiogroup">
+                  <div className="grid sm:grid-cols-2 gap-3 mb-2" role="radiogroup" aria-invalid={err('measurement') || undefined}>
                     {(['Exact Door Size', 'Opening Size'] as MeasurementType[]).map(kind => {
                       const selected = order.measurement === kind;
                       return (
@@ -960,6 +978,7 @@ export function OrderPage() {
                             <span className="md:hidden block text-[10px] uppercase tracking-wider text-royal-text-muted font-bold mb-1">Qty</span>
                             <input aria-label={`Line ${i + 1} quantity`} type="number" min={1} inputMode="numeric" value={row.qty}
                               onChange={e => updateRow(row.id, { qty: e.target.value })}
+                              aria-invalid={!!re.qty || undefined}
                               className={`${inputBase} ${fieldBorder(!!re.qty)} px-2 text-center h-11`} />
                           </div>
 
@@ -971,6 +990,7 @@ export function OrderPage() {
                                 <div className="relative">
                                   <input aria-label={`Line ${i + 1} ${dim} in inches`} placeholder={dim === 'width' ? '15 3/8' : '30'} value={row[dim]}
                                     onChange={e => updateRow(row.id, { [dim]: e.target.value })}
+                                    aria-invalid={!!re[dim] || undefined}
                                     className={`${inputBase} ${fieldBorder(!!re[dim])} pr-7 h-11`} />
                                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-royal-text-muted/60 text-sm pointer-events-none">"</span>
                                 </div>
@@ -985,12 +1005,12 @@ export function OrderPage() {
 
                           <div className="col-span-3 md:col-span-1">
                             <span className="md:hidden block text-[10px] uppercase tracking-wider text-royal-text-muted font-bold mb-1">{isInterior(order) ? 'Swing side' : 'Hinge side'}</span>
-                            <div className={`grid grid-cols-4 border h-11 ${re.hinge ? 'border-red-400/70' : 'border-royal-border'}`} role="radiogroup" aria-label={`Line ${i + 1} hinge side`}>
+                            <div className={`grid grid-cols-4 border h-11 ${re.hinge ? 'border-red-400/70' : 'border-royal-border'}`} role="radiogroup" aria-invalid={!!re.hinge || undefined} aria-label={`Line ${i + 1} hinge side`}>
                               {HINGE_OPTIONS.map(opt => (
                                 <button key={opt.value} type="button" role="radio" aria-checked={row.hinge === opt.value} title={opt.title}
                                   onClick={() => updateRow(row.id, { hinge: opt.value })}
                                   className={`text-xs font-bold transition-colors ${
-                                    row.hinge === opt.value ? 'bg-royal-gold text-white' : 'text-royal-text-muted hover:text-white hover:bg-white/5'
+                                    row.hinge === opt.value ? 'bg-royal-gold text-royal-charcoal' : 'text-royal-text-muted hover:text-white hover:bg-white/5'
                                   }`}>
                                   {opt.label}
                                 </button>
@@ -1151,12 +1171,12 @@ export function OrderPage() {
                 ) : <span />}
                 {step < STEPS.length ? (
                   <button type="button" onClick={goNext}
-                    className="px-7 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center gap-2">
+                    className="px-7 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center gap-2">
                     Continue <ChevronRight className="w-4 h-4" />
                   </button>
                 ) : (
                   <button type="button" onClick={handleSubmit} disabled={submitting}
-                    className="px-7 py-3.5 bg-royal-gold text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait">
+                    className="px-7 py-3.5 bg-royal-gold text-royal-charcoal font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-royal-charcoal transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait">
                     <Send className="w-4 h-4" /> {submitting ? 'Sending…' : 'Send Order to Robert'}
                   </button>
                 )}

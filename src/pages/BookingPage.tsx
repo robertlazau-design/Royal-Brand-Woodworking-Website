@@ -14,14 +14,80 @@ function getFirstDayOfMonth(year: number, month: number) {
 function isSameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
+const SHOP_TIME_ZONE = 'America/Los_Angeles';
+// Today's date in Portland, so a visitor whose phone is set to another time zone
+// (or who is travelling) sees the same open days the shop does.
+function portlandToday() {
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: SHOP_TIME_ZONE, year: 'numeric', month: 'numeric', day: 'numeric' })
+    .formatToParts(new Date());
+  const part = (type: string) => Number(parts.find(p => p.type === type)?.value);
+  return new Date(part('year'), part('month') - 1, part('day'));
+}
+function isWeekendDay(d: Date) {
+  return d.getDay() === 0 || d.getDay() === 6;
+}
+// No same-day visits and no weekends: the first day a customer can pick.
+function firstOpenDay(today: Date) {
+  const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+  while (isWeekendDay(d)) d.setDate(d.getDate() + 1);
+  return d;
+}
+const monthIndex = (year: number, month: number) => year * 12 + month;
+const MONTHS_AHEAD = 3;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+type Field = 'name' | 'email' | 'phone' | 'address';
+const FIELD_ORDER: Field[] = ['name', 'email', 'phone', 'address'];
+const FIELD_NAMES: Record<Field, string> = { name: 'your name', email: 'email', phone: 'phone number', address: 'project address' };
+
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAY_HEADERS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 
+const LABEL_CLASS = 'block text-xs text-royal-text-muted uppercase tracking-wider font-bold mb-1.5';
+
+// "name", "name and email", "name, email and phone number"
+function listOf(items: string[]) {
+  return items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
+
+function DetailField({
+  id, label, icon, error, inputRef, ...props
+}: {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  error?: string | false;
+  inputRef: (el: HTMLInputElement | null) => void;
+} & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <div>
+      <label htmlFor={id} className={LABEL_CLASS}>{label} <span className="text-royal-gold">*</span></label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-royal-text-muted/50 pointer-events-none">{icon}</span>
+        <input
+          id={id}
+          ref={inputRef}
+          required
+          aria-invalid={!!error || undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
+          {...props}
+          className={`w-full bg-transparent border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm scroll-mt-28 ${
+            error ? 'border-red-400/70' : 'border-royal-border'
+          }`}
+        />
+      </div>
+      {error && <p id={`${id}-error`} className="text-red-300 text-xs mt-1.5">{error}</p>}
+    </div>
+  );
+}
+
 export function BookingPage() {
-  const today = new Date();
-  const [viewYear, setViewYear] = useState(today.getFullYear());
-  const [viewMonth, setViewMonth] = useState(today.getMonth());
+  const [today] = useState(portlandToday);
+  const firstOpen = useMemo(() => firstOpenDay(today), [today]);
+  // Open on the month with the first bookable day (e.g. on Oct 30 that's November, not an all-grey October).
+  const [viewYear, setViewYear] = useState(firstOpen.getFullYear());
+  const [viewMonth, setViewMonth] = useState(firstOpen.getMonth());
   const [selectedFullDate, setSelectedFullDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [animDir, setAnimDir] = useState<'left' | 'right' | null>(null);
@@ -38,6 +104,12 @@ export function BookingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // Fields show their problem once the customer leaves them, or all at once after they press Send.
+  const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
+  const [triedSend, setTriedSend] = useState(false);
+  // The request already sent, if they come back and pick a different time.
+  const [previousRequest, setPreviousRequest] = useState<string | null>(null);
+  const fieldRefs = useRef<Partial<Record<Field, HTMLInputElement | null>>>({});
 
   // On phones the next step appears below the fold — glide to it so the tap visibly "does something".
   const timesRef = useRef<HTMLDivElement>(null);
@@ -59,6 +131,7 @@ export function BookingPage() {
     const cells: { date: number; month: number; year: number; isCurrentMonth: boolean; isToday: boolean; isPast: boolean; isWeekend: boolean; isBooked: boolean }[] = [];
     // No same-day visits: the earliest day a customer can pick is tomorrow.
     const firstBookable = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    const lastBookable = new Date(today.getFullYear(), today.getMonth() + MONTHS_AHEAD + 1, 0);
 
     // Previous month trailing days
     for (let i = firstDay - 1; i >= 0; i--) {
@@ -70,7 +143,7 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: false,
         isToday: isSameDay(dt, today),
-        isPast: dt < firstBookable,
+        isPast: dt < firstBookable || dt > lastBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
@@ -85,7 +158,7 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: true,
         isToday: isSameDay(dt, today),
-        isPast: dt < firstBookable,
+        isPast: dt < firstBookable || dt > lastBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
@@ -101,14 +174,14 @@ export function BookingPage() {
         year: viewYear,
         isCurrentMonth: false,
         isToday: isSameDay(dt, today),
-        isPast: dt < firstBookable,
+        isPast: dt < firstBookable || dt > lastBookable,
         isWeekend: dt.getDay() === 0 || dt.getDay() === 6,
         isBooked: false,
       });
     }
 
     return cells;
-  }, [viewYear, viewMonth]);
+  }, [viewYear, viewMonth, today]);
 
   /* ── navigation ── */
   function goToPrevMonth() {
@@ -123,9 +196,9 @@ export function BookingPage() {
     if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y + 1); }
     else setViewMonth(m => m + 1);
   }
-  function goToToday() {
-    setViewYear(today.getFullYear());
-    setViewMonth(today.getMonth());
+  function goToSoonest() {
+    setViewYear(firstOpen.getFullYear());
+    setViewMonth(firstOpen.getMonth());
   }
 
   /* ── date selection ── */
@@ -155,10 +228,10 @@ export function BookingPage() {
     { time: '04:00 PM', label: 'Late Afternoon' },
   ];
 
-  /* ── can the user book past the month limit? ── */
-  const maxMonth = today.getMonth() + 3; // allow 3 months ahead
-  const canGoNext = viewYear < today.getFullYear() + 1 || (viewYear === today.getFullYear() && viewMonth < Math.min(maxMonth, 11));
-  const canGoPrev = viewYear > today.getFullYear() || (viewYear === today.getFullYear() && viewMonth > today.getMonth());
+  /* ── months the customer can page through: the first open month to 3 months past this one ── */
+  const viewIndex = monthIndex(viewYear, viewMonth);
+  const canGoNext = viewIndex < monthIndex(today.getFullYear(), today.getMonth()) + MONTHS_AHEAD;
+  const canGoPrev = viewIndex > monthIndex(firstOpen.getFullYear(), firstOpen.getMonth());
 
   /* ── formatted selected date ── */
   const formattedDate = selectedFullDate
@@ -169,27 +242,49 @@ export function BookingPage() {
   const step = isSubmitted ? 4 : !selectedFullDate ? 1 : !selectedTime ? 2 : 3;
 
   /* ── form validation ── */
-  const isFormValid = name.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && address.trim() !== '';
+  const fieldErrors: Partial<Record<Field, string>> = {};
+  if (!name.trim()) fieldErrors.name = 'Please enter your name';
+  if (!email.trim()) fieldErrors.email = 'Please enter your email';
+  else if (!EMAIL_RE.test(email.trim())) fieldErrors.email = 'That email doesn’t look right (like name@example.com)';
+  const phoneDigits = phone.replace(/\D/g, '');
+  if (!phoneDigits) fieldErrors.phone = 'Please enter your phone number';
+  else if (phoneDigits.length < 10) fieldErrors.phone = 'Enter a 10-digit phone number';
+  if (!address.trim()) fieldErrors.address = 'Please enter the project address';
+  const missing = FIELD_ORDER.filter(f => fieldErrors[f]);
+  const showError = (f: Field) => (triedSend || touched[f]) && fieldErrors[f];
 
   /* ── submit handler ── */
-  async function handleSubmitRequest() {
-    if (!isFormValid || !selectedFullDate || !selectedTime) return;
-    
+  async function handleSubmitRequest(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (isSubmitting || !selectedFullDate || !selectedTime) return;
+    if (missing.length) {
+      // Say what's missing and put the cursor on the first one, rather than a greyed-out button.
+      setTriedSend(true);
+      const first = fieldRefs.current[missing[0]];
+      first?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      first?.focus({ preventScroll: true });
+      return;
+    }
+
+    const when = `${selectedFullDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${selectedTime}`;
     setIsSubmitting(true);
     setSubmitError(null);
     try {
       await submitToWeb3Forms({
-        subject: `Estimate Request — ${name.trim()} — ${selectedFullDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${selectedTime}`,
-        from_name: name,
-        name,
-        email,
-        phone,
-        address,
+        // A second request after "Choose a Different Date" is marked so it isn't mistaken for a new customer.
+        subject: `${previousRequest ? 'Updated ' : ''}Estimate Request — ${name.trim()} — ${when}`,
+        from_name: name.trim(),
+        ...(previousRequest ? { update: `Replaces their earlier request for ${previousRequest}` } : {}),
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
         notes,
         found_us: foundUs || 'Not answered',
         requested_date: formattedDate ?? '',
         requested_time: selectedTime,
       });
+      setPreviousRequest(when);
       setIsSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
@@ -204,6 +299,8 @@ export function BookingPage() {
     setIsSubmitted(false);
     setSelectedFullDate(null);
     setSelectedTime(null);
+    setSubmitError(null);
+    setTriedSend(false);
     // Keep the contact info so they don't have to re-enter it
   }
 
@@ -379,7 +476,7 @@ export function BookingPage() {
               <div className="flex flex-col items-center gap-2">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 ${
                   step >= s.num
-                    ? 'bg-royal-gold text-white shadow-[0_0_20px_rgba(201,164,122,0.3)]'
+                    ? 'bg-royal-gold text-royal-charcoal shadow-[0_0_20px_rgba(201,164,122,0.3)]'
                     : 'border border-royal-border text-royal-text-muted'
                 }`}>
                   {step > s.num ? <CheckCircle className="w-5 h-5" /> : s.num}
@@ -409,14 +506,15 @@ export function BookingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={goToToday}
+                  onClick={goToSoonest}
                   className="px-3 py-1.5 text-xs uppercase tracking-wider font-bold border border-royal-border text-royal-text-muted hover:border-royal-gold hover:text-royal-gold transition-all"
                 >
-                  Today
+                  Soonest
                 </button>
                 <button
                   onClick={goToPrevMonth}
                   disabled={!canGoPrev}
+                  aria-label="Previous month"
                   className="p-2 hover:text-royal-gold text-royal-text-muted transition-colors disabled:opacity-20 disabled:cursor-not-allowed hover:bg-white/5 rounded"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -424,6 +522,7 @@ export function BookingPage() {
                 <button
                   onClick={goToNextMonth}
                   disabled={!canGoNext}
+                  aria-label="Next month"
                   className="p-2 hover:text-royal-gold text-royal-text-muted transition-colors disabled:opacity-20 disabled:cursor-not-allowed hover:bg-white/5 rounded"
                 >
                   <ChevronRight className="w-5 h-5" />
@@ -464,7 +563,7 @@ export function BookingPage() {
                       ${cell.isCurrentMonth && cell.isPast ? 'opacity-25 cursor-not-allowed line-through' : ''}
                       ${cell.isCurrentMonth && cell.isWeekend && !cell.isPast ? 'opacity-30 cursor-not-allowed' : ''}
                       ${cell.isCurrentMonth && cell.isBooked ? 'opacity-30 cursor-not-allowed' : ''}
-                      ${selected ? 'bg-royal-gold text-white font-bold shadow-[0_0_24px_rgba(201,164,122,0.35)] scale-110 z-10' : ''}
+                      ${selected ? 'bg-royal-gold text-royal-charcoal font-bold shadow-[0_0_24px_rgba(201,164,122,0.35)] scale-110 z-10' : ''}
                       ${cell.isCurrentMonth && !disabled && !selected ? 'hover:bg-white/10 hover:scale-105 text-white cursor-pointer' : ''}
                     `}
                   >
@@ -516,13 +615,13 @@ export function BookingPage() {
                       onClick={() => setSelectedTime(slot.time)}
                       className={`py-4 px-3 text-center transition-all border group ${
                         selectedTime === slot.time
-                          ? 'bg-royal-gold text-white border-royal-gold shadow-[0_0_20px_rgba(201,164,122,0.25)]'
+                          ? 'bg-royal-gold text-royal-charcoal border-royal-gold shadow-[0_0_20px_rgba(201,164,122,0.25)]'
                           : 'bg-transparent text-white border-royal-border hover:border-royal-gold hover:bg-white/5'
                       }`}
                     >
                       <div className="text-sm font-bold">{slot.time}</div>
                       <div className={`text-xs uppercase tracking-wider mt-1 ${
-                        selectedTime === slot.time ? 'text-white/80' : 'text-royal-text-muted'
+                        selectedTime === slot.time ? 'text-royal-charcoal/80' : 'text-royal-text-muted'
                       }`}>{slot.label}</div>
                     </button>
                   ))}
@@ -533,8 +632,8 @@ export function BookingPage() {
 
           {/* ─── Right Sidebar (2 cols) ─── */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            {/* Booking Summary Card (after the form on phones, first on desktop) */}
-            <div className="order-3 lg:order-1 bg-royal-charcoal border border-royal-border p-6">
+            {/* Booking Summary Card (between the details and Send on phones, first on desktop) */}
+            <div className="order-2 lg:order-1 bg-royal-charcoal border border-royal-border p-6">
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-royal-gold" /> Booking Summary
               </h3>
@@ -577,86 +676,66 @@ export function BookingPage() {
             </div>
 
             {/* Contact & Project Details */}
-            <div ref={detailsRef} className={`order-1 lg:order-2 scroll-mt-24 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
+            <div ref={detailsRef} inert={step < 3} className={`order-1 lg:order-2 scroll-mt-24 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
               step >= 3 ? 'opacity-100' : 'opacity-40 pointer-events-none'
             }`}>
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
                 <User className="w-4 h-4 text-royal-gold" /> Your Details
               </h3>
-              <div className="space-y-3">
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
-                  <input
-                    type="text"
-                    placeholder="Full Name *"
-                    aria-label="Full Name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
-                  />
-                </div>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
-                  <input
-                    type="email"
-                    placeholder="Email Address *"
-                    aria-label="Email Address"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
-                  />
-                </div>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50" />
-                  <input
-                    type="tel"
-                    placeholder="Phone Number *"
-                    aria-label="Phone Number"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
-                  />
-                </div>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 w-4 h-4 text-royal-text-muted/50" />
-                  <input
-                    type="text"
-                    placeholder="Project Address *"
-                    aria-label="Project Address"
-                    value={address}
-                    onChange={e => setAddress(e.target.value)}
-                    className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm"
-                  />
-                </div>
-                <div className="relative">
+              {/* A real <form> with autocomplete names lets phones offer to fill name, email, phone and address. */}
+              <form id="booking-form" onSubmit={handleSubmitRequest} noValidate className="space-y-4">
+                <DetailField id="booking-name" label="Full name" icon={<User className="w-4 h-4" />} error={showError('name')}
+                  inputRef={el => { fieldRefs.current.name = el; }}
+                  type="text" name="name" autoComplete="name" placeholder="Jane Smith"
+                  value={name} onChange={e => setName(e.target.value)} onBlur={() => setTouched(t => ({ ...t, name: true }))} />
+                <DetailField id="booking-email" label="Email" icon={<Mail className="w-4 h-4" />} error={showError('email')}
+                  inputRef={el => { fieldRefs.current.email = el; }}
+                  type="email" name="email" autoComplete="email" inputMode="email" autoCapitalize="off" spellCheck={false} placeholder="you@example.com"
+                  value={email} onChange={e => setEmail(e.target.value)} onBlur={() => setTouched(t => ({ ...t, email: true }))} />
+                <DetailField id="booking-phone" label="Phone" icon={<Phone className="w-4 h-4" />} error={showError('phone')}
+                  inputRef={el => { fieldRefs.current.phone = el; }}
+                  type="tel" name="tel" autoComplete="tel" inputMode="tel" placeholder="(503) 555-0123"
+                  value={phone} onChange={e => setPhone(e.target.value)} onBlur={() => setTouched(t => ({ ...t, phone: true }))} />
+                <DetailField id="booking-address" label="Project address" icon={<MapPin className="w-4 h-4" />} error={showError('address')}
+                  inputRef={el => { fieldRefs.current.address = el; }}
+                  type="text" name="street-address" autoComplete="street-address" placeholder="Street, city"
+                  value={address} onChange={e => setAddress(e.target.value)} onBlur={() => setTouched(t => ({ ...t, address: true }))} />
+                <div>
+                  <label htmlFor="booking-notes" className={LABEL_CLASS}>Project description <span className="normal-case font-normal tracking-normal">(optional)</span></label>
+                  <div className="relative">
                   <FileText className="absolute left-3 top-3 w-4 h-4 text-royal-text-muted/50" />
                   <textarea
-                    placeholder="Brief project description (optional)"
-                    aria-label="Brief project description (optional)"
+                    id="booking-notes"
+                    name="notes"
+                    placeholder="What are you thinking of building?"
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     rows={3}
                     className="w-full bg-transparent border border-royal-border text-white pl-10 pr-4 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm resize-none"
                   />
+                  </div>
                 </div>
-                <div className="relative">
+                <div>
+                  <label htmlFor="booking-found-us" className={LABEL_CLASS}>How did you find us? <span className="normal-case font-normal tracking-normal">(optional)</span></label>
+                  <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-royal-text-muted/50 pointer-events-none" />
                   <select
-                    aria-label="How did you find us? (optional)"
+                    id="booking-found-us"
                     value={foundUs}
                     onChange={e => setFoundUs(e.target.value)}
                     className={`w-full bg-royal-charcoal border border-royal-border pl-10 pr-10 py-3 focus:outline-none focus:border-royal-gold transition-colors text-base sm:text-sm appearance-none cursor-pointer ${foundUs ? 'text-white' : 'text-royal-text-muted'}`}
                   >
-                    <option value="">How did you find us?</option>
+                    <option value="">Choose one</option>
                     {LEAD_SOURCES.map(s => <option key={s} value={s} className="text-white">{s}</option>)}
                   </select>
                   <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 w-4 h-4 text-royal-text-muted pointer-events-none" />
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
 
             {/* Submit for Verification */}
-            <div className={`order-2 lg:order-3 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
+            <div inert={step < 3} className={`order-3 bg-royal-charcoal border border-royal-border p-6 transition-all duration-500 ${
               step >= 3 ? 'opacity-100' : 'opacity-40 pointer-events-none'
             }`}>
               <h3 className="font-sans text-sm text-white uppercase tracking-wider font-bold mb-6 pb-3 border-b border-royal-border flex items-center gap-2">
@@ -684,20 +763,22 @@ export function BookingPage() {
                 </div>
               </div>
 
+              {triedSend && missing.length > 0 && (
+                <p className="mb-4 p-3 border border-red-400/40 bg-red-400/5 text-red-200 text-xs" role="alert">
+                  Please {missing.some(f => !{ name, email, phone, address }[f].trim()) ? 'add' : 'check'} {listOf(missing.map(f => FIELD_NAMES[f]))} above.
+                </p>
+              )}
               {submitError && (
                 <p className="mb-4 p-3 border border-red-400/40 bg-red-400/5 text-red-200 text-xs" role="alert">{submitError}</p>
               )}
               <button
-                onClick={handleSubmitRequest}
-                disabled={!isFormValid || isSubmitting}
-                className={`w-full py-4 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
-                  isFormValid && !isSubmitting
-                    ? 'bg-royal-gold text-white hover:bg-white hover:text-black cursor-pointer'
-                    : 'bg-royal-border text-royal-text-muted/50 cursor-not-allowed'
-                }`}
+                type="submit"
+                form="booking-form"
+                disabled={isSubmitting}
+                className="w-full py-4 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 bg-royal-gold text-royal-charcoal hover:bg-white hover:text-black cursor-pointer disabled:opacity-60 disabled:cursor-wait"
               >
                 <CalendarCheck className="w-4 h-4" />
-                {isSubmitting ? 'Submitting...' : 'Send My Request'}
+                {isSubmitting ? 'Sending…' : 'Send My Request'}
               </button>
               <p className="text-center text-xs text-royal-text-muted mt-3 tracking-wide uppercase flex items-center justify-center gap-1">
                 <Shield className="w-3 h-3" /> No payment required · Invoice sent after confirmation

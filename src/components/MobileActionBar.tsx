@@ -18,7 +18,7 @@ export function MobileActionBar() {
       <a href={BUSINESS.phoneHref} className="flex items-center justify-center gap-2 py-3 border border-royal-gold/60 text-royal-gold font-bold text-sm uppercase tracking-wider">
         <Phone className="w-4 h-4" /> Call
       </a>
-      <Link to="/booking" className="flex items-center justify-center gap-2 py-3 bg-royal-gold text-white font-bold text-sm uppercase tracking-wider">
+      <Link to="/booking" className="flex items-center justify-center gap-2 py-3 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider">
         <CalendarCheck className="w-4 h-4" /> Book Estimate
       </Link>
     </div>
