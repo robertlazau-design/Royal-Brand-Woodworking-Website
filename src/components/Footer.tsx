@@ -56,7 +56,7 @@ export function Footer() {
 
             <p className="flex items-start gap-2 text-sm text-gray-300">
               <Clock className="w-4 h-4 text-royal-gold shrink-0 mt-0.5" />
-              <span>Mon–Fri 7am–5pm · Sat by appointment<br /><span className="text-royal-text-muted">{BUSINESS.street}, {BUSINESS.cityStateZip}</span></span>
+              <span>Mon–Fri 7am–5pm · Evening visits until 8pm · Sat by appointment<br /><span className="text-royal-text-muted">{BUSINESS.street}, {BUSINESS.cityStateZip}</span></span>
             </p>
 
             <ul className="grid grid-cols-2 gap-x-4 text-sm border-t border-royal-border pt-4">
@@ -174,6 +174,13 @@ export function Footer() {
                   <div className="flex justify-between w-full">
                     <span className="text-royal-text-muted font-light">Mon – Fri</span>
                     <span className="text-white font-light">7:00 AM – 5:00 PM</span>
+                  </div>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Clock className="w-3.5 h-3.5 text-royal-gold shrink-0" />
+                  <div className="flex justify-between w-full">
+                    <span className="text-royal-text-muted font-light">Evening Visits</span>
+                    <span className="text-white font-light">Until 8:00 PM</span>
                   </div>
                 </li>
                 <li className="flex items-center gap-3">

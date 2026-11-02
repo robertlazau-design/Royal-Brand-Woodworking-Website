@@ -156,6 +156,9 @@ export function FaqAccordion() {
                     </p>
                   </div>
                   <p className="text-royal-text-muted text-xs font-light uppercase tracking-wider pl-[22px]">
+                    Evening visits until 8pm
+                  </p>
+                  <p className="text-royal-text-muted text-xs font-light uppercase tracking-wider pl-[22px]">
                     {BUSINESS.street}, {BUSINESS.cityStateZip}
                   </p>
                 </div>

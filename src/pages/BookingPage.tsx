@@ -226,6 +226,9 @@ export function BookingPage() {
     { time: '01:00 PM', label: 'Afternoon' },
     { time: '02:30 PM', label: 'Mid Afternoon' },
     { time: '04:00 PM', label: 'Late Afternoon' },
+    // Evening visits until 8pm, for customers who work days.
+    { time: '05:30 PM', label: 'Early Evening' },
+    { time: '07:00 PM', label: 'Evening' },
   ];
 
   /* ── months the customer can page through: the first open month to 3 months past this one ── */
