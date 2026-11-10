@@ -13,6 +13,18 @@ export const PAGES: Record<string, { title: string; description: string }> = {
     title: 'Custom Cabinets, Vanities & Built-Ins in Portland, OR',
     description: 'Kitchen cabinets, bathroom vanities, built-ins, finish carpentry, handmade furniture and custom cabinet doors, built by hand in Portland, OR.',
   },
+  '/kitchen-cabinets': {
+    title: 'Custom Kitchen Cabinets in Portland, OR | Royal Brand',
+    description: "Custom kitchen cabinets designed with you, built in Robert Burlacu's Portland shop and installed by him. Get a price before any work starts.",
+  },
+  '/bathroom-vanities': {
+    title: 'Custom Bathroom Vanities in Portland, OR | Royal Brand',
+    description: 'Custom bathroom vanities made to fit your space and built to handle a humid room, handmade in Portland, OR by woodworker Robert Burlacu.',
+  },
+  '/custom-cabinets': {
+    title: 'Custom Cabinets & Built-Ins in Portland, OR | Royal Brand',
+    description: "Custom cabinets, built-ins, shelving, bars and wardrobes, built by hand in Robert Burlacu's Portland shop. Licensed, bonded & insured, CCB# 210239.",
+  },
   '/gallery': {
     title: 'Custom Kitchen & Cabinet Projects in Portland | Royal Brand',
     description: 'Photos of custom kitchens, bathroom vanities, handmade furniture and built-ins by Royal Brand Woodworking in Portland, OR.',

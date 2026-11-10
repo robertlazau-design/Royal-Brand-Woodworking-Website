@@ -8,6 +8,13 @@ export function Hero() {
       {/* Background Image & Overlay */}
       {/* Phones: photo is a clear band across the top. Desktop: photo fills the right side, beside the text. */}
       <div className="absolute inset-x-0 top-0 h-[280px] md:h-auto md:inset-y-0 md:left-[34%] lg:left-[42%] xl:left-[34%] md:right-0 z-0 overflow-hidden">
+        {/* WebP first (a 1200 px size covers phones with sharp screens); the JPGs stay as the fallback. */}
+        <picture className="block w-full h-full">
+        <source
+          type="image/webp"
+          srcSet="/photos/web/kitchen-hero-800.webp 800w, /photos/web/kitchen-hero-1200.webp 1200w, /photos/web/kitchen-hero-1920.webp 1920w"
+          sizes="(max-width: 767px) 100vw, 66vw"
+        />
         <img 
           src="/photos/web/kitchen-hero.jpg"
           srcSet="/photos/web/kitchen-hero-sm.jpg 800w, /photos/web/kitchen-hero.jpg 1920w"
@@ -18,6 +25,7 @@ export function Hero() {
           fetchPriority="high"
           style={{ animation: 'heroParallax 20s ease-in-out infinite alternate' }}
         />
+        </picture>
         {/* Optional hero video (set BUSINESS.heroVideo). The photo above stays as
             the poster and the fallback; people who prefer reduced motion keep the photo. */}
         {BUSINESS.heroVideo && (

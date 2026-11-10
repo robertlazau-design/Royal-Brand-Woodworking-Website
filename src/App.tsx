@@ -9,6 +9,7 @@ import { PageMeta } from './components/PageMeta';
 // Pages
 import { Home } from './pages/Home';
 import { ServicesPage } from './pages/ServicesPage';
+import { ServiceDetailPage } from './pages/ServiceDetailPage';
 import { OrderPage } from './pages/OrderPage';
 import { BookingPage } from './pages/BookingPage';
 import { AboutPage } from './pages/AboutPage';
@@ -43,6 +44,9 @@ export function AppShell() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/kitchen-cabinets" element={<ServiceDetailPage path="/kitchen-cabinets" />} />
+            <Route path="/bathroom-vanities" element={<ServiceDetailPage path="/bathroom-vanities" />} />
+            <Route path="/custom-cabinets" element={<ServiceDetailPage path="/custom-cabinets" />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/estimator" element={<Navigate to="/order" replace />} />
             <Route path="*" element={<NotFoundPage />} />

@@ -15,6 +15,7 @@ Royal Brand Woodworking, Portland, OR. Live at https://www.royalbrandwoodworking
 ## Stack
 - Vite + React 19 + React Router 7 + Tailwind 4. Hosted on Vercel (project royal-brand-woodworking-website).
 - Domain is registered at Wix; Wix DNS points the apex (A record) and www (CNAME) at Vercel. www is the main address.
+- vercel.json also sends royal-brand-woodworking-website.vercel.app to www, so Google sees one copy of the site.
 - Google Search Console: domain property under Burlacu's Google account; Robert is an Owner.
 
 ## How pages get to Google
@@ -38,5 +39,8 @@ Royal Brand Woodworking, Portland, OR. Live at https://www.royalbrandwoodworking
 - src/data/business.ts: name, phone, address, CCB#, Instagram, form lead-source choices. Change contact details here.
 - src/data/pages.ts: every page's title and description.
 - src/data/gallery.ts, public/photos/web: project photos.
+- src/data/servicePages.ts + src/pages/ServiceDetailPage.tsx: the kitchen cabinets, bathroom vanities and custom cabinets pages.
+- src/data/reviews.ts: real Google reviews, copied word for word (home page and service pages).
+- public/photos/web/kitchen-hero-{800,1200,1920}.webp: the home hero as WebP (Hero.tsx). If the hero photo changes, make new WebP files too.
 - index.html: shared head, business schema (JSON-LD), fonts.
 - public/<32 hex>.txt: IndexNow key (public by design).
