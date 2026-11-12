@@ -84,7 +84,7 @@ export function Hero() {
             <Link to="/booking" className="text-center px-8 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm tracking-[0.1em] uppercase hover:bg-white hover:text-royal-charcoal transition-all shadow-[0_0_30px_rgba(201,164,122,0.2)]">
               Book an Estimate
             </Link>
-            <a href={BUSINESS.phoneHref} className="px-8 py-4 bg-transparent text-white font-bold text-sm tracking-[0.1em] uppercase border border-white/40 hover:border-royal-gold hover:text-royal-gold transition-all flex items-center justify-center gap-2">
+            <a href={BUSINESS.phoneHref} data-spot="hero" className="px-8 py-4 bg-transparent text-white font-bold text-sm tracking-[0.1em] uppercase border border-white/40 hover:border-royal-gold hover:text-royal-gold transition-all flex items-center justify-center gap-2">
               <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
             </a>
           </div>
