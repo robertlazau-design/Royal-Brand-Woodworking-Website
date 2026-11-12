@@ -1,3 +1,4 @@
+import { track } from '@vercel/analytics';
 import { BUSINESS } from '../data/business';
 
 // Sends a form to the shop's inbox through Web3Forms.
@@ -26,6 +27,7 @@ export async function submitToWeb3Forms(fields: Record<string, string>): Promise
     });
   } catch {
     clearTimeout(timer);
+    track('Form Error', { page: window.location.pathname });
     throw new Error(
       controller.signal.aborted
         ? `Sending is taking too long. Check your connection and try again, ${CALL_US}.`
@@ -37,6 +39,9 @@ export async function submitToWeb3Forms(fields: Record<string, string>): Promise
   const result: { success?: boolean; message?: string } = await response.json().catch(() => ({}));
   clearTimeout(timer);
   if (!response.ok || !result.success) {
+    track('Form Error', { page: window.location.pathname });
     throw new Error(`Your request didn’t go through${result.message ? ` (${result.message})` : ''}. Please try again, ${CALL_US}.`);
   }
+  // A lead for the growth report: which form (by page) and how they found us. No personal details.
+  track('Form Sent', { page: window.location.pathname, found: fields.found_us || 'Not answered' });
 }

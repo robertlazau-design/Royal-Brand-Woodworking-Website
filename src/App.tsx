@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { MobileActionBar, useShowMobileActionBar } from './components/MobileActionBar';
@@ -61,6 +62,7 @@ export function AppShell() {
         <MobileActionBar />
       </div>
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }

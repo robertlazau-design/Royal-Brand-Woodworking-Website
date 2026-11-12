@@ -44,3 +44,11 @@ Royal Brand Woodworking, Portland, OR. Live at https://www.royalbrandwoodworking
 - public/photos/web/kitchen-hero-{800,1200,1920}.webp: the home hero as WebP (Hero.tsx). If the hero photo changes, make new WebP files too.
 - index.html: shared head, business schema (JSON-LD), fonts.
 - public/<32 hex>.txt: IndexNow key (public by design).
+
+## Lead events and Speed Insights
+- src/lib/leadEvents.ts counts leads as Vercel Web Analytics custom events (Pro plan): `Call Click`, `Email Click` and `Directions Click` from one click listener started in src/main.tsx.
+- src/lib/submitForm.ts sends `Form Sent` (page + how they found us) when Web3Forms accepts a form, and `Form Error` (page) when it doesn't.
+- Two properties per event at most (Pro's limit). `spot` comes from the nearest `data-spot` (`hero`, `bottom`, `mobile-bar`), else header (nav), footer, the section id, or page.
+- Never put names, phone numbers, emails, addresses or message text in an event.
+- Speed Insights: `<SpeedInsights />` next to `<Analytics />` in src/App.tsx.
+

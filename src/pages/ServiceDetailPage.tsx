@@ -47,7 +47,7 @@ export function ServiceDetailPage({ path }: { path: ServicePath }) {
               <Link to="/booking" className="inline-flex items-center justify-center px-8 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white transition-all">
                 Book an Estimate
               </Link>
-              <a href={BUSINESS.phoneHref} className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-royal-border text-white font-bold text-sm uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all">
+              <a href={BUSINESS.phoneHref} data-spot="hero" className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-royal-border text-white font-bold text-sm uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all">
                 <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
               </a>
             </div>
@@ -207,7 +207,7 @@ export function ServiceDetailPage({ path }: { path: ServicePath }) {
             <Link to="/booking" className="w-full sm:w-auto px-8 py-4 bg-royal-gold text-royal-charcoal font-bold text-sm uppercase tracking-wider hover:bg-white transition-all">
               Book an Estimate
             </Link>
-            <a href={BUSINESS.phoneHref} className="w-full sm:w-auto px-8 py-4 border border-royal-border text-white font-bold text-sm uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all inline-flex items-center justify-center gap-2">
+            <a href={BUSINESS.phoneHref} data-spot="bottom" className="w-full sm:w-auto px-8 py-4 border border-royal-border text-white font-bold text-sm uppercase tracking-wider hover:border-royal-gold hover:text-royal-gold transition-all inline-flex items-center justify-center gap-2">
               <Phone className="w-4 h-4" /> Call {BUSINESS.phoneDisplay}
             </a>
           </div>
